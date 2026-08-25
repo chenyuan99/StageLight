@@ -20,11 +20,24 @@ jobs:
       - name: Build and test
         shell: bash
         run: |
+          set +e
           set -o pipefail
+          device_id=$(xcrun simctl list devices available \
+            | sed -nE 's/.*iPhone.*\(([0-9A-F-]{36})\).*/\1/p' \
+            | head -n 1)
+          if [[ -z "$device_id" ]]; then
+            {
+              echo '## Simulator discovery failed'
+              echo '```text'
+              xcrun simctl list devices available
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
           xcodebuild test \
             -project StageLight.xcodeproj \
             -scheme StageLight \
-            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+            -destination "platform=iOS Simulator,id=$device_id" \
             -derivedDataPath DerivedData \
             CODE_SIGNING_ALLOWED=NO 2>&1 | tee xcodebuild.log
           status=${PIPESTATUS[0]}
