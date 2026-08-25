@@ -44,7 +44,9 @@ struct MainTabView: View {
             }
             .accessibilityIdentifier("add-performance-button")
             .accessibilityLabel("Add a performance")
-            .padding(.bottom, 3)
+            // Keep the action above the tab items so the Diary tab remains
+            // visible and tappable.
+            .padding(.bottom, 52)
         }
         .sheet(isPresented: $isAddingPerformance) {
             AddPerformanceFlow()

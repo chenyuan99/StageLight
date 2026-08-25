@@ -142,13 +142,11 @@ struct AddPerformanceFlow: View {
                     maxSelectionCount: 10,
                     matching: .images
                 ) {
-                    MainActor.assumeIsolated {
-                        sourceLabel(
-                            title: "Choose from Photos",
-                            detail: "Select Playbills, tickets, or posters",
-                            symbol: "photo.on.rectangle"
-                        )
-                    }
+                    sourceLabel(
+                        title: "Choose from Photos",
+                        detail: "Select Playbills, tickets, or posters",
+                        symbol: "photo.on.rectangle"
+                    )
                 }
                 .buttonStyle(.plain)
 
@@ -179,7 +177,7 @@ struct AddPerformanceFlow: View {
         .buttonStyle(.plain)
     }
 
-    private func sourceLabel(
+    nonisolated private func sourceLabel(
         title: LocalizedStringKey,
         detail: LocalizedStringKey,
         symbol: String
@@ -329,10 +327,8 @@ struct AddPerformanceFlow: View {
                     maxSelectionCount: 10,
                     matching: .images
                 ) {
-                    MainActor.assumeIsolated {
-                        Label("Add Photos", systemImage: "photo.badge.plus")
-                            .frame(minHeight: 44)
-                    }
+                    Label("Add Photos", systemImage: "photo.badge.plus")
+                        .frame(minHeight: 44)
                 }
             }
         }
