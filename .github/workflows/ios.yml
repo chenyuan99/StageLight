@@ -12,16 +12,28 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Show Xcode version
         run: xcodebuild -version
 
       - name: Build and test
-        run: >-
-          xcodebuild test
-          -project StageLight.xcodeproj
-          -scheme StageLight
-          -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest'
-          -derivedDataPath DerivedData
-          CODE_SIGNING_ALLOWED=NO
+        shell: bash
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -project StageLight.xcodeproj \
+            -scheme StageLight \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+            -derivedDataPath DerivedData \
+            CODE_SIGNING_ALLOWED=NO 2>&1 | tee xcodebuild.log
+          status=${PIPESTATUS[0]}
+          if [[ $status -ne 0 ]]; then
+            {
+              echo '## Xcode diagnostics'
+              echo '```text'
+              tail -n 240 xcodebuild.log
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit "$status"
+          fi
