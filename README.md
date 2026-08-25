@@ -27,6 +27,14 @@ Users can:
 
 Swift 6 · SwiftUI · SwiftData · PhotosUI · AVFoundation · Vision · URLSession · OSLog · FileManager · XCTest
 
+## Development
+
+Open `StageLight.xcodeproj` in Xcode 16 or later. The app targets iOS 18+ and has no third-party runtime dependencies.
+
+- Run the `StageLight` scheme on an iOS 18+ simulator or device.
+- Run unit and UI tests with **Product → Test** (`⌘U`).
+- Camera capture requires a physical iPhone; manual entry and PhotosPicker work in Simulator.
+
 ## Principles
 
 Local-first. Private by default. No account required. AI assists, user confirms.
