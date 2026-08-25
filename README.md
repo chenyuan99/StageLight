@@ -21,6 +21,7 @@ Users can:
 - [PRD](docs/PRD.md)
 - [Design](docs/DESIGN.md)
 - [Technical Specification](docs/TECHNICAL_SPEC.md)
+- [Test Plan](docs/TEST_PLAN.md)
 
 ## MVP Stack
 
