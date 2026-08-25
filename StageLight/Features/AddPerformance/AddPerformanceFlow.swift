@@ -177,7 +177,7 @@ struct AddPerformanceFlow: View {
         .buttonStyle(.plain)
     }
 
-    private func sourceLabel(
+    nonisolated private func sourceLabel(
         title: LocalizedStringKey,
         detail: LocalizedStringKey,
         symbol: String
