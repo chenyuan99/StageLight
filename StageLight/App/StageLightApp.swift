@@ -11,17 +11,14 @@ struct StageLightApp: App {
 
     init() {
         do {
-            let schema = Schema([
-                Show.self,
-                Performance.self,
-                PerformancePhoto.self
-            ])
+            let schema = Schema(versionedSchema: StageLightSchemaV2.self)
             let configuration = ModelConfiguration(
                 schema: schema,
                 cloudKitDatabase: .private(Self.cloudKitContainerIdentifier)
             )
             let container = try ModelContainer(
                 for: schema,
+                migrationPlan: StageLightMigrationPlan.self,
                 configurations: [configuration]
             )
             let library = LibraryStore(context: container.mainContext)
