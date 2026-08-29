@@ -4,17 +4,17 @@ struct ShowDetailView: View {
     let show: Show
 
     private var performances: [Performance] {
-        show.performances.sorted { $0.date > $1.date }
+        show.performanceList.sorted { $0.date > $1.date }
     }
 
-    private var coverFilename: String? {
-        performances.first?.photos.sorted { $0.sortOrder < $1.sortOrder }.first?.filename
+    private var coverPhoto: PerformancePhoto? {
+        performances.first?.photoList.min { $0.sortOrder < $1.sortOrder }
     }
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
-                PhotoThumbnailView(filename: coverFilename)
+                PhotoThumbnailView(photo: coverPhoto)
                     .frame(height: 360)
                     .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
 

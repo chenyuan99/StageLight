@@ -65,7 +65,9 @@ final class LibraryStore {
 
         do {
             for image in images {
-                newFilenames.append(try await photoStore.save(image))
+                let filename = try await photoStore.save(image)
+                newFilenames.append(filename)
+                draft.photoDataByFilename[filename] = try await photoStore.loadData(filename: filename)
             }
             draft.photoFilenames.append(contentsOf: newFilenames)
             let performance = try repository.save(draft: draft)
@@ -86,12 +88,14 @@ final class LibraryStore {
         newImages: [UIImage]
     ) async throws {
         var draft = try draft.validate()
-        let originalFilenames = Set(performance.photos.map(\.filename))
+        let originalFilenames = Set(performance.photoList.map(\.filename))
         var newFilenames: [String] = []
 
         do {
             for image in newImages {
-                newFilenames.append(try await photoStore.save(image))
+                let filename = try await photoStore.save(image)
+                newFilenames.append(filename)
+                draft.photoDataByFilename[filename] = try await photoStore.loadData(filename: filename)
             }
             draft.photoFilenames.append(contentsOf: newFilenames)
             try repository.update(performance, with: draft)
@@ -110,7 +114,7 @@ final class LibraryStore {
     }
 
     func delete(_ performance: Performance) throws {
-        for photo in performance.photos {
+        for photo in performance.photoList {
             try photoStore.delete(filename: photo.filename)
         }
         try repository.delete(performance)
@@ -124,6 +128,29 @@ final class LibraryStore {
             refresh()
         } catch {
             errorMessage = error.localizedDescription
+        }
+    }
+
+    func prepareCloudSync() async {
+        var addedData = false
+
+        for performance in performances {
+            for photo in performance.photoList where photo.imageData == nil {
+                guard let data = try? await photoStore.loadData(filename: photo.filename) else {
+                    continue
+                }
+                photo.imageData = data
+                addedData = true
+            }
+        }
+
+        guard addedData else { return }
+        do {
+            try repository.saveChanges()
+        } catch {
+            AppLogger.persistence.error(
+                "Photo sync preparation failed: \(error.localizedDescription, privacy: .public)"
+            )
         }
     }
 }

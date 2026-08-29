@@ -9,6 +9,7 @@ protocol PerformanceRepositoryProtocol {
     func update(_ performance: Performance, with draft: PerformanceDraft) throws
     func delete(_ performance: Performance) throws
     func deleteAll() throws
+    func saveChanges() throws
 }
 
 @MainActor
@@ -51,6 +52,7 @@ final class PerformanceRepository: PerformanceRepositoryProtocol {
             let photo = PerformancePhoto(
                 filename: filename,
                 sortOrder: index,
+                imageData: draft.photoDataByFilename[filename],
                 performance: performance
             )
             context.insert(photo)
@@ -66,11 +68,11 @@ final class PerformanceRepository: PerformanceRepositoryProtocol {
         let normalizedTitle = TitleNormalizer.normalize(draft.showTitle)
 
         if oldShow?.normalizedTitle != normalizedTitle {
-            oldShow?.performances.removeAll { $0.id == performance.id }
+            oldShow?.performances?.removeAll { $0.id == performance.id }
             let newShow = try fetchShows().first { $0.normalizedTitle == normalizedTitle }
                 ?? makeShow(title: draft.showTitle, normalizedTitle: normalizedTitle)
             performance.show = newShow
-            if let oldShow, oldShow.performances.isEmpty {
+            if let oldShow, oldShow.performanceList.isEmpty {
                 context.delete(oldShow)
             }
         } else {
@@ -89,19 +91,23 @@ final class PerformanceRepository: PerformanceRepositoryProtocol {
         performance.updatedAt = .now
 
         let desiredFilenames = Set(draft.photoFilenames)
-        for photo in performance.photos where !desiredFilenames.contains(photo.filename) {
+        for photo in performance.photoList where !desiredFilenames.contains(photo.filename) {
             context.delete(photo)
         }
-        performance.photos.removeAll { !desiredFilenames.contains($0.filename) }
+        performance.photos?.removeAll { !desiredFilenames.contains($0.filename) }
 
-        let existingFilenames = Set(performance.photos.map(\.filename))
+        let existingFilenames = Set(performance.photoList.map(\.filename))
         for (index, filename) in draft.photoFilenames.enumerated() {
-            if let photo = performance.photos.first(where: { $0.filename == filename }) {
+            if let photo = performance.photoList.first(where: { $0.filename == filename }) {
                 photo.sortOrder = index
+                if photo.imageData == nil {
+                    photo.imageData = draft.photoDataByFilename[filename]
+                }
             } else if !existingFilenames.contains(filename) {
                 let photo = PerformancePhoto(
                     filename: filename,
                     sortOrder: index,
+                    imageData: draft.photoDataByFilename[filename],
                     performance: performance
                 )
                 context.insert(photo)
@@ -113,9 +119,9 @@ final class PerformanceRepository: PerformanceRepositoryProtocol {
 
     func delete(_ performance: Performance) throws {
         let show = performance.show
-        show?.performances.removeAll { $0.id == performance.id }
+        show?.performances?.removeAll { $0.id == performance.id }
         context.delete(performance)
-        if let show, show.performances.isEmpty {
+        if let show, show.performanceList.isEmpty {
             context.delete(show)
         }
         try context.save()
@@ -125,6 +131,10 @@ final class PerformanceRepository: PerformanceRepositoryProtocol {
         try context.delete(model: PerformancePhoto.self)
         try context.delete(model: Performance.self)
         try context.delete(model: Show.self)
+        try context.save()
+    }
+
+    func saveChanges() throws {
         try context.save()
     }
 

@@ -13,6 +13,7 @@ struct PerformanceDraft: Equatable {
     var rating: Double?
     var notes: String
     var photoFilenames: [String]
+    var photoDataByFilename: [String: Data]
 
     init(
         showTitle: String = "",
@@ -26,7 +27,8 @@ struct PerformanceDraft: Equatable {
         seatNumber: String = "",
         rating: Double? = nil,
         notes: String = "",
-        photoFilenames: [String] = []
+        photoFilenames: [String] = [],
+        photoDataByFilename: [String: Data] = [:]
     ) {
         self.showTitle = showTitle
         self.date = date
@@ -40,6 +42,7 @@ struct PerformanceDraft: Equatable {
         self.rating = rating
         self.notes = notes
         self.photoFilenames = photoFilenames
+        self.photoDataByFilename = photoDataByFilename
     }
 
     init(performance: Performance) {
@@ -55,9 +58,14 @@ struct PerformanceDraft: Equatable {
             seatNumber: performance.seatNumber,
             rating: performance.rating,
             notes: performance.notes,
-            photoFilenames: performance.photos
+            photoFilenames: performance.photoList
                 .sorted { $0.sortOrder < $1.sortOrder }
-                .map(\.filename)
+                .map(\.filename),
+            photoDataByFilename: Dictionary(
+                uniqueKeysWithValues: performance.photoList.compactMap { photo in
+                    photo.imageData.map { (photo.filename, $0) }
+                }
+            )
         )
     }
 

@@ -19,7 +19,7 @@ final class PerformanceRepositoryTests: XCTestCase {
 
         XCTAssertEqual(shows.count, 1)
         XCTAssertEqual(shows[0].normalizedTitle, "hamilton")
-        XCTAssertEqual(shows[0].performances.count, 1)
+        XCTAssertEqual(shows[0].performanceList.count, 1)
         XCTAssertEqual(performance.show?.id, shows[0].id)
     }
 
@@ -38,7 +38,25 @@ final class PerformanceRepositoryTests: XCTestCase {
         let shows = try repository.fetchShows()
 
         XCTAssertEqual(shows.count, 1)
-        XCTAssertEqual(shows[0].performances.count, 2)
+        XCTAssertEqual(shows[0].performanceList.count, 2)
+
+    }
+
+    @MainActor
+    func test_save_photoData_persistsCloudSyncedPayload() throws {
+        let (container, repository) = try makeRepository()
+        defer { withExtendedLifetime(container) {} }
+        let imageData = Data([0x01, 0x02, 0x03])
+        let draft = PerformanceDraft(
+            showTitle: "Hamilton",
+            photoFilenames: ["photo.jpg"],
+            photoDataByFilename: ["photo.jpg": imageData]
+        )
+
+        let performance = try repository.save(draft: draft)
+
+        XCTAssertEqual(performance.photoList.count, 1)
+        XCTAssertEqual(performance.photoList[0].imageData, imageData)
     }
 
     @MainActor
@@ -57,7 +75,10 @@ final class PerformanceRepositoryTests: XCTestCase {
 
     @MainActor
     private func makeRepository() throws -> (ModelContainer, PerformanceRepository) {
-        let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
+        let configuration = ModelConfiguration(
+            isStoredInMemoryOnly: true,
+            cloudKitDatabase: .none
+        )
         let container = try ModelContainer(
             for: Show.self,
             Performance.self,

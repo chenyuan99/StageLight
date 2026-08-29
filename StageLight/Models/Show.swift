@@ -3,13 +3,13 @@ import SwiftData
 
 @Model
 final class Show {
-    @Attribute(.unique) var id: UUID
-    var title: String
-    var normalizedTitle: String
-    var createdAt: Date
+    var id: UUID = UUID()
+    var title: String = ""
+    var normalizedTitle: String = ""
+    var createdAt: Date = Date.now
 
     @Relationship(deleteRule: .cascade, inverse: \Performance.show)
-    var performances: [Performance]
+    var performances: [Performance]?
 
     init(
         id: UUID = UUID(),
@@ -25,12 +25,14 @@ final class Show {
         self.performances = performances
     }
 
+    var performanceList: [Performance] { performances ?? [] }
+
     var latestPerformance: Performance? {
-        performances.max { $0.date < $1.date }
+        performanceList.max { $0.date < $1.date }
     }
 
     var averageRating: Double? {
-        let ratings = performances.compactMap(\.rating)
+        let ratings = performanceList.compactMap(\.rating)
         guard !ratings.isEmpty else { return nil }
         return ratings.reduce(0, +) / Double(ratings.count)
     }

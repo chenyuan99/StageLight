@@ -3,22 +3,22 @@ import SwiftData
 
 @Model
 final class Performance {
-    @Attribute(.unique) var id: UUID
-    var date: Date
+    var id: UUID = UUID()
+    var date: Date = Date.now
     var time: Date?
-    var theatre: String
-    var city: String
-    var seatSection: String
-    var seatRow: String
-    var seatNumber: String
+    var theatre: String = ""
+    var city: String = ""
+    var seatSection: String = ""
+    var seatRow: String = ""
+    var seatNumber: String = ""
     var rating: Double?
-    var notes: String
-    var createdAt: Date
-    var updatedAt: Date
+    var notes: String = ""
+    var createdAt: Date = Date.now
+    var updatedAt: Date = Date.now
     var show: Show?
 
     @Relationship(deleteRule: .cascade, inverse: \PerformancePhoto.performance)
-    var photos: [PerformancePhoto]
+    var photos: [PerformancePhoto]?
 
     init(
         id: UUID = UUID(),
@@ -51,6 +51,8 @@ final class Performance {
         self.show = show
         self.photos = photos
     }
+
+    var photoList: [PerformancePhoto] { photos ?? [] }
 
     var formattedSeat: String? {
         let components = [seatSection, seatRow, seatNumber]
