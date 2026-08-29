@@ -14,6 +14,19 @@ struct RecognitionResult: Equatable {
     var confidence: Double
 }
 
+struct RecognizedTextLine: Equatable {
+    let text: String
+    let confidence: Float
+}
+
+struct ExtractedPerformanceFields: Equatable {
+    var showTitle: String
+    var theatre: String
+    var city: String
+    var date: String
+    var time: String
+}
+
 @MainActor
 protocol RecognitionServiceProtocol {
     func recognize(image: UIImage) async throws -> RecognitionResult
@@ -48,34 +61,13 @@ final class LocalOCRRecognitionService: RecognitionServiceProtocol {
 
         let lines = (request.results ?? [])
             .compactMap { $0.topCandidates(1).first }
-        guard let strongest = lines.max(by: { lhs, rhs in
-            lhs.confidence == rhs.confidence
-                ? lhs.string.count < rhs.string.count
-                : lhs.confidence < rhs.confidence
-        }) else {
-            throw RecognitionError.noTextFound
-        }
-
-        let theatre = lines
-            .map(\.string)
-            .first { line in
-                let lowered = line.lowercased()
-                return lowered.contains("theatre") || lowered.contains("theater")
-            }
-
-        let fallback = RecognitionResult(
-            showTitle: strongest.string.trimmingCharacters(in: .whitespacesAndNewlines),
-            theatre: theatre,
-            city: nil,
-            date: nil,
-            time: nil,
-            confidence: Double(strongest.confidence)
-        )
+            .map { RecognizedTextLine(text: $0.string, confidence: $0.confidence) }
+        let fallback = try RecognitionResultProcessor.fallback(from: lines)
 
 #if canImport(FoundationModels)
         if #available(iOS 26.0, *), SystemLanguageModel.default.isAvailable {
             return (try? await recognizeWithAppleIntelligence(
-                text: lines.map(\.string).joined(separator: "\n"),
+                text: lines.map(\.text).joined(separator: "\n"),
                 fallback: fallback
             )) ?? fallback
         }
@@ -101,24 +93,62 @@ final class LocalOCRRecognitionService: RecognitionServiceProtocol {
         )
         let details = response.content
 
+        return RecognitionResultProcessor.merging(
+            ExtractedPerformanceFields(
+                showTitle: details.showTitle,
+                theatre: details.theatre,
+                city: details.city,
+                date: details.date,
+                time: details.time
+            ),
+            into: fallback
+        )
+    }
+#endif
+}
+
+@MainActor
+enum RecognitionResultProcessor {
+    static func fallback(from lines: [RecognizedTextLine]) throws -> RecognitionResult {
+        let meaningfulLines = lines.filter { $0.text.nilIfEmpty != nil }
+        guard let strongest = meaningfulLines.max(by: { lhs, rhs in
+            lhs.confidence == rhs.confidence
+                ? lhs.text.count < rhs.text.count
+                : lhs.confidence < rhs.confidence
+        }) else {
+            throw RecognitionError.noTextFound
+        }
+
+        let theatre = meaningfulLines
+            .map(\.text)
+            .first { line in
+                let lowered = line.lowercased()
+                return lowered.contains("theatre") || lowered.contains("theater")
+            }?
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+
         return RecognitionResult(
-            showTitle: details.showTitle.nilIfEmpty ?? fallback.showTitle,
-            theatre: details.theatre.nilIfEmpty ?? fallback.theatre,
-            city: details.city.nilIfEmpty,
-            date: parseDate(details.date),
-            time: parseTime(details.time),
-            confidence: max(fallback.confidence, 0.85)
+            showTitle: strongest.text.nilIfEmpty,
+            theatre: theatre,
+            city: nil,
+            date: nil,
+            time: nil,
+            confidence: Double(strongest.confidence)
         )
     }
 
-    @available(iOS 26.0, *)
-    private func parseDate(_ value: String) -> Date? {
-        Self.dateFormatter.date(from: value.trimmingCharacters(in: .whitespacesAndNewlines))
-    }
-
-    @available(iOS 26.0, *)
-    private func parseTime(_ value: String) -> Date? {
-        Self.timeFormatter.date(from: value.trimmingCharacters(in: .whitespacesAndNewlines))
+    static func merging(
+        _ fields: ExtractedPerformanceFields,
+        into fallback: RecognitionResult
+    ) -> RecognitionResult {
+        RecognitionResult(
+            showTitle: fields.showTitle.nilIfEmpty ?? fallback.showTitle,
+            theatre: fields.theatre.nilIfEmpty ?? fallback.theatre,
+            city: fields.city.nilIfEmpty,
+            date: dateFormatter.date(from: fields.date.trimmingCharacters(in: .whitespacesAndNewlines)),
+            time: timeFormatter.date(from: fields.time.trimmingCharacters(in: .whitespacesAndNewlines)),
+            confidence: max(fallback.confidence, 0.85)
+        )
     }
 
     private static let dateFormatter: DateFormatter = {
@@ -127,6 +157,7 @@ final class LocalOCRRecognitionService: RecognitionServiceProtocol {
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.timeZone = .current
         formatter.dateFormat = "yyyy-MM-dd"
+        formatter.isLenient = false
         return formatter
     }()
 
@@ -136,9 +167,9 @@ final class LocalOCRRecognitionService: RecognitionServiceProtocol {
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.timeZone = .current
         formatter.dateFormat = "HH:mm"
+        formatter.isLenient = false
         return formatter
     }()
-#endif
 }
 
 #if canImport(FoundationModels)

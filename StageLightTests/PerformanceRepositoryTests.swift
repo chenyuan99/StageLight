@@ -5,7 +5,8 @@ import XCTest
 final class PerformanceRepositoryTests: XCTestCase {
     @MainActor
     func test_save_firstPerformance_createsShowAndRelationship() throws {
-        let (_, repository) = try makeRepository()
+        let (container, repository) = try makeRepository()
+        defer { withExtendedLifetime(container) {} }
         let draft = PerformanceDraft(
             showTitle: "Hamilton",
             date: .now,
@@ -24,7 +25,8 @@ final class PerformanceRepositoryTests: XCTestCase {
 
     @MainActor
     func test_save_repeatViewing_reusesExistingShow() throws {
-        let (_, repository) = try makeRepository()
+        let (container, repository) = try makeRepository()
+        defer { withExtendedLifetime(container) {} }
         _ = try repository.save(draft: PerformanceDraft(showTitle: "Hamilton", date: .now))
         _ = try repository.save(
             draft: PerformanceDraft(
@@ -41,7 +43,8 @@ final class PerformanceRepositoryTests: XCTestCase {
 
     @MainActor
     func test_delete_lastPerformance_deletesEmptyParentShow() throws {
-        let (_, repository) = try makeRepository()
+        let (container, repository) = try makeRepository()
+        defer { withExtendedLifetime(container) {} }
         let performance = try repository.save(
             draft: PerformanceDraft(showTitle: "Hamilton", date: .now)
         )

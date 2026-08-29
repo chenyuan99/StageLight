@@ -142,11 +142,27 @@ struct AddPerformanceFlow: View {
                     maxSelectionCount: 10,
                     matching: .images
                 ) {
-                    sourceLabel(
-                        title: "Choose from Photos",
-                        detail: "Select Playbills, tickets, or posters",
-                        symbol: "photo.on.rectangle"
-                    )
+                    HStack(spacing: 16) {
+                        Image(systemName: "photo.on.rectangle")
+                            .font(.title3)
+                            .frame(width: 44, height: 44)
+                            .background(StageTheme.spotlight.opacity(0.3))
+                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text("Choose from Photos").font(.headline)
+                            Text("Select Playbills, tickets, or posters")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(.tertiary)
+                    }
+                    .padding(16)
+                    .background(StageTheme.surface)
+                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
 
@@ -177,7 +193,7 @@ struct AddPerformanceFlow: View {
         .buttonStyle(.plain)
     }
 
-    nonisolated private func sourceLabel(
+    private func sourceLabel(
         title: LocalizedStringKey,
         detail: LocalizedStringKey,
         symbol: String
