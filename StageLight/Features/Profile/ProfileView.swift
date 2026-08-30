@@ -2,6 +2,11 @@ import SwiftUI
 
 struct ProfileView: View {
     @Environment(LibraryStore.self) private var library
+    @State private var cloudSyncAvailability: CloudSyncAvailability = .checking
+
+    private let cloudSyncStatusProvider = CloudSyncStatusProvider(
+        containerIdentifier: "iCloud.com.chenyuan.StageLight"
+    )
 
     private var statistics: LibraryStatistics { library.statistics }
 
@@ -41,6 +46,8 @@ struct ProfileView: View {
                     editorialFact(label: "Favorite theatre", value: favoriteTheatre)
                 }
 
+                cloudSyncSection
+
                 Spacer(minLength: 60)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -48,6 +55,9 @@ struct ProfileView: View {
         }
         .background(StageTheme.background)
         .navigationTitle("Profile")
+        .task {
+            await refreshCloudSyncStatus()
+        }
     }
 
     private func profileStatistic(value: String, label: LocalizedStringKey) -> some View {
@@ -70,5 +80,79 @@ struct ProfileView: View {
             Text(value)
                 .font(.system(.title2, design: .serif, weight: .medium))
         }
+    }
+
+    private var cloudSyncSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("iCloud Sync")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .textCase(.uppercase)
+                .accessibilityIdentifier("icloud-sync-section-title")
+
+            VStack(alignment: .leading, spacing: 16) {
+                HStack(spacing: 14) {
+                    Image(systemName: cloudSyncAvailability == .available
+                        ? "icloud.fill"
+                        : "icloud")
+                        .font(.title2)
+                        .foregroundStyle(cloudSyncAvailability == .available
+                            ? .blue
+                            : .secondary)
+                        .frame(width: 34, height: 34)
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Automatic Sync")
+                            .font(.headline)
+                        Text(cloudSyncAvailability.title)
+                            .font(.subheadline)
+                            .foregroundStyle(statusColor)
+                    }
+
+                    Spacer()
+
+                    if cloudSyncAvailability == .checking {
+                        ProgressView()
+                            .controlSize(.small)
+                    } else {
+                        Circle()
+                            .fill(statusColor)
+                            .frame(width: 9, height: 9)
+                            .accessibilityHidden(true)
+                    }
+                }
+
+                Text(cloudSyncAvailability.message)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Button {
+                    Task { await refreshCloudSyncStatus() }
+                } label: {
+                    Label("Check Status", systemImage: "arrow.clockwise")
+                }
+                .buttonStyle(.bordered)
+                .disabled(cloudSyncAvailability == .checking)
+            }
+            .padding(18)
+            .background(StageTheme.surface, in: RoundedRectangle(cornerRadius: 18))
+        }
+        .accessibilityElement(children: .contain)
+    }
+
+    private var statusColor: Color {
+        switch cloudSyncAvailability {
+        case .available:
+            .green
+        case .checking, .noAccount, .restricted, .temporarilyUnavailable, .unavailable:
+            .secondary
+        }
+    }
+
+    private func refreshCloudSyncStatus() async {
+        cloudSyncAvailability = .checking
+        cloudSyncAvailability = await cloudSyncStatusProvider.currentAvailability()
+        library.refresh()
     }
 }
