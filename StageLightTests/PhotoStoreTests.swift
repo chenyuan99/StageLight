@@ -28,8 +28,10 @@ final class PhotoStoreTests: XCTestCase {
 
         let filename = try await store.save(source)
         let loaded = try await store.load(filename: filename)
+        let storedData = try await store.loadData(filename: filename)
 
         XCTAssertEqual(loaded.size, CGSize(width: 100, height: 200))
+        XCTAssertFalse(storedData.isEmpty)
         XCTAssertTrue(FileManager.default.fileExists(atPath: directory.appending(path: filename).path))
 
         try store.delete(filename: filename)

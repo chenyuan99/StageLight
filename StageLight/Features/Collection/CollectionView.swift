@@ -103,13 +103,13 @@ struct CollectionView: View {
         library.shows.filter { show in
             let matchesQuery = searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
                 || show.title.localizedStandardContains(searchText)
-                || show.performances.contains { $0.theatre.localizedStandardContains(searchText) }
+                || show.performanceList.contains { $0.theatre.localizedStandardContains(searchText) }
             let matchesYear = selectedYear == nil
-                || show.performances.contains {
+                || show.performanceList.contains {
                     Calendar.current.component(.year, from: $0.date) == selectedYear
                 }
             let matchesRating = minimumRating == nil
-                || show.performances.contains { ($0.rating ?? 0) >= (minimumRating ?? 0) }
+                || show.performanceList.contains { ($0.rating ?? 0) >= (minimumRating ?? 0) }
             return matchesQuery && matchesYear && matchesRating
         }
     }

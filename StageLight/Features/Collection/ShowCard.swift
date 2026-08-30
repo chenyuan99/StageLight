@@ -4,15 +4,14 @@ import UIKit
 struct ShowCard: View {
     let show: Show
 
-    private var coverFilename: String? {
-        show.latestPerformance?.photos
-            .sorted { $0.sortOrder < $1.sortOrder }
-            .first?.filename
+    private var coverPhoto: PerformancePhoto? {
+        show.latestPerformance?.photoList
+            .min { $0.sortOrder < $1.sortOrder }
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 9) {
-            PhotoThumbnailView(filename: coverFilename)
+            PhotoThumbnailView(photo: coverPhoto)
                 .aspectRatio(0.72, contentMode: .fit)
                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
 
@@ -22,7 +21,7 @@ struct ShowCard: View {
                 .lineLimit(2)
 
             HStack(spacing: 8) {
-                Text("\(show.performances.count) seen")
+                Text("\(show.performanceList.count) seen")
                 if let rating = show.latestPerformance?.rating ?? show.averageRating {
                     Text("·")
                     RatingLabel(rating: rating)
@@ -36,7 +35,7 @@ struct ShowCard: View {
     }
 
     private var accessibilityLabel: String {
-        var parts = [show.title, String(localized: "\(show.performances.count) performances")]
+        var parts = [show.title, String(localized: "\(show.performanceList.count) performances")]
         if let average = show.averageRating {
             parts.append(String(localized: "average \(average.formatted()) out of 5 stars"))
         }
@@ -47,8 +46,27 @@ struct ShowCard: View {
 struct PhotoThumbnailView: View {
     @Environment(LibraryStore.self) private var library
     let filename: String?
+    let syncedData: Data?
     var contentMode: ContentMode = .fill
     @State private var image: UIImage?
+
+    init(
+        filename: String?,
+        syncedData: Data? = nil,
+        contentMode: ContentMode = .fill
+    ) {
+        self.filename = filename
+        self.syncedData = syncedData
+        self.contentMode = contentMode
+    }
+
+    init(photo: PerformancePhoto?, contentMode: ContentMode = .fill) {
+        self.init(
+            filename: photo?.filename,
+            syncedData: photo?.imageData,
+            contentMode: contentMode
+        )
+    }
 
     var body: some View {
         ZStack {
@@ -66,12 +84,19 @@ struct PhotoThumbnailView: View {
             }
         }
         .clipped()
-        .task(id: filename) {
-            guard let filename else {
+        .task(id: PhotoLoadKey(filename: filename, syncedByteCount: syncedData?.count)) {
+            if let syncedData, let syncedImage = UIImage(data: syncedData) {
+                image = syncedImage
+            } else if let filename {
+                image = try? await library.photoStore.load(filename: filename)
+            } else {
                 image = nil
-                return
             }
-            image = try? await library.photoStore.load(filename: filename)
         }
     }
+}
+
+private struct PhotoLoadKey: Equatable {
+    let filename: String?
+    let syncedByteCount: Int?
 }

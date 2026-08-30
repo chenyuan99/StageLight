@@ -363,7 +363,10 @@ struct AddPerformanceFlow: View {
 
     private func photoItem(filename: String) -> some View {
         ZStack(alignment: .topTrailing) {
-            PhotoThumbnailView(filename: filename)
+            PhotoThumbnailView(
+                filename: filename,
+                syncedData: draft.photoDataByFilename[filename]
+            )
                 .frame(width: 100, height: 126)
                 .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
             Button {

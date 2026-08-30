@@ -53,7 +53,7 @@ final class DuplicateDetectorTests: XCTestCase {
     private func makePerformance(title: String, date: Date) -> Performance {
         let show = Show(title: title)
         let performance = Performance(date: date, show: show)
-        show.performances.append(performance)
+        show.performances?.append(performance)
         return performance
     }
 

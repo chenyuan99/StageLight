@@ -8,7 +8,7 @@ struct PerformanceDetailView: View {
     @State private var confirmsDelete = false
 
     private var photos: [PerformancePhoto] {
-        performance.photos.sorted { $0.sortOrder < $1.sortOrder }
+        performance.photoList.sorted { $0.sortOrder < $1.sortOrder }
     }
 
     var body: some View {
@@ -24,7 +24,7 @@ struct PerformanceDetailView: View {
                 }
 
                 if let first = photos.first {
-                    PhotoThumbnailView(filename: first.filename)
+                    PhotoThumbnailView(photo: first)
                         .frame(height: 390)
                         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                 }
@@ -48,7 +48,7 @@ struct PerformanceDetailView: View {
                         ScrollView(.horizontal) {
                             LazyHStack(spacing: 12) {
                                 ForEach(photos.dropFirst()) { photo in
-                                    PhotoThumbnailView(filename: photo.filename)
+                                    PhotoThumbnailView(photo: photo)
                                         .frame(width: 180, height: 220)
                                         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                                 }

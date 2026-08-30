@@ -5,6 +5,7 @@ import UIKit
 protocol PhotoStoreProtocol {
     func save(_ image: UIImage) async throws -> String
     func load(filename: String) async throws -> UIImage
+    func loadData(filename: String) async throws -> Data
     func delete(filename: String) throws
     func deleteAll() throws
 }
@@ -62,14 +63,18 @@ final class LocalPhotoStore: PhotoStoreProtocol {
     }
 
     func load(filename: String) async throws -> UIImage {
-        let url = try safeURL(filename: filename)
-        let data = try await Task.detached(priority: .utility) {
-            try Data(contentsOf: url, options: .mappedIfSafe)
-        }.value
+        let data = try await loadData(filename: filename)
         guard let image = UIImage(data: data) else {
             throw PhotoStoreError.unreadableImage
         }
         return image
+    }
+
+    func loadData(filename: String) async throws -> Data {
+        let url = try safeURL(filename: filename)
+        return try await Task.detached(priority: .utility) {
+            try Data(contentsOf: url, options: .mappedIfSafe)
+        }.value
     }
 
     func delete(filename: String) throws {
