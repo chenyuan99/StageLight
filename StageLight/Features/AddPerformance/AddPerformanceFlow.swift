@@ -144,27 +144,7 @@ struct AddPerformanceFlow: View {
                     maxSelectionCount: 10,
                     matching: .images
                 ) {
-                    HStack(spacing: 16) {
-                        Image(systemName: "photo.on.rectangle")
-                            .font(.title3)
-                            .frame(width: 44, height: 44)
-                            .background(StageTheme.spotlight.opacity(0.3))
-                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                        VStack(alignment: .leading, spacing: 3) {
-                            Text("Choose from Photos").font(.headline)
-                            Text("Select Playbills, tickets, or posters")
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                        }
-                        Spacer()
-                        Image(systemName: "chevron.right")
-                            .font(.caption.weight(.semibold))
-                            .foregroundStyle(.tertiary)
-                    }
-                    .padding(16)
-                    .background(StageTheme.surface)
-                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                    .contentShape(Rectangle())
+                    PhotoLibraryPickerLabel()
                 }
                 .buttonStyle(.plain)
 
@@ -350,8 +330,7 @@ struct AddPerformanceFlow: View {
                     maxSelectionCount: 10,
                     matching: .images
                 ) {
-                    Label("Add Photos", systemImage: "photo.badge.plus")
-                        .frame(minHeight: 44)
+                    AddPhotosPickerLabel()
                 }
             }
         }
@@ -553,5 +532,38 @@ struct AddPerformanceFlow: View {
     private var isSaving: Bool {
         if case .saving = state { return true }
         return false
+    }
+}
+
+private struct PhotoLibraryPickerLabel: View {
+    var body: some View {
+        HStack(spacing: 16) {
+            Image(systemName: "photo.on.rectangle")
+                .font(.title3)
+                .frame(width: 44, height: 44)
+                .background(StageTheme.spotlight.opacity(0.3))
+                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+            VStack(alignment: .leading, spacing: 3) {
+                Text("Choose from Photos").font(.headline)
+                Text("Select Playbills, tickets, or posters")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+            Spacer()
+            Image(systemName: "chevron.right")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.tertiary)
+        }
+        .padding(16)
+        .background(StageTheme.surface)
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .contentShape(Rectangle())
+    }
+}
+
+private struct AddPhotosPickerLabel: View {
+    var body: some View {
+        Label("Add Photos", systemImage: "photo.badge.plus")
+            .frame(minHeight: 44)
     }
 }
