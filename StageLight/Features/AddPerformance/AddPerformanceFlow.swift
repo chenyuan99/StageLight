@@ -27,6 +27,7 @@ struct AddPerformanceFlow: View {
     @State private var duplicateMatch: Performance?
     @State private var showsDuplicateWarning = false
     @State private var recognitionConfidence: Double?
+    @State private var showsTheatreSearch = false
 
     init(editing performance: Performance? = nil) {
         self.performance = performance
@@ -299,6 +300,11 @@ struct AddPerformanceFlow: View {
                     .textInputAutocapitalization(.words)
                 TextField("City", text: $draft.city)
                     .textInputAutocapitalization(.words)
+                Button {
+                    showsTheatreSearch = true
+                } label: {
+                    Label("Find Theatre with Apple Maps", systemImage: "map")
+                }
             }
 
             Section("Rating") {
@@ -350,6 +356,14 @@ struct AddPerformanceFlow: View {
             }
         }
         .navigationTitle(performance == nil ? "Add Performance" : "Edit Performance")
+        .sheet(isPresented: $showsTheatreSearch) {
+            TheatreSearchView(
+                currentTheatre: draft.theatre,
+                cityHint: draft.city
+            ) { suggestion in
+                draft.applyTheatreSuggestion(suggestion)
+            }
+        }
         .safeAreaInset(edge: .bottom) {
             Button(performance == nil ? "Add to Stage" : "Save Changes") {
                 requestSave()
