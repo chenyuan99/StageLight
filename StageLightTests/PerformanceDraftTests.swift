@@ -34,4 +34,46 @@ final class PerformanceDraftTests: XCTestCase {
             XCTAssertEqual(error as? DraftValidationError, .invalidRating)
         }
     }
+
+    func test_applyTheatreSuggestion_updatesTheatreAndSuggestedCity() {
+        var draft = PerformanceDraft(
+            showTitle: "Hamilton",
+            date: .now,
+            theatre: "Manual Theatre",
+            city: "Boston"
+        )
+
+        draft.applyTheatreSuggestion(
+            TheatreSuggestion(
+                id: "richard-rodgers",
+                name: "Richard Rodgers Theatre",
+                city: "New York",
+                address: "226 W 46th St, New York, NY"
+            )
+        )
+
+        XCTAssertEqual(draft.theatre, "Richard Rodgers Theatre")
+        XCTAssertEqual(draft.city, "New York")
+    }
+
+    func test_applyTheatreSuggestion_withoutCity_preservesExistingCity() {
+        var draft = PerformanceDraft(
+            showTitle: "Hamilton",
+            date: .now,
+            theatre: "Manual Theatre",
+            city: "New York"
+        )
+
+        draft.applyTheatreSuggestion(
+            TheatreSuggestion(
+                id: "unknown-city",
+                name: "Custom Theatre",
+                city: nil,
+                address: nil
+            )
+        )
+
+        XCTAssertEqual(draft.theatre, "Custom Theatre")
+        XCTAssertEqual(draft.city, "New York")
+    }
 }

@@ -94,6 +94,14 @@ struct PerformanceDraft: Equatable {
         }
         return validated
     }
+
+    mutating func applyTheatreSuggestion(_ suggestion: TheatreSuggestion) {
+        theatre = suggestion.name
+        if let suggestedCity = suggestion.city?.trimmingCharacters(in: .whitespacesAndNewlines),
+           !suggestedCity.isEmpty {
+            city = suggestedCity
+        }
+    }
 }
 
 enum DraftValidationError: LocalizedError, Equatable {
