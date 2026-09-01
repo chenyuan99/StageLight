@@ -1,4 +1,4 @@
-# StageLight 0.2.0
+# StageLight 1.1.0
 
 StageLight now keeps your theatre memories in sync with iCloud and makes theatre entry faster with optional Apple Maps search.
 
