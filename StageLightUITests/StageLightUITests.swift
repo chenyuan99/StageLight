@@ -1,5 +1,6 @@
 import XCTest
 
+@MainActor
 final class StageLightUITests: XCTestCase {
     private var app: XCUIApplication!
 

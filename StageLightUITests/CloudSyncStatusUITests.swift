@@ -1,5 +1,6 @@
 import XCTest
 
+@MainActor
 final class CloudSyncStatusUITests: XCTestCase {
     func test_profileDisplaysICloudSyncStatusAndRefreshAction() {
         let app = XCUIApplication()
