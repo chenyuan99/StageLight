@@ -13,6 +13,7 @@ enum AddPerformanceState {
     case failed(String)
 }
 
+@MainActor
 struct AddPerformanceFlow: View {
     @Environment(LibraryStore.self) private var library
     @Environment(\.dismiss) private var dismiss
