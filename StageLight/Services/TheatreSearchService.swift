@@ -29,11 +29,20 @@ enum TheatreSearchService {
             request.region = broadwayRegion
         }
 
-        let response = try await MKLocalSearch(request: request).start()
-        return response.mapItems.compactMap(suggestion(from:))
+        return try await withCheckedThrowingContinuation { continuation in
+            MKLocalSearch(request: request).start { response, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+
+                let suggestions = response?.mapItems.compactMap(suggestion(from:)) ?? []
+                continuation.resume(returning: suggestions)
+            }
+        }
     }
 
-    private static func suggestion(from mapItem: MKMapItem) -> TheatreSuggestion? {
+    private nonisolated static func suggestion(from mapItem: MKMapItem) -> TheatreSuggestion? {
         guard let name = mapItem.name?.trimmingCharacters(in: .whitespacesAndNewlines),
               !name.isEmpty else {
             return nil

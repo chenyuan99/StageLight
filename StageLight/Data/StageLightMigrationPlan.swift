@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 
 enum StageLightSchemaV1: VersionedSchema {
-    static let versionIdentifier = Schema.Version(1, 0, 0)
+    nonisolated(unsafe) static let versionIdentifier = Schema.Version(1, 0, 0)
     static let models: [any PersistentModel.Type] = [
         Show.self,
         Performance.self,
@@ -111,7 +111,7 @@ enum StageLightSchemaV1: VersionedSchema {
 }
 
 enum StageLightSchemaV2: VersionedSchema {
-    static let versionIdentifier = Schema.Version(2, 0, 0)
+    nonisolated(unsafe) static let versionIdentifier = Schema.Version(2, 0, 0)
     static let models: [any PersistentModel.Type] = [
         Show.self,
         Performance.self,
@@ -125,7 +125,7 @@ enum StageLightMigrationPlan: SchemaMigrationPlan {
         StageLightSchemaV2.self
     ]
 
-    static let stages: [MigrationStage] = [
+    nonisolated(unsafe) static let stages: [MigrationStage] = [
         .lightweight(
             fromVersion: StageLightSchemaV1.self,
             toVersion: StageLightSchemaV2.self
