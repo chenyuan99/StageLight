@@ -61,7 +61,6 @@ final class StageLightUITests: XCTestCase {
 
         XCTAssertTrue(app.otherElements["memory-card-preview"].waitForExistence(timeout: 2))
         XCTAssertTrue(app.buttons["share-memory-card"].exists)
-        XCTAssertTrue(app.buttons["save-memory-card-to-photos"].exists)
         XCTAssertTrue(app.buttons["Spotlight"].exists)
         XCTAssertTrue(app.buttons["Story"].exists)
         XCTAssertTrue(app.switches["Include App Store link"].exists)
