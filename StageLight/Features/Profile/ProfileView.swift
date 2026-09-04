@@ -1,7 +1,10 @@
 import SwiftUI
+import StoreKit
 
 struct ProfileView: View {
     @Environment(LibraryStore.self) private var library
+    @Environment(\.requestReview) private var requestReview
+    @AppStorage("lastReviewRequestVersion") private var lastReviewRequestVersion = ""
     @State private var cloudSyncAvailability: CloudSyncAvailability = .checking
 
     private let cloudSyncStatusProvider = CloudSyncStatusProvider(
@@ -57,6 +60,7 @@ struct ProfileView: View {
         .navigationTitle("Profile")
         .task {
             await refreshCloudSyncStatus()
+            await requestReviewIfAppropriate()
         }
     }
 
@@ -154,5 +158,27 @@ struct ProfileView: View {
         cloudSyncAvailability = .checking
         cloudSyncAvailability = await cloudSyncStatusProvider.currentAvailability()
         library.refresh()
+    }
+
+    private func requestReviewIfAppropriate() async {
+        let arguments = ProcessInfo.processInfo.arguments
+        let currentVersion = Bundle.main.object(
+            forInfoDictionaryKey: "CFBundleShortVersionString"
+        ) as? String ?? ""
+
+        guard ReviewPromptPolicy.shouldRequestReview(
+            performanceCount: statistics.performanceCount,
+            currentVersion: currentVersion,
+            lastRequestedVersion: lastReviewRequestVersion,
+            isUITesting: arguments.contains("-ui-testing")
+        ) else { return }
+
+        // Profile is a natural pause after someone has built a meaningful
+        // collection, so the system prompt does not interrupt data entry.
+        try? await Task.sleep(for: .seconds(1.2))
+        guard !Task.isCancelled else { return }
+
+        lastReviewRequestVersion = currentVersion
+        requestReview()
     }
 }
