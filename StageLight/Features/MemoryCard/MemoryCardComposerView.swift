@@ -11,6 +11,7 @@ struct MemoryCardComposerView: View {
     @State private var options: MemoryCardOptions
     @State private var selectedPhotoID: UUID?
     @State private var selectedImage: UIImage?
+    @State private var includesAppStoreLink = true
     @State private var sharedCard: SharedMemoryCard?
     @State private var errorMessage: String?
 
@@ -64,6 +65,11 @@ struct MemoryCardComposerView: View {
                             .padding(.top, 12)
                         }
                         .font(.body.weight(.medium))
+
+                        Toggle("Include App Store link", isOn: $includesAppStoreLink)
+                        Text("The link is shared separately when the destination supports it. It contains no tracking code.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
                     }
                     .padding(18)
                     .background(StageTheme.surface)
@@ -95,7 +101,10 @@ struct MemoryCardComposerView: View {
             await loadSelectedPhoto()
         }
         .sheet(item: $sharedCard) { card in
-            MemoryCardActivityView(image: card.image)
+            MemoryCardActivityView(
+                image: card.image,
+                includesAppStoreLink: card.includesAppStoreLink
+            )
         }
         .alert("Unable to Share", isPresented: Binding(
             get: { errorMessage != nil },
@@ -164,7 +173,10 @@ struct MemoryCardComposerView: View {
             errorMessage = String(localized: "The memory card could not be prepared.")
             return
         }
-        sharedCard = SharedMemoryCard(image: image)
+        sharedCard = SharedMemoryCard(
+            image: image,
+            includesAppStoreLink: includesAppStoreLink
+        )
     }
 }
 
@@ -190,13 +202,21 @@ private struct MemoryCardPreview: View {
 private struct SharedMemoryCard: Identifiable {
     let id = UUID()
     let image: UIImage
+    let includesAppStoreLink: Bool
 }
 
 private struct MemoryCardActivityView: UIViewControllerRepresentable {
     let image: UIImage
+    let includesAppStoreLink: Bool
 
     func makeUIViewController(context: Context) -> UIActivityViewController {
-        UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        UIActivityViewController(
+            activityItems: MemoryCardBrand.activityItems(
+                image: image,
+                includesAppStoreLink: includesAppStoreLink
+            ),
+            applicationActivities: nil
+        )
     }
 
     func updateUIViewController(_ controller: UIActivityViewController, context: Context) {}

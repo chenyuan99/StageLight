@@ -1,6 +1,16 @@
 import SwiftUI
 import UIKit
 
+enum MemoryCardBrand {
+    static let signature = "Made with StageLight · Theatre Diary"
+    static let appStoreURL = URL(string: "https://apps.apple.com/app/id6806575225")!
+
+    @MainActor
+    static func activityItems(image: UIImage, includesAppStoreLink: Bool) -> [Any] {
+        includesAppStoreLink ? [image, appStoreURL] : [image]
+    }
+}
+
 enum MemoryCardTemplate: String, CaseIterable, Identifiable {
     case spotlight
     case story
@@ -142,7 +152,7 @@ struct MemoryCardView: View {
         .frame(width: template.canvasSize.width, height: template.canvasSize.height)
         .clipped()
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(content.accessibilitySummary)
+        .accessibilityLabel("\(content.accessibilitySummary), \(MemoryCardBrand.signature)")
     }
 
     private var spotlightCard: some View {
@@ -280,8 +290,8 @@ struct MemoryCardView: View {
     private func brand(foreground: Color) -> some View {
         HStack(spacing: 7) {
             Image(systemName: "sparkles")
-            Text("STAGELIGHT")
-                .tracking(2.2)
+            Text(MemoryCardBrand.signature)
+                .tracking(0.35)
         }
         .font(.system(size: 10, weight: .bold, design: .rounded))
         .foregroundStyle(foreground)

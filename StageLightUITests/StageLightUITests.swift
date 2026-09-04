@@ -63,5 +63,6 @@ final class StageLightUITests: XCTestCase {
         XCTAssertTrue(app.buttons["share-memory-card"].exists)
         XCTAssertTrue(app.buttons["Spotlight"].exists)
         XCTAssertTrue(app.buttons["Story"].exists)
+        XCTAssertTrue(app.switches["Include App Store link"].exists)
     }
 }

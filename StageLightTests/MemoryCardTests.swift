@@ -88,6 +88,26 @@ final class MemoryCardTests: XCTestCase {
     }
 
     @MainActor
+    func testSharingIncludesCanonicalAppStoreLinkByDefault() {
+        let image = UIGraphicsImageRenderer(size: CGSize(width: 10, height: 10)).image { _ in }
+        let items = MemoryCardBrand.activityItems(image: image, includesAppStoreLink: true)
+
+        XCTAssertEqual(MemoryCardBrand.signature, "Made with StageLight · Theatre Diary")
+        XCTAssertEqual(MemoryCardBrand.appStoreURL.absoluteString, "https://apps.apple.com/app/id6806575225")
+        XCTAssertEqual(items.count, 2)
+        XCTAssertEqual(items.last as? URL, MemoryCardBrand.appStoreURL)
+    }
+
+    @MainActor
+    func testSharingCanExcludeAppStoreLink() {
+        let image = UIGraphicsImageRenderer(size: CGSize(width: 10, height: 10)).image { _ in }
+        let items = MemoryCardBrand.activityItems(image: image, includesAppStoreLink: false)
+
+        XCTAssertEqual(items.count, 1)
+        XCTAssertTrue(items.first is UIImage)
+    }
+
+    @MainActor
     func testSpotlightRendererProducesHighResolutionPortrait() throws {
         let content = MemoryCardContent.make(source: source, options: MemoryCardOptions())
 
