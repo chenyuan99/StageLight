@@ -103,6 +103,32 @@ final class MemoryCardTests: XCTestCase {
         XCTAssertNotNil(UIImage(named: "MemoryCardAppIcon"))
     }
 
+    func testPhotoLibraryAddUsageDescriptionIsPresent() {
+        let description = Bundle.main.object(
+            forInfoDictionaryKey: "NSPhotoLibraryAddUsageDescription"
+        ) as? String
+
+        XCTAssertEqual(
+            description,
+            "StageLight saves memory cards to your photo library only when you choose Save to Photos."
+        )
+    }
+
+    func testPhotoSaveErrorsProvideRecoveryGuidance() {
+        XCTAssertNotNil(MemoryCardPhotoSaveError.accessDenied.errorDescription)
+        XCTAssertNotNil(MemoryCardPhotoSaveError.accessRestricted.errorDescription)
+    }
+
+    @MainActor
+    func testSaveToPhotosActivityAcceptsRenderedImages() {
+        let image = UIGraphicsImageRenderer(size: CGSize(width: 10, height: 10)).image { _ in }
+        let activity = MemoryCardSaveToPhotosActivity()
+
+        XCTAssertEqual(activity.activityTitle, "Save to Photos")
+        XCTAssertTrue(activity.canPerform(withActivityItems: [image, MemoryCardBrand.appStoreURL]))
+        XCTAssertFalse(activity.canPerform(withActivityItems: [MemoryCardBrand.appStoreURL]))
+    }
+
     @MainActor
     func testSharingCanExcludeAppStoreLink() {
         let image = UIGraphicsImageRenderer(size: CGSize(width: 10, height: 10)).image { _ in }

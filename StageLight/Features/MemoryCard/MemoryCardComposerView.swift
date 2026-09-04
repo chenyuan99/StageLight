@@ -6,6 +6,7 @@ struct MemoryCardComposerView: View {
     @Environment(\.dismiss) private var dismiss
 
     let performance: Performance
+    private let photoSaver: any MemoryCardPhotoSaving
 
     @State private var template = MemoryCardTemplate.spotlight
     @State private var options: MemoryCardOptions
@@ -14,6 +15,9 @@ struct MemoryCardComposerView: View {
     @State private var includesAppStoreLink = true
     @State private var sharedCard: SharedMemoryCard?
     @State private var errorMessage: String?
+    @State private var errorTitle = String(localized: "Unable to Share")
+    @State private var isSavingToPhotos = false
+    @State private var showsSavedConfirmation = false
 
     private var photos: [PerformancePhoto] {
         performance.photoList.sorted { $0.sortOrder < $1.sortOrder }
@@ -23,8 +27,12 @@ struct MemoryCardComposerView: View {
         .make(source: MemoryCardSource(performance: performance), options: options)
     }
 
-    init(performance: Performance) {
+    init(
+        performance: Performance,
+        photoSaver: any MemoryCardPhotoSaving = SystemMemoryCardPhotoSaver()
+    ) {
         self.performance = performance
+        self.photoSaver = photoSaver
         let firstPhotoID = performance.photoList.min { $0.sortOrder < $1.sortOrder }?.id
         _selectedPhotoID = State(initialValue: firstPhotoID)
         _options = State(initialValue: MemoryCardOptions(includesPhoto: firstPhotoID != nil))
@@ -87,14 +95,31 @@ struct MemoryCardComposerView: View {
                 }
             }
             .safeAreaInset(edge: .bottom) {
-                Button("Share Card", systemImage: "square.and.arrow.up") {
-                    renderForSharing()
+                HStack(spacing: 12) {
+                    Button {
+                        saveToPhotos()
+                    } label: {
+                        Label(
+                            isSavingToPhotos ? "Saving…" : "Save to Photos",
+                            systemImage: isSavingToPhotos ? "hourglass" : "photo.badge.arrow.down"
+                        )
+                        .font(.subheadline.weight(.semibold))
+                        .frame(maxWidth: .infinity)
+                        .frame(minHeight: 46)
+                    }
+                    .buttonStyle(.bordered)
+                    .disabled(isSavingToPhotos)
+                    .accessibilityIdentifier("save-memory-card-to-photos")
+
+                    Button("Share Card", systemImage: "square.and.arrow.up") {
+                        renderForSharing()
+                    }
+                    .buttonStyle(StagePrimaryButtonStyle())
+                    .accessibilityIdentifier("share-memory-card")
                 }
-                .buttonStyle(StagePrimaryButtonStyle())
                 .padding(.horizontal, 16)
                 .padding(.vertical, 10)
                 .background(.ultraThinMaterial)
-                .accessibilityIdentifier("share-memory-card")
             }
         }
         .task(id: selectedPhotoID) {
@@ -106,13 +131,18 @@ struct MemoryCardComposerView: View {
                 includesAppStoreLink: card.includesAppStoreLink
             )
         }
-        .alert("Unable to Share", isPresented: Binding(
+        .alert(errorTitle, isPresented: Binding(
             get: { errorMessage != nil },
             set: { if !$0 { errorMessage = nil } }
         )) {
             Button("OK", role: .cancel) {}
         } message: {
             Text(errorMessage ?? "The memory card could not be prepared.")
+        }
+        .alert("Saved to Photos", isPresented: $showsSavedConfirmation) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Your memory card is ready in the Photos app.")
         }
     }
 
@@ -165,17 +195,42 @@ struct MemoryCardComposerView: View {
     }
 
     private func renderForSharing() {
-        guard let image = MemoryCardRenderer.render(
-            content: content,
-            template: template,
-            photo: selectedImage
-        ) else {
+        guard let image = renderedCard() else {
+            errorTitle = String(localized: "Unable to Share")
             errorMessage = String(localized: "The memory card could not be prepared.")
             return
         }
         sharedCard = SharedMemoryCard(
             image: image,
             includesAppStoreLink: includesAppStoreLink
+        )
+    }
+
+    private func saveToPhotos() {
+        guard let image = renderedCard() else {
+            errorTitle = String(localized: "Unable to Save")
+            errorMessage = String(localized: "The memory card could not be prepared.")
+            return
+        }
+
+        isSavingToPhotos = true
+        Task {
+            defer { isSavingToPhotos = false }
+            do {
+                try await photoSaver.save(image)
+                showsSavedConfirmation = true
+            } catch {
+                errorTitle = String(localized: "Unable to Save")
+                errorMessage = error.localizedDescription
+            }
+        }
+    }
+
+    private func renderedCard() -> UIImage? {
+        MemoryCardRenderer.render(
+            content: content,
+            template: template,
+            photo: selectedImage
         )
     }
 }
@@ -215,7 +270,7 @@ private struct MemoryCardActivityView: UIViewControllerRepresentable {
                 image: image,
                 includesAppStoreLink: includesAppStoreLink
             ),
-            applicationActivities: nil
+            applicationActivities: [MemoryCardSaveToPhotosActivity()]
         )
     }
 
