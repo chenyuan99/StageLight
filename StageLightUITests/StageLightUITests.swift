@@ -63,5 +63,24 @@ final class StageLightUITests: XCTestCase {
         XCTAssertTrue(app.buttons["share-memory-card"].exists)
         XCTAssertTrue(app.buttons["Spotlight"].exists)
         XCTAssertTrue(app.buttons["Story"].exists)
+        XCTAssertTrue(app.switches["Include App Store link"].exists)
+
+        app.buttons["share-memory-card"].tap()
+
+        let shareSheet = app.otherElements["ActivityListView"]
+        XCTAssertTrue(shareSheet.waitForExistence(timeout: 3))
+        let saveToPhotos = shareSheet.cells["Save to Photos"]
+        XCTAssertTrue(saveToPhotos.waitForExistence(timeout: 3))
+
+        addUIInterruptionMonitor(withDescription: "Photo Library Access") { alert in
+            let allowButton = alert.buttons["Allow"]
+            guard allowButton.exists else { return false }
+            allowButton.tap()
+            return true
+        }
+
+        saveToPhotos.tap()
+        app.tap()
+        XCTAssertTrue(app.wait(for: .runningForeground, timeout: 5))
     }
 }
