@@ -4,6 +4,7 @@ import UIKit
 enum MemoryCardPhotoSaveError: LocalizedError, Equatable {
     case accessDenied
     case accessRestricted
+    case imageEncodingFailed
 
     var errorDescription: String? {
         switch self {
@@ -11,6 +12,8 @@ enum MemoryCardPhotoSaveError: LocalizedError, Equatable {
             String(localized: "Allow StageLight to add photos in Settings, then try again.")
         case .accessRestricted:
             String(localized: "This device does not allow apps to save photos.")
+        case .imageEncodingFailed:
+            String(localized: "The memory card could not be prepared for Photos.")
         }
     }
 }
@@ -23,6 +26,10 @@ protocol MemoryCardPhotoSaving: Sendable {
 @MainActor
 struct SystemMemoryCardPhotoSaver: MemoryCardPhotoSaving {
     func save(_ image: UIImage) async throws {
+        guard let imageData = image.pngData() else {
+            throw MemoryCardPhotoSaveError.imageEncodingFailed
+        }
+
         let status = await PHPhotoLibrary.requestAuthorization(for: .addOnly)
         switch status {
         case .authorized, .limited:
@@ -35,8 +42,13 @@ struct SystemMemoryCardPhotoSaver: MemoryCardPhotoSaving {
             throw MemoryCardPhotoSaveError.accessDenied
         }
 
+        let temporaryURL = FileManager.default.temporaryDirectory
+            .appending(path: "StageLight-MemoryCard-\(UUID().uuidString).png")
+        try imageData.write(to: temporaryURL, options: .atomic)
+        defer { try? FileManager.default.removeItem(at: temporaryURL) }
+
         try await PHPhotoLibrary.shared().performChanges {
-            PHAssetChangeRequest.creationRequestForAsset(from: image)
+            PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: temporaryURL)
         }
     }
 }

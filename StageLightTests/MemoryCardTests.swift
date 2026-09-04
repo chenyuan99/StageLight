@@ -117,6 +117,7 @@ final class MemoryCardTests: XCTestCase {
     func testPhotoSaveErrorsProvideRecoveryGuidance() {
         XCTAssertNotNil(MemoryCardPhotoSaveError.accessDenied.errorDescription)
         XCTAssertNotNil(MemoryCardPhotoSaveError.accessRestricted.errorDescription)
+        XCTAssertNotNil(MemoryCardPhotoSaveError.imageEncodingFailed.errorDescription)
     }
 
     @MainActor
