@@ -1,3 +1,4 @@
+import Combine
 import CoreData
 import SwiftData
 import SwiftUI
@@ -41,6 +42,7 @@ struct StageLightApp: App {
                 }
                 .onReceive(
                     NotificationCenter.default.publisher(for: .NSPersistentStoreRemoteChange)
+                        .receive(on: DispatchQueue.main)
                 ) { _ in
                     library.refresh()
                 }
