@@ -72,16 +72,19 @@ final class MemoryCardSaveToPhotosActivity: UIActivity, @unchecked Sendable {
 
     override func perform() {
         guard let image else {
-            activityDidFinish(false)
+            Task { @MainActor [weak self] in
+                self?.activityDidFinish(false)
+            }
             return
         }
 
-        Task {
+        let photoSaver = photoSaver
+        Task { @MainActor [weak self] in
             do {
                 try await photoSaver.save(image)
-                activityDidFinish(true)
+                self?.activityDidFinish(true)
             } catch {
-                activityDidFinish(false)
+                self?.activityDidFinish(false)
             }
         }
     }
