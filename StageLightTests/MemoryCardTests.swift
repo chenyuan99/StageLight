@@ -118,6 +118,7 @@ final class MemoryCardTests: XCTestCase {
         XCTAssertNotNil(MemoryCardPhotoSaveError.accessDenied.errorDescription)
         XCTAssertNotNil(MemoryCardPhotoSaveError.accessRestricted.errorDescription)
         XCTAssertNotNil(MemoryCardPhotoSaveError.imageEncodingFailed.errorDescription)
+        XCTAssertNotNil(MemoryCardPhotoSaveError.saveFailed.errorDescription)
     }
 
     @MainActor

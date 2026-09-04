@@ -5,6 +5,7 @@ enum MemoryCardPhotoSaveError: LocalizedError, Equatable {
     case accessDenied
     case accessRestricted
     case imageEncodingFailed
+    case saveFailed
 
     var errorDescription: String? {
         switch self {
@@ -14,6 +15,16 @@ enum MemoryCardPhotoSaveError: LocalizedError, Equatable {
             String(localized: "This device does not allow apps to save photos.")
         case .imageEncodingFailed:
             String(localized: "The memory card could not be prepared for Photos.")
+        case .saveFailed:
+            String(localized: "Photos could not save the memory card. Please try again.")
+        }
+    }
+}
+
+private enum MemoryCardPhotoAssetWriter {
+    nonisolated static func changes(for fileURL: URL) -> @Sendable () -> Void {
+        { @Sendable in
+            PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: fileURL)
         }
     }
 }
@@ -47,8 +58,19 @@ struct SystemMemoryCardPhotoSaver: MemoryCardPhotoSaving {
         try imageData.write(to: temporaryURL, options: .atomic)
         defer { try? FileManager.default.removeItem(at: temporaryURL) }
 
-        try await PHPhotoLibrary.shared().performChanges {
-            PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: temporaryURL)
+        let changes = MemoryCardPhotoAssetWriter.changes(for: temporaryURL)
+        try await withCheckedThrowingContinuation {
+            (continuation: CheckedContinuation<Void, Error>) in
+            let completion: @Sendable (Bool, Error?) -> Void = { success, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if success {
+                    continuation.resume()
+                } else {
+                    continuation.resume(throwing: MemoryCardPhotoSaveError.saveFailed)
+                }
+            }
+            PHPhotoLibrary.shared().performChanges(changes, completionHandler: completion)
         }
     }
 }
