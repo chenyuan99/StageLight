@@ -5,6 +5,7 @@ struct PerformanceDetailView: View {
     @Environment(\.dismiss) private var dismiss
     let performance: Performance
     @State private var isEditing = false
+    @State private var isSharingMemory = false
     @State private var confirmsDelete = false
 
     private var photos: [PerformancePhoto] {
@@ -66,6 +67,9 @@ struct PerformanceDetailView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
+                    Button("Share Memory", systemImage: "square.and.arrow.up") {
+                        isSharingMemory = true
+                    }
                     Button("Edit", systemImage: "pencil") { isEditing = true }
                     Button("Delete", systemImage: "trash", role: .destructive) {
                         confirmsDelete = true
@@ -74,10 +78,14 @@ struct PerformanceDetailView: View {
                     Image(systemName: "ellipsis.circle")
                 }
                 .accessibilityLabel("Performance actions")
+                .accessibilityIdentifier("performance-actions")
             }
         }
         .sheet(isPresented: $isEditing) {
             AddPerformanceFlow(editing: performance)
+        }
+        .sheet(isPresented: $isSharingMemory) {
+            MemoryCardComposerView(performance: performance)
         }
         .confirmationDialog(
             "Delete this performance?",

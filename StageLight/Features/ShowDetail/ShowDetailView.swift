@@ -42,6 +42,7 @@ struct ShowDetailView: View {
                             PerformanceRow(performance: performance)
                         }
                         .buttonStyle(.plain)
+                        .accessibilityIdentifier("performance-row")
                         if performance.id != performances.last?.id {
                             Divider().padding(.leading, 58)
                         }
