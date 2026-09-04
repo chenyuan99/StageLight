@@ -2,7 +2,7 @@ import SwiftUI
 import UIKit
 
 enum MemoryCardBrand {
-    static let signature = "Made with StageLight · Theatre Diary"
+    static let signature = "Made with StageLight"
     static let appStoreURL = URL(string: "https://apps.apple.com/app/id6806575225")!
 
     @MainActor
@@ -289,7 +289,11 @@ struct MemoryCardView: View {
 
     private func brand(foreground: Color) -> some View {
         HStack(spacing: 7) {
-            Image(systemName: "sparkles")
+            Image("MemoryCardAppIcon")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 18, height: 18)
+                .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
             Text(MemoryCardBrand.signature)
                 .tracking(0.35)
         }

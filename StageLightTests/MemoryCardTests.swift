@@ -92,10 +92,15 @@ final class MemoryCardTests: XCTestCase {
         let image = UIGraphicsImageRenderer(size: CGSize(width: 10, height: 10)).image { _ in }
         let items = MemoryCardBrand.activityItems(image: image, includesAppStoreLink: true)
 
-        XCTAssertEqual(MemoryCardBrand.signature, "Made with StageLight · Theatre Diary")
+        XCTAssertEqual(MemoryCardBrand.signature, "Made with StageLight")
         XCTAssertEqual(MemoryCardBrand.appStoreURL.absoluteString, "https://apps.apple.com/app/id6806575225")
         XCTAssertEqual(items.count, 2)
         XCTAssertEqual(items.last as? URL, MemoryCardBrand.appStoreURL)
+    }
+
+    @MainActor
+    func testMemoryCardAppIconIsAvailable() {
+        XCTAssertNotNil(UIImage(named: "MemoryCardAppIcon"))
     }
 
     @MainActor
