@@ -1,23 +1,26 @@
 import type { Metadata } from 'next';
 import './globals.css';
 
+const siteURL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://stagelight-theatre-diary.cysbc1999.chatgpt.site';
+const socialImageURL = new URL('og.png', siteURL).toString();
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://stagelight-theatre-diary.cysbc1999.chatgpt.site'),
-  title: 'StageLight — Your Private Theatre Diary',
+  metadataBase: new URL(siteURL),
+  title: 'StageLight — Remember the Show. Share the Moment.',
   description:
-    'Remember every show with photos, seats, ratings, notes, and private iCloud sync. Free for iPhone.',
+    'Keep a private theatre diary and turn every performance into a beautiful memory card to share or save. Free for iPhone.',
   openGraph: {
-    title: 'StageLight — Your Private Theatre Diary',
+    title: 'StageLight — Remember the Show. Share the Moment.',
     description:
-      'Remember every show with photos, seats, ratings, notes, and private iCloud sync. Free for iPhone.',
-    images: ['/og.png'],
+      'Keep a private theatre diary and turn every performance into a beautiful memory card to share or save. Free for iPhone.',
+    images: [socialImageURL],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'StageLight — Your Private Theatre Diary',
+    title: 'StageLight — Remember the Show. Share the Moment.',
     description:
-      'Remember every show with photos, seats, ratings, notes, and private iCloud sync. Free for iPhone.',
-    images: ['/og.png'],
+      'Keep a private theatre diary and turn every performance into a beautiful memory card to share or save. Free for iPhone.',
+    images: [socialImageURL],
   },
 };
 

@@ -1,6 +1,9 @@
 import { ArrowLeft, CircleHelp, Cloud, Image as ImageIcon, MapPin } from 'lucide-react';
 
 const issuesURL = 'https://github.com/chenyuan99/StageLight/issues';
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+
+export const dynamic = 'force-static';
 
 const questions = [
   {
@@ -27,8 +30,8 @@ export default function Support() {
   return (
     <main className="legal-shell">
       <header className="subpage-header">
-        <a href="/" className="back-link"><ArrowLeft size={17} /> StageLight</a>
-        <a href="/privacy">Privacy</a>
+        <a href={`${basePath}/`} className="back-link"><ArrowLeft size={17} /> StageLight</a>
+        <a href={`${basePath}/privacy.html`}>Privacy</a>
       </header>
       <section className="legal-hero">
         <CircleHelp aria-hidden="true" />
