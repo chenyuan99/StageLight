@@ -166,7 +166,7 @@ struct MemoryCardComposerView: View {
 
     private func renderForSharing() {
         guard let image = renderedCard() else {
-            errorMessage = String(localized: "The memory card could not be prepared.")
+            errorMessage = AppLanguage.localized("The memory card could not be prepared.")
             return
         }
         sharedCard = SharedMemoryCard(

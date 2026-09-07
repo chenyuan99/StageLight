@@ -58,8 +58,8 @@ struct StageRatingView: View {
     }
 
     private var accessibilityValue: String {
-        guard let rating else { return String(localized: "Not rated") }
-        return String(localized: "\(rating.formatted()) out of 5 stars")
+        guard let rating else { return AppLanguage.localized("Not rated") }
+        return AppLanguage.localized("\(rating.formatted()) out of 5 stars")
     }
 }
 

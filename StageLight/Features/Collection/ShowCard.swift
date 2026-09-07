@@ -35,9 +35,9 @@ struct ShowCard: View {
     }
 
     private var accessibilityLabel: String {
-        var parts = [show.title, String(localized: "\(show.performanceList.count) performances")]
+        var parts = [show.title, AppLanguage.localized("\(show.performanceList.count) performances")]
         if let average = show.averageRating {
-            parts.append(String(localized: "average \(average.formatted()) out of 5 stars"))
+            parts.append(AppLanguage.localized("average \(average.formatted()) out of 5 stars"))
         }
         return parts.joined(separator: ", ")
     }

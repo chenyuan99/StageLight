@@ -39,9 +39,9 @@ enum RecognitionError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .invalidImage:
-            return String(localized: "This image could not be read.")
+            return AppLanguage.localized("This image could not be read.")
         case .noTextFound:
-            return String(localized: "We couldn't identify this show. You can add it manually.")
+            return AppLanguage.localized("We couldn't identify this show. You can add it manually.")
         }
     }
 }

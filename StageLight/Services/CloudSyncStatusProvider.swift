@@ -27,29 +27,29 @@ enum CloudSyncAvailability: Equatable {
 
     var title: String {
         switch self {
-        case .checking: "Checking…"
-        case .available: "On"
-        case .noAccount: "Sign In Required"
-        case .restricted: "Restricted"
-        case .temporarilyUnavailable: "Temporarily Unavailable"
-        case .unavailable: "Unavailable"
+        case .checking: AppLanguage.localized("Checking…")
+        case .available: AppLanguage.localized("On")
+        case .noAccount: AppLanguage.localized("Sign In Required")
+        case .restricted: AppLanguage.localized("Restricted")
+        case .temporarilyUnavailable: AppLanguage.localized("Temporarily Unavailable")
+        case .unavailable: AppLanguage.localized("Unavailable")
         }
     }
 
     var message: String {
         switch self {
         case .checking:
-            "Checking your iCloud account status."
+            AppLanguage.localized("Checking your iCloud account status.")
         case .available:
-            "Your collection and photos sync automatically across devices signed in to this Apple Account."
+            AppLanguage.localized("Your collection and photos sync automatically across devices signed in to this Apple Account.")
         case .noAccount:
-            "Sign in to iCloud in Settings to sync your collection across devices."
+            AppLanguage.localized("Sign in to iCloud in Settings to sync your collection across devices.")
         case .restricted:
-            "iCloud access is restricted on this device. Check Screen Time or device-management settings."
+            AppLanguage.localized("iCloud access is restricted on this device. Check Screen Time or device-management settings.")
         case .temporarilyUnavailable:
-            "iCloud is temporarily unavailable. StageLight will keep your changes locally and retry automatically."
+            AppLanguage.localized("iCloud is temporarily unavailable. StageLight will keep your changes locally and retry automatically.")
         case .unavailable:
-            "StageLight could not determine your iCloud status. Your collection remains available on this device."
+            AppLanguage.localized("StageLight could not determine your iCloud status. Your collection remains available on this device.")
         }
     }
 }

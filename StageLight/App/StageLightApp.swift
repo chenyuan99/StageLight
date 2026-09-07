@@ -7,6 +7,7 @@ import SwiftUI
 struct StageLightApp: App {
     private static let cloudKitContainerIdentifier = "iCloud.com.chenyuan.StageLight"
     @Environment(\.scenePhase) private var scenePhase
+    @AppStorage(AppLanguage.storageKey) private var selectedLanguage = AppLanguage.system.rawValue
     private let modelContainer: ModelContainer
     @State private var library: LibraryStore
 
@@ -37,6 +38,10 @@ struct StageLightApp: App {
         WindowGroup {
             RootView()
                 .environment(library)
+                .environment(
+                    \.locale,
+                    AppLanguage(rawValue: selectedLanguage)?.locale ?? .autoupdatingCurrent
+                )
                 .task {
                     await library.prepareCloudSync()
                 }

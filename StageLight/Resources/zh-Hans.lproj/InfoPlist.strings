@@ -1,0 +1,3 @@
+"CFBundleDisplayName" = "剧光灯";
+"NSCameraUsageDescription" = "StageLight 使用相机扫描节目单、票根或剧院海报。";
+"NSPhotoLibraryAddUsageDescription" = "只有当你选择“保存到照片”时，StageLight 才会将回忆卡保存到照片图库。";
