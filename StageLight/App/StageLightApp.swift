@@ -7,16 +7,28 @@ import SwiftUI
 struct StageLightApp: App {
     private static let cloudKitContainerIdentifier = "iCloud.com.chenyuan.StageLight"
     @Environment(\.scenePhase) private var scenePhase
+    @AppStorage(AppLanguage.storageKey) private var selectedLanguage = AppLanguage.system.rawValue
     private let modelContainer: ModelContainer
     @State private var library: LibraryStore
 
     init() {
         do {
             let schema = Schema(versionedSchema: StageLightSchemaV2.self)
-            let configuration = ModelConfiguration(
-                schema: schema,
-                cloudKitDatabase: .private(Self.cloudKitContainerIdentifier)
-            )
+            let isRunningUnitTests = ProcessInfo.processInfo.environment[
+                "XCTestConfigurationFilePath"
+            ] != nil
+            let configuration = if isRunningUnitTests {
+                ModelConfiguration(
+                    schema: schema,
+                    isStoredInMemoryOnly: true,
+                    cloudKitDatabase: .none
+                )
+            } else {
+                ModelConfiguration(
+                    schema: schema,
+                    cloudKitDatabase: .private(Self.cloudKitContainerIdentifier)
+                )
+            }
             let container = try ModelContainer(
                 for: schema,
                 migrationPlan: StageLightMigrationPlan.self,
@@ -37,6 +49,10 @@ struct StageLightApp: App {
         WindowGroup {
             RootView()
                 .environment(library)
+                .environment(
+                    \.locale,
+                    AppLanguage(rawValue: selectedLanguage)?.locale ?? .autoupdatingCurrent
+                )
                 .task {
                     await library.prepareCloudSync()
                 }

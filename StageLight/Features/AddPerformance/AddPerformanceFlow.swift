@@ -128,13 +128,13 @@ struct AddPerformanceFlow: View {
                 ) {
                     Task {
                         guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
-                            errorMessage = String(localized: "Camera isn't available on this device. Choose a photo or add manually.")
+                            errorMessage = AppLanguage.localized("Camera isn't available on this device. Choose a photo or add manually.")
                             return
                         }
                         if await CameraAuthorization.requestAccess() {
                             state = .camera
                         } else {
-                            errorMessage = String(localized: "Camera access is off. You can choose a photo or add manually.")
+                            errorMessage = AppLanguage.localized("Camera access is off. You can choose a photo or add manually.")
                         }
                     }
                 }
@@ -438,7 +438,7 @@ struct AddPerformanceFlow: View {
             }
             pickerItems = []
             guard let first = images.first else {
-                state = .failed(String(localized: "The selected photo could not be opened."))
+                state = .failed(AppLanguage.localized("The selected photo could not be opened."))
                 return
             }
             selectedImages.append(contentsOf: images)
@@ -519,9 +519,9 @@ struct AddPerformanceFlow: View {
 
     private var duplicateMessage: String {
         guard let duplicateMatch else {
-            return String(localized: "You already saved this show on the same day. Matinee and evening performances can both be kept.")
+            return AppLanguage.localized("You already saved this show on the same day. Matinee and evening performances can both be kept.")
         }
-        return String(localized: "A performance is already saved on \(duplicateMatch.date.formatted(date: .long, time: .omitted)). Matinee and evening performances can both be kept.")
+        return AppLanguage.localized("A performance is already saved on \(duplicateMatch.date.formatted(date: .long, time: .omitted)). Matinee and evening performances can both be kept.")
     }
 
     private var isCamera: Bool {

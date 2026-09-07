@@ -111,9 +111,9 @@ enum DraftValidationError: LocalizedError, Equatable {
     var errorDescription: String? {
         switch self {
         case .missingShowTitle:
-            return String(localized: "Enter a show title.")
+            return AppLanguage.localized("Enter a show title.")
         case .invalidRating:
-            return String(localized: "Choose a rating from 0.5 to 5 stars.")
+            return AppLanguage.localized("Choose a rating from 0.5 to 5 stars.")
         }
     }
 }

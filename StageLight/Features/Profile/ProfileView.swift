@@ -5,6 +5,7 @@ struct ProfileView: View {
     @Environment(LibraryStore.self) private var library
     @Environment(\.requestReview) private var requestReview
     @AppStorage("lastReviewRequestVersion") private var lastReviewRequestVersion = ""
+    @AppStorage(AppLanguage.storageKey) private var selectedLanguage = AppLanguage.system.rawValue
     @State private var cloudSyncAvailability: CloudSyncAvailability = .checking
 
     private let cloudSyncStatusProvider = CloudSyncStatusProvider(
@@ -49,6 +50,7 @@ struct ProfileView: View {
                     editorialFact(label: "Favorite theatre", value: favoriteTheatre)
                 }
 
+                languageSection
                 cloudSyncSection
 
                 Spacer(minLength: 60)
@@ -138,6 +140,45 @@ struct ProfileView: View {
                 }
                 .buttonStyle(.bordered)
                 .disabled(cloudSyncAvailability == .checking)
+            }
+            .padding(18)
+            .background(StageTheme.surface, in: RoundedRectangle(cornerRadius: 18))
+        }
+        .accessibilityElement(children: .contain)
+    }
+
+    private var languageSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Language")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .textCase(.uppercase)
+
+            HStack(spacing: 14) {
+                Image(systemName: "globe")
+                    .font(.title2)
+                    .foregroundStyle(.secondary)
+                    .frame(width: 34, height: 34)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("App Language")
+                        .font(.headline)
+                    Text("Change the language without restarting StageLight.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+
+                Picker("App Language", selection: $selectedLanguage) {
+                    ForEach(AppLanguage.allCases) { language in
+                        Text(verbatim: language.displayName)
+                            .tag(language.rawValue)
+                    }
+                }
+                .labelsHidden()
+                .pickerStyle(.menu)
+                .accessibilityIdentifier("app-language-picker")
             }
             .padding(18)
             .background(StageTheme.surface, in: RoundedRectangle(cornerRadius: 18))

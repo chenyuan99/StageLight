@@ -105,7 +105,7 @@ struct TheatreSearchView: View {
         } catch {
             guard !Task.isCancelled else { return }
             suggestions = []
-            errorMessage = String(localized: "Apple Maps is temporarily unavailable. You can continue with manual entry.")
+            errorMessage = AppLanguage.localized("Apple Maps is temporarily unavailable. You can continue with manual entry.")
             isSearching = false
         }
     }

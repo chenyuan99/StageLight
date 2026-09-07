@@ -18,11 +18,11 @@ enum PhotoStoreError: LocalizedError, Equatable {
     var errorDescription: String? {
         switch self {
         case .encodingFailed:
-            return String(localized: "The photo could not be prepared.")
+            return AppLanguage.localized("The photo could not be prepared.")
         case .invalidFilename:
-            return String(localized: "The photo filename is invalid.")
+            return AppLanguage.localized("The photo filename is invalid.")
         case .unreadableImage:
-            return String(localized: "The photo could not be opened.")
+            return AppLanguage.localized("The photo could not be opened.")
         }
     }
 }

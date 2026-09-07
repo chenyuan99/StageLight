@@ -74,7 +74,7 @@ struct MemoryCardSource: Equatable {
     }
 
     init(performance: Performance) {
-        showTitle = performance.show?.title ?? String(localized: "Untitled Show")
+        showTitle = performance.show?.title ?? AppLanguage.localized("Untitled Show")
         date = performance.date
         theatre = performance.theatre
         city = performance.city

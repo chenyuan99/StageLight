@@ -143,7 +143,7 @@
 			compatibilityVersion = "Xcode 16.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
-			knownRegions = (en, Base);
+			knownRegions = (en, Base, "zh-Hans", "zh-Hant");
 			mainGroup = A80000000000000000000001;
 			productRefGroup = A80000000000000000000002 /* Products */;
 			projectDirPath = "";

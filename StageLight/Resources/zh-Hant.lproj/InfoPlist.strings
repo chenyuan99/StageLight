@@ -1,0 +1,3 @@
+"CFBundleDisplayName" = "劇光燈";
+"NSCameraUsageDescription" = "StageLight 使用相機掃描節目單、票根或劇院海報。";
+"NSPhotoLibraryAddUsageDescription" = "只有當你選擇「儲存到照片」時，StageLight 才會將回憶卡儲存到照片圖庫。";

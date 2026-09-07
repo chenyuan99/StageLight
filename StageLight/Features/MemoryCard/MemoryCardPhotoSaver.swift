@@ -10,13 +10,13 @@ enum MemoryCardPhotoSaveError: LocalizedError, Equatable {
     var errorDescription: String? {
         switch self {
         case .accessDenied:
-            String(localized: "Allow StageLight to add photos in Settings, then try again.")
+            AppLanguage.localized("Allow StageLight to add photos in Settings, then try again.")
         case .accessRestricted:
-            String(localized: "This device does not allow apps to save photos.")
+            AppLanguage.localized("This device does not allow apps to save photos.")
         case .imageEncodingFailed:
-            String(localized: "The memory card could not be prepared for Photos.")
+            AppLanguage.localized("The memory card could not be prepared for Photos.")
         case .saveFailed:
-            String(localized: "Photos could not save the memory card. Please try again.")
+            AppLanguage.localized("Photos could not save the memory card. Please try again.")
         }
     }
 }
@@ -89,7 +89,7 @@ final class MemoryCardSaveToPhotosActivity: UIActivity, @unchecked Sendable {
     }
 
     override var activityTitle: String? {
-        String(localized: "Save to Photos")
+        AppLanguage.localized("Save to Photos")
     }
 
     override var activityImage: UIImage? {
