@@ -1,11 +1,15 @@
 import { ArrowLeft, Cloud, LockKeyhole } from 'lucide-react';
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+
+export const dynamic = 'force-static';
+
 export default function Privacy() {
   return (
     <main className="legal-shell">
       <header className="subpage-header">
-        <a href="/" className="back-link"><ArrowLeft size={17} /> StageLight</a>
-        <a href="/support">Support</a>
+        <a href={`${basePath}/`} className="back-link"><ArrowLeft size={17} /> StageLight</a>
+        <a href={`${basePath}/support.html`}>Support</a>
       </header>
       <article className="policy">
         <div className="legal-hero">
@@ -43,7 +47,7 @@ export default function Privacy() {
         <section>
           <h2>Changes and contact</h2>
           <p>If these practices change, this policy will be updated before the changed version is released. Privacy questions can be submitted through the StageLight support page.</p>
-          <a className="text-link" href="/support">Visit support</a>
+          <a className="text-link" href={`${basePath}/support.html`}>Visit support</a>
         </section>
       </article>
     </main>
