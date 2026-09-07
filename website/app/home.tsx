@@ -5,9 +5,32 @@ import { Cloud, ImageDown, Languages, LockKeyhole, MapPin, NotebookPen, Palette,
 
 const appStoreURL = 'https://apps.apple.com/us/app/stagelight-theatre-diary/id6806575225';
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
-type Language = 'en' | 'zh-Hans' | 'zh-Hant';
+type Language = 'en' | 'zh-Hans' | 'zh-Hant' | 'ja';
 
 const copy = {
+  ja: {
+    brand: 'StageLight', skip: '本文へスキップ', nav: ['メモリーカード', 'プライバシー', 'サポート'], download: '無料ダウンロード',
+    heroEyebrow: 'iPhoneでつづる、あなただけの観劇日記', heroTitle: '舞台の感動を残して、分かち合おう。',
+    heroDescription: '観劇の思い出をプライベートな日記に。お気に入りの公演を美しいメモリーカードにして、シェアしたり、写真に保存したりできます。',
+    downloadOn: '無料ダウンロード', appStore: 'App Store', availability: '無料 · アカウント登録不要 · 広告なし', privacy: 'トラッキングなし。思い出は、あなただけのもの。', floating: 'Made with StageLight.\n思い出をシェア。',
+    memoryEyebrow: 'カーテンコールから、写真ライブラリへ', memoryTitle: 'あの夜の感動を、美しい一枚に。',
+    memoryIntro: '記録した公演を、あなただけの記念に。メッセージやInstagramストーリーズでシェアしたり、自分の写真ライブラリに残したりできます。',
+    memorySteps: [
+      ['感動を記録する', '観劇日記に保存した公演から、思い出の一枚を作りましょう。'],
+      ['自分らしく仕上げる', 'SpotlightまたはStoryのデザインを選び、載せたい情報だけを追加できます。'],
+      ['シェアする、保存する', 'カードを好きな場所にシェアしたり、写真ライブラリに保存したりできます。'],
+    ],
+    memoryCta: 'はじめてのメモリーカードを作る', freeIPhone: 'iPhoneで無料', featureEyebrow: 'プライバシーを大切に', featureTitle: 'あなたの観劇の記録は、あなたのもの。',
+    features: [
+      ['思い出をまるごと残す', '公演名、日付、劇場、座席、評価、メモ、そして感動がよみがえる写真を保存できます。'],
+      ['プライベートなiCloud同期', 'StageLight専用のアカウントを作らずに、Appleデバイス間でコレクションを同期できます。'],
+      ['劇場をすばやく見つける', 'Appleマップで検索することも、劇場名を手入力することもできます。ブロードウェイから地元の劇場まで。'],
+      ['アプリの表示言語を選べる', 'アプリは英語、簡体字中国語、繁体字中国語に対応。プロフィールからいつでも切り替えられます。'],
+    ],
+    storyEyebrow: '思い出とともに育つ日記', storyTitle: 'あなただけの観劇の物語を。',
+    storyCopy: '公演を時系列で眺めたり、公演名や劇場名で検索したり。心に残った場所や作品を、いつでも振り返れます。',
+    closingTitle: '舞台の感動を残して、分かち合おう。', closingCopy: 'あなただけの観劇日記を始めて、最初のメモリーカードを作りましょう。', closingCta: 'App StoreでStageLightを見る', languageLabel: 'ページの言語',
+  },
   en: {
     brand: 'StageLight', skip: 'Skip to content', nav: ['Memory cards', 'Privacy', 'Support'], download: 'Download free',
     heroEyebrow: 'Your private theatre diary for iPhone', heroTitle: 'Remember the show. Share the moment.',
@@ -100,6 +123,7 @@ export default function Home() {
       const browserLanguage = navigator.language.toLowerCase();
       if (browserLanguage.startsWith('zh-hant') || browserLanguage.includes('tw') || browserLanguage.includes('hk')) setLanguage('zh-Hant');
       else if (browserLanguage.startsWith('zh')) setLanguage('zh-Hans');
+      else if (browserLanguage.startsWith('ja')) setLanguage('ja');
     }
     setLanguageReady(true);
   }, []);
@@ -114,17 +138,17 @@ export default function Home() {
     <main id="top">
       <a className="skip-link" href="#content">{text.skip}</a>
       <header className="site-header">
-        <a className="brand" href={`${basePath}/`} aria-label={`${text.brand} home`}>
+        <a className="brand" href={`${basePath}/`} aria-label={language === 'ja' ? 'StageLight ホーム' : `${text.brand} home`}>
           <img src={`${basePath}/app-icon.png`} alt="" width="40" height="40" /><span>{text.brand}</span>
         </a>
         <div className="header-actions">
-          <nav aria-label="Primary navigation">
+          <nav aria-label={language === 'ja' ? 'メインナビゲーション' : 'Primary navigation'}>
             <a href="#memory-cards">{text.nav[0]}</a><a href={`${basePath}/privacy.html`}>{text.nav[1]}</a><a href={`${basePath}/support.html`}>{text.nav[2]}</a>
           </nav>
           <label className="language-picker">
             <Languages size={16} aria-hidden="true" /><span className="visually-hidden">{text.languageLabel}</span>
             <select value={language} onChange={(event) => setLanguage(event.target.value as Language)} aria-label={text.languageLabel}>
-              <option value="en">English</option><option value="zh-Hans">简体中文</option><option value="zh-Hant">繁體中文</option>
+              <option value="en">English</option><option value="zh-Hans">简体中文</option><option value="zh-Hant">繁體中文</option><option value="ja">日本語</option>
             </select>
           </label>
         </div>
@@ -140,8 +164,8 @@ export default function Home() {
           </div>
           <div className="trust-line"><LockKeyhole size={17} aria-hidden="true" /><span>{text.privacy}</span></div>
         </div>
-        <div className="hero-visual" aria-label="A shareable StageLight theatre memory card">
-          <div className="spotlight" /><div className="memory-card-preview"><img src={`${basePath}/memory-card-share.jpg`} alt="StageLight memory card" width="760" height="1644" /></div>
+        <div className="hero-visual" aria-label={language === 'ja' ? 'シェアできるStageLightの観劇メモリーカード' : 'A shareable StageLight theatre memory card'}>
+          <div className="spotlight" /><div className="memory-card-preview"><img src={`${basePath}/memory-card-share.jpg`} alt={language === 'ja' ? 'StageLightのメモリーカード' : 'StageLight memory card'} width="760" height="1644" /></div>
           <div className="floating-note"><Share2 size={16} aria-hidden="true" /><span>{text.floating.split('\n').map((line, index) => <span key={line}>{index > 0 && <br />}{line}</span>)}</span></div>
         </div>
       </section>
@@ -152,7 +176,7 @@ export default function Home() {
           {text.memorySteps.map(([title, description], index) => {
             const Icon = memoryIcons[index];
             return <article className="memory-step" key={title}>
-              <div className="memory-step-image"><img src={`${basePath}${memoryImages[index][0]}`} alt={memoryImages[index][1]} width="760" height="1644" loading="lazy" /></div>
+              <div className="memory-step-image"><img src={`${basePath}${memoryImages[index][0]}`} alt={language === 'ja' ? title : memoryImages[index][1]} width="760" height="1644" loading="lazy" /></div>
               <div className="memory-step-copy"><span>{String(index + 1).padStart(2, '0')}</span><Icon aria-hidden="true" /><h3>{title}</h3><p>{description}</p></div>
             </article>;
           })}
@@ -172,11 +196,11 @@ export default function Home() {
 
       <section className="story-section">
         <div className="story-copy"><p className="eyebrow">{text.storyEyebrow}</p><h2>{text.storyTitle}</h2><p>{text.storyCopy}</p></div>
-        <div className="story-phone phone"><img src={`${basePath}/profile.png`} alt="StageLight personal theatre statistics" width="1284" height="2778" loading="lazy" /></div>
+        <div className="story-phone phone"><img src={`${basePath}/profile.png`} alt={language === 'ja' ? 'StageLightの観劇統計' : 'StageLight personal theatre statistics'} width="1284" height="2778" loading="lazy" /></div>
       </section>
 
       <section className="closing-section">
-        <img src={`${basePath}/app-icon.png`} alt={`${text.brand} icon`} width="84" height="84" /><h2>{text.closingTitle}</h2><p>{text.closingCopy}</p><a className="primary-link" href={appStoreURL}>{text.closingCta}</a>
+        <img src={`${basePath}/app-icon.png`} alt={language === 'ja' ? 'StageLightのアイコン' : `${text.brand} icon`} width="84" height="84" /><h2>{text.closingTitle}</h2><p>{text.closingCopy}</p><a className="primary-link" href={appStoreURL}>{text.closingCta}</a>
       </section>
       <footer><span>© 2026 Yuan Chen</span><div><a href={`${basePath}/privacy.html`}>{text.nav[1]}</a><a href={`${basePath}/support.html`}>{text.nav[2]}</a></div></footer>
     </main>
