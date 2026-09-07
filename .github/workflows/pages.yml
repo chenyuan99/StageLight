@@ -52,6 +52,11 @@ jobs:
           test -s dist/client/privacy.html
           test -s dist/client/support.html
 
+      - name: Prepare and verify Pages asset paths
+        run: node scripts/prepare-github-pages.mjs
+        env:
+          NEXT_PUBLIC_BASE_PATH: /StageLight
+
       - name: Upload site artifact
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v4
