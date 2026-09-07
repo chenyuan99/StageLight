@@ -2,6 +2,8 @@
 
 ## Product Vision
 
+Language-specific requirements and release criteria are defined in the [Localization PRD](LOCALIZATION_PRD.md).
+
 StageLight is a personal theatre collection and diary for people who watch Broadway, Off-Broadway, West End, touring productions, plays, and musicals.
 
 > 剧光灯不是告诉你有什么剧可以看，而是记住你这一生看过哪些剧。

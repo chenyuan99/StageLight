@@ -2,6 +2,8 @@
 
 ## Purpose
 
+For localization, use the acceptance matrix in the [Localization PRD](LOCALIZATION_PRD.md) alongside this original MVP plan. It also covers language-sensitive sharing and iCloud checks introduced after the MVP.
+
 This plan defines how StageLight's iOS MVP will be verified before TestFlight. It translates the product requirements, UX decisions, and technical specification into observable tests so implementation can proceed against clear behavior rather than informal expectations.
 
 The plan follows a test-first workflow:

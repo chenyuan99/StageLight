@@ -19,6 +19,7 @@ Users can:
 ## Product Docs
 
 - [PRD](docs/PRD.md)
+- [Localization PRD](docs/LOCALIZATION_PRD.md)
 - [Design](docs/DESIGN.md)
 - [Technical Specification](docs/TECHNICAL_SPEC.md)
 - [Test Plan](docs/TEST_PLAN.md)
