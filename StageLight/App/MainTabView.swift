@@ -65,7 +65,7 @@ struct MainTabView: View {
                     .font(.system(size: 26, weight: .medium))
                     .foregroundStyle(.white)
                     .frame(width: 56, height: 44)
-                    .background(Color(red: 1, green: 0.16, blue: 0.28), in: RoundedRectangle(cornerRadius: 12))
+                    .background(StageTheme.spotlight, in: RoundedRectangle(cornerRadius: 12))
             }
             .buttonStyle(.plain)
             .accessibilityIdentifier("add-performance-button")
