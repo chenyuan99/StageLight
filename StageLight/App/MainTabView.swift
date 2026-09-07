@@ -30,23 +30,9 @@ struct MainTabView: View {
             .tag(2)
         }
         .tint(.primary)
-        .overlay(alignment: .bottom) {
-            Button {
-                isAddingPerformance = true
-            } label: {
-                Image(systemName: "plus")
-                    .font(.title2.weight(.semibold))
-                    .foregroundStyle(.background)
-                    .frame(width: 52, height: 52)
-                    .background(.primary)
-                    .clipShape(Circle())
-                    .shadow(color: .black.opacity(0.16), radius: 12, y: 5)
-            }
-            .accessibilityIdentifier("add-performance-button")
-            .accessibilityLabel("Add a performance")
-            // Keep the action above the tab items so the Diary tab remains
-            // visible and tappable.
-            .padding(.bottom, 52)
+        .toolbar(.hidden, for: .tabBar)
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            bottomNavigation
         }
         .sheet(isPresented: $isAddingPerformance) {
             AddPerformanceFlow()
@@ -62,5 +48,52 @@ struct MainTabView: View {
         } message: {
             Text(library.errorMessage ?? "")
         }
+    }
+
+    private var bottomNavigation: some View {
+        HStack(spacing: 12) {
+            HStack(spacing: 0) {
+                navigationButton("Collection", icon: "square.grid.2x2", tab: 0)
+                navigationButton("Diary", icon: "book.pages", tab: 1)
+            }
+            .frame(maxWidth: .infinity)
+
+            Button {
+                isAddingPerformance = true
+            } label: {
+                Image(systemName: "plus")
+                    .font(.system(size: 26, weight: .medium))
+                    .foregroundStyle(.white)
+                    .frame(width: 56, height: 44)
+                    .background(StageTheme.spotlight, in: RoundedRectangle(cornerRadius: 12))
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("add-performance-button")
+            .accessibilityLabel("Add a performance")
+
+            navigationButton("Profile", icon: "person.crop.circle", tab: 2)
+                .frame(maxWidth: .infinity)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
+        .background(.bar)
+    }
+
+    private func navigationButton(_ title: LocalizedStringKey, icon: String, tab: Int) -> some View {
+        Button {
+            selectedTab = tab
+        } label: {
+            VStack(spacing: 4) {
+                Image(systemName: icon)
+                    .font(.system(size: 22, weight: selectedTab == tab ? .semibold : .regular))
+                Text(title)
+                    .font(.caption2)
+            }
+            .foregroundStyle(selectedTab == tab ? Color.primary : Color.secondary)
+            .frame(maxWidth: .infinity, minHeight: 44)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(selectedTab == tab ? .isSelected : [])
     }
 }
