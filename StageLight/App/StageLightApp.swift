@@ -14,10 +14,21 @@ struct StageLightApp: App {
     init() {
         do {
             let schema = Schema(versionedSchema: StageLightSchemaV2.self)
-            let configuration = ModelConfiguration(
-                schema: schema,
-                cloudKitDatabase: .private(Self.cloudKitContainerIdentifier)
-            )
+            let isRunningUnitTests = ProcessInfo.processInfo.environment[
+                "XCTestConfigurationFilePath"
+            ] != nil
+            let configuration = if isRunningUnitTests {
+                ModelConfiguration(
+                    schema: schema,
+                    isStoredInMemoryOnly: true,
+                    cloudKitDatabase: .none
+                )
+            } else {
+                ModelConfiguration(
+                    schema: schema,
+                    cloudKitDatabase: .private(Self.cloudKitContainerIdentifier)
+                )
+            }
             let container = try ModelContainer(
                 for: schema,
                 migrationPlan: StageLightMigrationPlan.self,

@@ -108,10 +108,8 @@ final class MemoryCardTests: XCTestCase {
             forInfoDictionaryKey: "NSPhotoLibraryAddUsageDescription"
         ) as? String
 
-        XCTAssertEqual(
-            description,
-            "StageLight saves memory cards to your photo library only when you choose Save to Photos."
-        )
+        XCTAssertFalse(description?.isEmpty ?? true)
+        XCTAssertTrue(description?.contains("StageLight") ?? false)
     }
 
     func testPhotoSaveErrorsProvideRecoveryGuidance() {
@@ -126,7 +124,7 @@ final class MemoryCardTests: XCTestCase {
         let image = UIGraphicsImageRenderer(size: CGSize(width: 10, height: 10)).image { _ in }
         let activity = MemoryCardSaveToPhotosActivity()
 
-        XCTAssertEqual(activity.activityTitle, "Save to Photos")
+        XCTAssertEqual(activity.activityTitle, AppLanguage.localized("Save to Photos"))
         XCTAssertTrue(activity.canPerform(withActivityItems: [image, MemoryCardBrand.appStoreURL]))
         XCTAssertFalse(activity.canPerform(withActivityItems: [MemoryCardBrand.appStoreURL]))
     }

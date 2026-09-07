@@ -7,21 +7,26 @@ final class CloudSyncStatusProviderTests: XCTestCase {
         let status = CloudSyncAvailability(accountStatus: .available)
 
         XCTAssertEqual(status, .available)
-        XCTAssertEqual(status.title, "On")
+        XCTAssertEqual(status.title, AppLanguage.localized("On"))
     }
 
     func test_missingAccount_requestsSignIn() {
         let status = CloudSyncAvailability(accountStatus: .noAccount)
 
         XCTAssertEqual(status, .noAccount)
-        XCTAssertEqual(status.title, "Sign In Required")
+        XCTAssertEqual(status.title, AppLanguage.localized("Sign In Required"))
     }
 
     func test_temporaryFailure_explainsAutomaticRetry() {
         let status = CloudSyncAvailability(accountStatus: .temporarilyUnavailable)
 
         XCTAssertEqual(status, .temporarilyUnavailable)
-        XCTAssertTrue(status.message.contains("retry automatically"))
+        XCTAssertEqual(
+            status.message,
+            AppLanguage.localized(
+                "iCloud is temporarily unavailable. StageLight will keep your changes locally and retry automatically."
+            )
+        )
     }
 
     func test_unknownAccountStatus_reportsUnavailable() {
