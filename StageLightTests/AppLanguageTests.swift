@@ -21,7 +21,7 @@ final class AppLanguageTests: XCTestCase {
     func testAllLanguageOptionsAreAvailable() {
         XCTAssertEqual(
             AppLanguage.allCases,
-            [.system, .english, .simplifiedChinese, .traditionalChinese]
+            [.system, .english, .simplifiedChinese, .traditionalChinese, .japanese]
         )
     }
 
@@ -39,6 +39,16 @@ final class AppLanguageTests: XCTestCase {
         UserDefaults.standard.set("unsupported", forKey: AppLanguage.storageKey)
 
         XCTAssertEqual(AppLanguage.selected, .system)
+    }
+
+    func testJapaneseSelectionLoadsJapaneseResources() {
+        UserDefaults.standard.set(AppLanguage.japanese.rawValue, forKey: AppLanguage.storageKey)
+        XCTAssertEqual(AppLanguage.selected, .japanese)
+        XCTAssertEqual(AppLanguage.selected.locale.identifier, "ja")
+        XCTAssertEqual(AppLanguage.selected.displayName, "日本語")
+        XCTAssertEqual(AppLanguage.localized("Collection"), "コレクション")
+        XCTAssertEqual(AppLanguage.localized("Share Memory"), "思い出をシェア")
+        XCTAssertEqual(AppLanguage.localized("System Default"), "システム設定に従う")
     }
 
     func testSimplifiedChineseLocalization() {

@@ -7,6 +7,7 @@ enum AppLanguage: String, CaseIterable, Identifiable {
     case english
     case simplifiedChinese
     case traditionalChinese
+    case japanese
 
     var id: Self { self }
 
@@ -20,6 +21,8 @@ enum AppLanguage: String, CaseIterable, Identifiable {
             Locale(identifier: "zh-Hans")
         case .traditionalChinese:
             Locale(identifier: "zh-Hant")
+        case .japanese:
+            Locale(identifier: "ja")
         }
     }
 
@@ -33,6 +36,8 @@ enum AppLanguage: String, CaseIterable, Identifiable {
             "简体中文"
         case .traditionalChinese:
             "繁體中文"
+        case .japanese:
+            "日本語"
         }
     }
 
@@ -58,6 +63,8 @@ enum AppLanguage: String, CaseIterable, Identifiable {
             resourceName = "zh-Hans"
         case .traditionalChinese:
             resourceName = "zh-Hant"
+        case .japanese:
+            resourceName = "ja"
         case .system:
             resourceName = nil
         }
