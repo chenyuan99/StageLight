@@ -18,6 +18,155 @@ The core unit is a **Performance**, not merely a Show. A Show is the enduring wo
 - December 18, 2025
 - May 2, 2024
 
+## Product Differentiation & Apple Journal Positioning
+
+StageLight is **not intended to replace or compete broadly with Apple Journal**.
+
+Apple Journal is a general-purpose tool for remembering moments across a user's life. StageLight is a specialized system for understanding and preserving one specific part of that life: **theatre-going history**.
+
+Our positioning is:
+
+> **Apple Journal remembers moments. StageLight understands your theatre history.**
+
+The distinction is important. A user can save a photo of a Playbill and write about the evening in a general-purpose journal. StageLight goes further by turning that moment into structured theatre data.
+
+After a user photographs a Playbill, ticket, or theatre poster, StageLight should understand that the user **saw a specific performance of a specific show**, rather than merely storing a photograph.
+
+For example:
+
+```text
+Hamilton
+Richard Rodgers Theatre
+September 8, 2026 · 7:00 PM
+★★★★★
+Orchestra · Row H · Seat 108
+```
+
+Over time, individual Performance records form a structured personal theatre history:
+
+```text
+YOUR STAGE
+
+63 performances
+47 shows
+22 theatres
+
+Hamilton
+Seen 4 times
+
+2024 · Richard Rodgers Theatre
+2025 · Richard Rodgers Theatre
+2026 · Richard Rodgers Theatre
+2026 · Richard Rodgers Theatre
+
+Favorite theatre
+Richard Rodgers Theatre · 7 visits
+```
+
+### Core Differentiators
+
+StageLight should provide theatre-specific capabilities that a general-purpose journal cannot naturally provide:
+
+- Show and Performance as first-class entities
+- Multiple viewings of the same Show
+- Automatic Playbill, ticket, and poster recognition
+- Structured theatre, date, time, and seat information
+- Performance ratings
+- Show-level viewing history
+- Theatre visit history
+- Personal theatre statistics
+- Cast history in a future release
+- Broadway Theatre Passport in a future release
+- Annual theatre recap in a future release
+
+The long-term value is therefore not the individual diary entry. It is the **structured dataset that emerges from years of theatre-going**.
+
+### Camera-First Advantage
+
+StageLight should minimize the effort required to create this structured history.
+
+The ideal interaction is:
+
+```text
+Take Playbill photo
+        ↓
+Identify show
+        ↓
+Confirm performance
+        ↓
+Rate / optional note
+        ↓
+Add to Stage
+```
+
+The user should not need to consciously maintain a database or write a journal entry.
+
+Their collection should emerge naturally from an action theatre-goers already perform: **taking a photo.**
+
+This supports the MVP goal of completing the basic collection flow in approximately 10–15 seconds.
+
+### Product Boundary
+
+StageLight should not attempt to outperform Apple Journal in general-purpose journaling.
+
+The following are explicitly not differentiation priorities:
+
+- General life journaling
+- Rich-text journaling
+- Mood tracking
+- Generic journaling prompts
+- General memory suggestions
+- General location history
+- Generic media organization
+
+When evaluating a new feature, the product team should ask:
+
+> **Would a theatre-goer get something from this that a general-purpose journal cannot naturally provide?**
+
+If the answer is no, the feature should generally not be prioritized.
+
+This principle protects StageLight from becoming a generic diary application.
+
+### Complementary Ecosystem
+
+StageLight may eventually complement Apple Journal rather than replace it.
+
+A future **Share to Journal** capability could generate a formatted theatre memory containing:
+
+```text
+Hamilton
+Richard Rodgers Theatre
+September 8, 2026
+★★★★★
+Orchestra · Row H · Seat 108
+```
+
+along with the user's selected photograph and personal note.
+
+In this model:
+
+**Apple Journal remains the user's life journal.**
+
+**StageLight becomes the system of record for their theatre life.**
+
+### Product Positioning
+
+Avoid positioning StageLight primarily as a "theatre journal."
+
+Preferred positioning:
+
+> **StageLight — Your theatre collection.**
+
+Supporting message:
+
+> **Photograph a Playbill. Remember every performance.**
+
+The core product distinction can be summarized as:
+
+> **Apple Journal stores a photo of Hamilton. StageLight knows you saw Hamilton.**
+
+This distinction should guide recognition, data modeling, collection design, statistics, and future product development.
+
 ## Product Principles
 
 1. **Performance First.** Model and present each visit as a distinct experience. Repeat viewings are valuable history, not duplicates to collapse.
