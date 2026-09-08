@@ -59,14 +59,10 @@ h1, h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 500; lette
 h1 { font-size: clamp(3.5rem, 7.2vw, 6.6rem); line-height: 0.94; max-width: 760px; text-wrap: balance; }
 .hero-description { color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.24rem); line-height: 1.65; margin: 30px 0 0; max-width: 580px; }
 .hero-actions { align-items: center; display: flex; flex-wrap: wrap; gap: 18px; margin-top: 32px; }
-.app-store-button {
-  align-items: flex-start; background: var(--ink); border-radius: 13px; color: white;
-  display: inline-flex; flex-direction: column; min-width: 184px; padding: 10px 20px 11px;
-  transition: transform 160ms ease, box-shadow 160ms ease;
-}
-.app-store-button:hover { box-shadow: 0 13px 30px rgba(32, 24, 16, 0.18); transform: translateY(-2px); }
-.app-store-button span { font-size: 0.7rem; }
-.app-store-button strong { font-size: 1.28rem; letter-spacing: -0.02em; }
+/* Apple requires unchanged artwork, at least 40px high, with 1/4-height clear space. */
+.app-store-badge { display: inline-flex; flex: 0 0 auto; padding: 12px; }
+.app-store-badge img { display: block; height: 48px; width: auto; max-width: none; }
+.app-store-badge:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 .availability { color: var(--muted); font-size: 0.86rem; }
 .trust-line { align-items: center; color: #5f574f; display: flex; font-size: 0.87rem; gap: 9px; margin-top: 25px; }
 .hero-visual { height: 650px; position: relative; }
@@ -179,7 +175,6 @@ footer a { color: #b9b0a7; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .app-store-button { transition: none; }
   .skip-link { transition: none; }
 }
 
