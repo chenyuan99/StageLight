@@ -7,6 +7,13 @@ const appStoreURL = 'https://apps.apple.com/us/app/stagelight-theatre-diary/id68
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 type Language = 'en' | 'zh-Hans' | 'zh-Hant' | 'ja';
 
+const appStoreBadges = {
+  en: { width: 119.66407, alt: 'Download on the App Store' },
+  'zh-Hans': { width: 108.85157, alt: '在 App Store 下载' },
+  'zh-Hant': { width: 108.85157, alt: '在 App Store 下載' },
+  ja: { width: 108.85157, alt: 'App Storeからダウンロード' },
+} satisfies Record<Language, { width: number; alt: string }>;
+
 const copy = {
   ja: {
     brand: 'StageLight', skip: '本文へスキップ', nav: ['メモリーカード', 'プライバシー', 'サポート'], download: '無料ダウンロード',
@@ -159,7 +166,14 @@ export default function Home() {
         <div className="hero-copy">
           <p className="eyebrow">{text.heroEyebrow}</p><h1>{text.heroTitle}</h1><p className="hero-description">{text.heroDescription}</p>
           <div className="hero-actions">
-            <a className="app-store-button" href={appStoreURL} aria-label={text.download}><span>{text.downloadOn}</span><strong>{text.appStore}</strong></a>
+            <a className="app-store-badge" href={appStoreURL}>
+              <img
+                src={`${basePath}/badges/app-store-${language}.svg`}
+                alt={appStoreBadges[language].alt}
+                width={appStoreBadges[language].width}
+                height={40}
+              />
+            </a>
             <span className="availability">{text.availability}</span>
           </div>
           <div className="trust-line"><LockKeyhole size={17} aria-hidden="true" /><span>{text.privacy}</span></div>
