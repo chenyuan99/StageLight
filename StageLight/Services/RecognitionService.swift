@@ -2,6 +2,7 @@ import Foundation
 #if canImport(FoundationModels)
 import FoundationModels
 #endif
+import ImageIO
 import UIKit
 import Vision
 
@@ -14,9 +15,10 @@ struct RecognitionResult: Equatable {
     var confidence: Double
 }
 
-struct RecognizedTextLine: Equatable {
+struct RecognizedTextLine: Equatable, Sendable {
     let text: String
     let confidence: Float
+    var height: Double = 0
 }
 
 struct ExtractedPerformanceFields: Equatable {
@@ -48,28 +50,64 @@ enum RecognitionError: LocalizedError {
 
 @MainActor
 final class LocalOCRRecognitionService: RecognitionServiceProtocol {
+    private let usesAppleIntelligence: Bool
+
+    init(usesAppleIntelligence: Bool = true) {
+        self.usesAppleIntelligence = usesAppleIntelligence
+    }
+
     func recognize(image: UIImage) async throws -> RecognitionResult {
         guard let cgImage = image.cgImage else {
             throw RecognitionError.invalidImage
         }
 
-        let request = VNRecognizeTextRequest()
-        request.recognitionLevel = .accurate
-        request.usesLanguageCorrection = true
-        let handler = VNImageRequestHandler(cgImage: cgImage)
-        try handler.perform([request])
-
-        let lines = (request.results ?? [])
-            .compactMap { $0.topCandidates(1).first }
-            .map { RecognizedTextLine(text: $0.string, confidence: $0.confidence) }
+        let orientation: CGImagePropertyOrientation
+        switch image.imageOrientation {
+        case .up: orientation = .up
+        case .down: orientation = .down
+        case .left: orientation = .left
+        case .right: orientation = .right
+        case .upMirrored: orientation = .upMirrored
+        case .downMirrored: orientation = .downMirrored
+        case .leftMirrored: orientation = .leftMirrored
+        case .rightMirrored: orientation = .rightMirrored
+        @unknown default: orientation = .up
+        }
+        try Task.checkCancellation()
+        // Vision performs synchronously; keep image analysis away from the UI actor.
+        let worker = Task.detached(priority: .userInitiated) {
+            try Task.checkCancellation()
+            let request = VNRecognizeTextRequest()
+            request.recognitionLevel = .accurate
+            request.usesLanguageCorrection = true
+            let handler = VNImageRequestHandler(cgImage: cgImage, orientation: orientation)
+            try handler.perform([request])
+            try Task.checkCancellation()
+            return (request.results ?? []).compactMap { observation -> RecognizedTextLine? in
+                guard let candidate = observation.topCandidates(1).first else { return nil }
+                return RecognizedTextLine(
+                    text: candidate.string,
+                    confidence: candidate.confidence,
+                    height: observation.boundingBox.height
+                )
+            }
+        }
+        let lines = try await withTaskCancellationHandler {
+            try await worker.value
+        } onCancel: {
+            worker.cancel()
+        }
+        try Task.checkCancellation()
         let fallback = try RecognitionResultProcessor.fallback(from: lines)
 
 #if canImport(FoundationModels)
-        if #available(iOS 26.0, *), SystemLanguageModel.default.isAvailable {
-            return (try? await recognizeWithAppleIntelligence(
+        if #available(iOS 26.0, *), usesAppleIntelligence, SystemLanguageModel.default.isAvailable {
+            let result = (try? await recognizeWithAppleIntelligence(
                 text: lines.map(\.text).joined(separator: "\n"),
                 fallback: fallback
             )) ?? fallback
+            try Task.checkCancellation()
+            return result
         }
 #endif
 
@@ -101,7 +139,8 @@ final class LocalOCRRecognitionService: RecognitionServiceProtocol {
                 date: details.date,
                 time: details.time
             ),
-            into: fallback
+            into: fallback,
+            sourceText: text
         )
     }
 #endif
@@ -111,13 +150,13 @@ final class LocalOCRRecognitionService: RecognitionServiceProtocol {
 enum RecognitionResultProcessor {
     static func fallback(from lines: [RecognizedTextLine]) throws -> RecognitionResult {
         let meaningfulLines = lines.filter { $0.text.nilIfEmpty != nil }
-        guard let strongest = meaningfulLines.max(by: { lhs, rhs in
-            lhs.confidence == rhs.confidence
-                ? lhs.text.count < rhs.text.count
-                : lhs.confidence < rhs.confidence
-        }) else {
-            throw RecognitionError.noTextFound
+        guard !meaningfulLines.isEmpty else { throw RecognitionError.noTextFound }
+        let candidates = meaningfulLines.filter { isTitleCandidate($0.text) }
+        let maxHeight = candidates.map(\.height).max() ?? 0
+        func score(_ line: RecognizedTextLine) -> Double {
+            Double(line.confidence) + (maxHeight > 0 ? 0.4 * line.height / maxHeight : 0)
         }
+        let strongest = candidates.max { score($0) < score($1) }
 
         let theatre = meaningfulLines
             .map(\.text)
@@ -128,27 +167,74 @@ enum RecognitionResultProcessor {
             .trimmingCharacters(in: .whitespacesAndNewlines)
 
         return RecognitionResult(
-            showTitle: strongest.text.nilIfEmpty,
+            showTitle: strongest?.text.nilIfEmpty,
             theatre: theatre,
             city: nil,
             date: nil,
             time: nil,
-            confidence: Double(strongest.confidence)
+            // OCR certainty measures legibility, not whether this is the show title.
+            confidence: strongest.map { min(Double($0.confidence), 0.64) } ?? 0
         )
     }
 
     static func merging(
         _ fields: ExtractedPerformanceFields,
-        into fallback: RecognitionResult
+        into fallback: RecognitionResult,
+        sourceText: String
     ) -> RecognitionResult {
-        RecognitionResult(
-            showTitle: fields.showTitle.nilIfEmpty ?? fallback.showTitle,
-            theatre: fields.theatre.nilIfEmpty ?? fallback.theatre,
-            city: fields.city.nilIfEmpty,
-            date: dateFormatter.date(from: fields.date.trimmingCharacters(in: .whitespacesAndNewlines)),
-            time: timeFormatter.date(from: fields.time.trimmingCharacters(in: .whitespacesAndNewlines)),
-            confidence: max(fallback.confidence, 0.85)
+        func supported(_ value: String) -> String? {
+            guard let value = value.nilIfEmpty,
+                  contains(value, in: sourceText) else { return nil }
+            return value
+        }
+        return RecognitionResult(
+            showTitle: supported(fields.showTitle) ?? fallback.showTitle,
+            theatre: supported(fields.theatre) ?? fallback.theatre,
+            city: supported(fields.city),
+            date: supportedDate(fields.date, sourceText: sourceText),
+            time: supportedTime(fields.time, sourceText: sourceText),
+            confidence: fallback.confidence
         )
+    }
+
+    private static func supportedDate(_ value: String, sourceText: String) -> Date? {
+        guard let date = dateFormatter.date(from: value.trimmingCharacters(in: .whitespacesAndNewlines)) else { return nil }
+        return appears(date, formats: ["yyyy-MM-dd", "MMMM d, yyyy", "MMM d, yyyy", "d MMMM yyyy", "d MMM yyyy"], in: sourceText) ? date : nil
+    }
+
+    private static func supportedTime(_ value: String, sourceText: String) -> Date? {
+        guard let time = timeFormatter.date(from: value.trimmingCharacters(in: .whitespacesAndNewlines)) else { return nil }
+        return appears(time, formats: ["HH:mm", "H:mm", "h:mm a", "h:mma"], in: sourceText) ? time : nil
+    }
+
+    private static func appears(_ date: Date, formats: [String], in source: String) -> Bool {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.timeZone = .current
+        return formats.contains { format in
+            formatter.dateFormat = format
+            return contains(formatter.string(from: date), in: source)
+        }
+    }
+
+    private static func contains(_ value: String, in source: String) -> Bool {
+        let pattern = "(?<![a-z0-9])" + NSRegularExpression.escapedPattern(for: normalize(value)) + "(?![a-z0-9])"
+        return normalize(source).range(of: pattern, options: .regularExpression) != nil
+    }
+
+    private static func normalize(_ text: String) -> String {
+        text.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: Locale(identifier: "en_US_POSIX"))
+            .components(separatedBy: .whitespacesAndNewlines).filter { !$0.isEmpty }.joined(separator: " ")
+    }
+
+    private static func isTitleCandidate(_ text: String) -> Bool {
+        let value = normalize(text)
+        guard value.rangeOfCharacter(from: .letters) != nil else { return false }
+        let labels = ["playbill", "www.playbill.com", "a new musical", "the musical", "a musical", "broadway", "ticketmaster", "telecharge"]
+        guard !labels.contains(value) else { return false }
+        let metadata = #"\b(theatre|theater|row|seat|section|admit|order|www|https?)\b|\b\d{1,2}:\d{2}\b|\b\d{4}-\d{2}-\d{2}\b"#
+        return value.range(of: metadata, options: .regularExpression) == nil
     }
 
     private static let dateFormatter: DateFormatter = {
