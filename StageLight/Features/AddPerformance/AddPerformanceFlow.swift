@@ -28,6 +28,9 @@ struct AddPerformanceFlow: View {
     @State private var showsDuplicateWarning = false
     @State private var recognitionConfidence: Double?
     @State private var showsTheatreSearch = false
+    @State private var captureTask: Task<Void, Never>?
+    @State private var captureID = UUID()
+    @State private var isLoadingPhotos = false
 
     init(editing performance: Performance? = nil) {
         self.performance = performance
@@ -78,11 +81,16 @@ struct AddPerformanceFlow: View {
             .toolbar {
                 if !isCamera {
                     ToolbarItem(placement: .cancellationAction) {
-                        Button("Cancel") { dismiss() }
+                        Button("Cancel") {
+                            cancelCapture()
+                            dismiss()
+                        }
+                        .disabled(isSaving)
                     }
                 }
             }
         }
+        .onDisappear { cancelCapture() }
         .interactiveDismissDisabled(isSaving)
         .confirmationDialog(
             "Possible duplicate",
@@ -208,8 +216,10 @@ struct AddPerformanceFlow: View {
             Text("Finding your show…")
                 .font(.title2.weight(.medium))
             Button("Add Manually") {
+                cancelCapture()
                 state = .editing
             }
+            .disabled(isLoadingPhotos)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(StageTheme.background)
@@ -235,8 +245,15 @@ struct AddPerformanceFlow: View {
                     if !draft.theatre.isEmpty {
                         Text(draft.theatre).foregroundStyle(.secondary)
                     }
-                    Text(draft.date.formatted(date: .long, time: .omitted))
-                        .foregroundStyle(.secondary)
+                    DatePicker("Date", selection: $draft.date, displayedComponents: .date)
+                    Toggle("Add a time", isOn: $draft.includesTime)
+                    if draft.includesTime {
+                        DatePicker("Time", selection: Binding(
+                            get: { draft.time ?? draft.date },
+                            set: { draft.time = $0 }
+                        ), displayedComponents: .hourAndMinute)
+                    }
+                    StageRatingView(rating: $draft.rating, size: 24)
                 }
 
                 Button("Add to Stage") { requestSave() }
@@ -348,6 +365,7 @@ struct AddPerformanceFlow: View {
                 requestSave()
             }
             .buttonStyle(StagePrimaryButtonStyle())
+            .disabled(isLoadingPhotos)
             .accessibilityIdentifier("save-performance-button")
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
@@ -428,36 +446,55 @@ struct AddPerformanceFlow: View {
         } else {
             shouldRecognize = false
         }
-        Task {
+        cancelCapture()
+        isLoadingPhotos = true
+        let requestID = captureID
+        captureTask = Task {
             var images: [UIImage] = []
             for item in items {
                 if let data = try? await item.loadTransferable(type: Data.self),
                    let image = UIImage(data: data) {
                     images.append(image)
                 }
+                guard !Task.isCancelled, captureID == requestID else { return }
             }
+            isLoadingPhotos = false
             pickerItems = []
             guard let first = images.first else {
-                state = .failed(AppLanguage.localized("The selected photo could not be opened."))
+                if shouldRecognize {
+                    state = .failed(AppLanguage.localized("The selected photo could not be opened."))
+                } else {
+                    errorMessage = AppLanguage.localized("The selected photo could not be opened.")
+                }
                 return
             }
             selectedImages.append(contentsOf: images)
             if shouldRecognize {
                 recognize(first)
-            } else {
-                state = .editing
             }
         }
     }
 
+    private func cancelCapture() {
+        captureID = UUID()
+        captureTask?.cancel()
+        captureTask = nil
+        isLoadingPhotos = false
+    }
+
     private func recognize(_ image: UIImage) {
+        cancelCapture()
+        let requestID = captureID
         state = .processing
-        Task {
+        captureTask = Task {
             do {
                 let result = try await library.recognitionService.recognize(image: image)
+                guard !Task.isCancelled, captureID == requestID else { return }
                 apply(result)
-                state = .recognitionResult
+                // Missing dates and titles need explicit editing rather than a guessed quick save.
+                state = result.date == nil || result.showTitle == nil ? .editing : .recognitionResult
             } catch {
+                guard !Task.isCancelled, captureID == requestID else { return }
                 AppLogger.recognition.notice("Recognition failed: \(error.localizedDescription, privacy: .public)")
                 state = .failed(error.localizedDescription)
             }
@@ -477,6 +514,7 @@ struct AddPerformanceFlow: View {
     }
 
     private func requestSave() {
+        guard !isSaving, !isLoadingPhotos else { return }
         do {
             _ = try draft.validate()
             if performance == nil,
