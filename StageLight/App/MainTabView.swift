@@ -14,18 +14,21 @@ struct MainTabView: View {
                     isAddingPerformance = true
                 }
             }
+            .toolbar(.hidden, for: .tabBar)
             .tabItem { Label("Collection", systemImage: "square.grid.2x2") }
             .tag(0)
 
             NavigationStack {
                 DiaryView()
             }
+            .toolbar(.hidden, for: .tabBar)
             .tabItem { Label("Diary", systemImage: "book.pages") }
             .tag(1)
 
             NavigationStack {
                 ProfileView()
             }
+            .toolbar(.hidden, for: .tabBar)
             .tabItem { Label("Profile", systemImage: "person.crop.circle") }
             .tag(2)
         }
@@ -76,6 +79,8 @@ struct MainTabView: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
+        .frame(maxWidth: 640)
+        .frame(maxWidth: .infinity)
         .background(.bar)
     }
 

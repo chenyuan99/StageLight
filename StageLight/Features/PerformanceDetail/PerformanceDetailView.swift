@@ -61,6 +61,7 @@ struct PerformanceDetailView: View {
             }
             .padding(16)
             .padding(.bottom, 40)
+            .readableStageContent()
         }
         .background(StageTheme.background)
         .navigationBarTitleDisplayMode(.inline)

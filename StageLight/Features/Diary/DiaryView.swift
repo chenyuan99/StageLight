@@ -43,6 +43,7 @@ struct DiaryView: View {
                     }
                 }
                 .listStyle(.plain)
+                .readableStageContent()
                 .scrollContentBackground(.hidden)
                 .background(StageTheme.background)
                 .refreshable { library.refresh() }

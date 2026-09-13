@@ -57,6 +57,7 @@ struct ProfileView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(24)
+            .readableStageContent()
         }
         .background(StageTheme.background)
         .navigationTitle("Profile")

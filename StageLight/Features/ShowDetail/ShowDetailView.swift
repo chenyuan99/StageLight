@@ -51,6 +51,7 @@ struct ShowDetailView: View {
             }
             .padding(16)
             .padding(.bottom, 40)
+            .readableStageContent()
         }
         .background(StageTheme.background)
         .navigationBarTitleDisplayMode(.inline)

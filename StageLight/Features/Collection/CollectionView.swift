@@ -6,21 +6,22 @@ struct CollectionView: View {
     @State private var searchText = ""
     @State private var selectedYear: Int?
     @State private var minimumRating: Double?
-
-    private let columns = [
-        GridItem(.flexible(), spacing: 16),
-        GridItem(.flexible(), spacing: 16)
-    ]
+    @Environment(\.horizontalSizeClass) private var sizeClass
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
-        Group {
+        GeometryReader { geometry in
+          Group {
             if library.shows.isEmpty {
                 emptyState
             } else if filteredShows.isEmpty {
                 ContentUnavailableView.search(text: searchText)
             } else {
                 ScrollView {
-                    LazyVGrid(columns: columns, alignment: .leading, spacing: 24) {
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 16), count:
+                        StageLayout.collectionColumnCount(width: geometry.size.width,
+                            regular: sizeClass == .regular,
+                            accessibility: dynamicTypeSize.isAccessibilitySize)), alignment: .leading, spacing: 24) {
                         ForEach(filteredShows) { show in
                             NavigationLink {
                                 ShowDetailView(show: show)
@@ -36,6 +37,8 @@ struct CollectionView: View {
                 .background(StageTheme.background)
                 .refreshable { library.refresh() }
             }
+          }
+          .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .navigationTitle("Collection")
         .searchable(text: $searchText, prompt: "Show or theatre")
