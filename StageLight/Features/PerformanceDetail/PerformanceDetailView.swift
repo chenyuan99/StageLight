@@ -25,7 +25,7 @@ struct PerformanceDetailView: View {
                 }
 
                 if let first = photos.first {
-                    PhotoThumbnailView(photo: first)
+                    PhotoThumbnailView(photo: first, contentMode: .fit)
                         .frame(height: 390)
                         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                 }

@@ -219,9 +219,7 @@ struct AddPerformanceFlow: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
                 if let firstImage = selectedImages.first {
-                    Image(uiImage: firstImage)
-                        .resizable()
-                        .scaledToFill()
+                    StagePhotoView(image: firstImage)
                         .frame(height: 280)
                         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                         .clipped()
@@ -244,10 +242,12 @@ struct AddPerformanceFlow: View {
                     .disabled(draft.showTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
 
                 Button("Edit details") { state = .editing }
+                    .foregroundStyle(.primary)
                     .frame(maxWidth: .infinity)
                     .frame(minHeight: 44)
             }
             .padding(24)
+            .readableStageContent()
         }
         .background(StageTheme.background)
     }

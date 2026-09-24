@@ -73,9 +73,7 @@ struct PhotoThumbnailView: View {
             Rectangle()
                 .fill(StageTheme.surface)
             if let image {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: contentMode)
+                StagePhotoView(image: image, contentMode: contentMode)
             } else {
                 Image(systemName: "photo")
                     .font(.system(size: 32, weight: .ultraLight))
