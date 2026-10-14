@@ -6,11 +6,19 @@ struct CollectionView: View {
     @State private var searchText = ""
     @State private var selectedYear: Int?
     @State private var minimumRating: Double?
+    @AppStorage(HistoryCopy.preferenceKey) private var showsHistory = true
     @Environment(\.horizontalSizeClass) private var sizeClass
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
         GeometryReader { geometry in
+          VStack(spacing: 0) {
+            if showsHistory && searchText.isEmpty {
+                TheatreHistoryEntry()
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                    .readableStageContent()
+            }
           Group {
             if library.shows.isEmpty {
                 emptyState
@@ -39,6 +47,7 @@ struct CollectionView: View {
             }
           }
           .frame(maxWidth: .infinity, maxHeight: .infinity)
+          }
         }
         .navigationTitle("Collection")
         .searchable(text: $searchText, prompt: "Show or theatre")
