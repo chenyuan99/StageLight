@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "revision": 1,
+  "events": [
+    {
+      "id": "wicked-broadway-2003", "year": 2003, "month": 10, "day": 30,
+      "title": "Wicked", "venue": "Gershwin Theatre · New York",
+      "sourceName": "IBDB · The Broadway League",
+      "sourceURL": "https://www.ibdb.com/broadway-production/wicked-13485",
+      "translations": {
+        "en": {"heading": "Broadway opening", "summary": "Wicked opened on Broadway at the Gershwin Theatre, with music and lyrics by Stephen Schwartz."},
+        "zh-Hans": {"heading": "百老汇正式开幕", "summary": "《Wicked》在纽约 Gershwin Theatre 正式开幕，音乐与歌词由 Stephen Schwartz 创作。"},
+        "zh-Hant": {"heading": "百老匯正式開幕", "summary": "《Wicked》在紐約 Gershwin Theatre 正式開幕，音樂與歌詞由 Stephen Schwartz 創作。"},
+        "ja": {"heading": "ブロードウェイ開幕", "summary": "『Wicked』がガーシュウィン劇場で開幕。作曲・作詞はスティーヴン・シュワルツ。"}
+      }
+    },
+    {
+      "id": "phantom-broadway-1988", "year": 1988, "month": 1, "day": 26,
+      "title": "The Phantom of the Opera", "venue": "Majestic Theatre · New York",
+      "sourceName": "IBDB · The Broadway League",
+      "sourceURL": "https://www.ibdb.com/broadway-production/the-phantom-of-the-opera-4491",
+      "translations": {
+        "en": {"heading": "Broadway opening", "summary": "The Phantom of the Opera opened on Broadway at the Majestic Theatre. This date marks the Broadway production's opening."},
+        "zh-Hans": {"heading": "百老汇正式开幕", "summary": "《歌剧魅影》在纽约 Majestic Theatre 正式开幕。这一天记录的是百老汇版的开幕。"},
+        "zh-Hant": {"heading": "百老匯正式開幕", "summary": "《歌劇魅影》在紐約 Majestic Theatre 正式開幕。這一天記錄的是百老匯版的開幕。"},
+        "ja": {"heading": "ブロードウェイ開幕", "summary": "『オペラ座の怪人』がマジェスティック劇場で開幕。ブロードウェイ公演の開幕日です。"}
+      }
+    },
+    {
+      "id": "hamilton-broadway-2015", "year": 2015, "month": 8, "day": 6,
+      "title": "Hamilton", "venue": "Richard Rodgers Theatre · New York",
+      "sourceName": "IBDB · The Broadway League",
+      "sourceURL": "https://www.ibdb.com/broadway-production/hamilton-499521",
+      "translations": {
+        "en": {"heading": "Broadway opening", "summary": "Hamilton opened at the Richard Rodgers Theatre. Its world premiere had taken place at the Public Theater earlier that year."},
+        "zh-Hans": {"heading": "百老汇正式开幕", "summary": "《Hamilton》在 Richard Rodgers Theatre 正式开幕。同年早些时候，该剧已在 Public Theater 完成世界首演。"},
+        "zh-Hant": {"heading": "百老匯正式開幕", "summary": "《Hamilton》在 Richard Rodgers Theatre 正式開幕。同年早些時候，該劇已在 Public Theater 完成世界首演。"},
+        "ja": {"heading": "ブロードウェイ開幕", "summary": "『Hamilton』がリチャード・ロジャース劇場で開幕。世界初演は同年、それに先立ちパブリック・シアターで行われました。"}
+      }
+    },
+    {
+      "id": "salesman-broadway-1949", "year": 1949, "month": 2, "day": 10,
+      "title": "Death of a Salesman", "venue": "Morosco Theatre · New York",
+      "sourceName": "IBDB · The Broadway League",
+      "sourceURL": "https://www.ibdb.com/broadway-production/death-of-a-salesman-2111",
+      "translations": {
+        "en": {"heading": "Broadway opening", "summary": "Arthur Miller's Death of a Salesman opened at the Morosco Theatre, directed by Elia Kazan."},
+        "zh-Hans": {"heading": "百老汇正式开幕", "summary": "Arthur Miller 的《推销员之死》在 Morosco Theatre 正式开幕，由 Elia Kazan 执导。"},
+        "zh-Hant": {"heading": "百老匯正式開幕", "summary": "Arthur Miller 的《推銷員之死》在 Morosco Theatre 正式開幕，由 Elia Kazan 執導。"},
+        "ja": {"heading": "ブロードウェイ開幕", "summary": "アーサー・ミラー作『セールスマンの死』がモロスコ劇場で開幕。演出はエリア・カザン。"}
+      }
+    },
+    {
+      "id": "raisin-broadway-1959", "year": 1959, "month": 3, "day": 11,
+      "title": "A Raisin in the Sun", "venue": "Ethel Barrymore Theatre · New York",
+      "sourceName": "IBDB · The Broadway League",
+      "sourceURL": "https://www.ibdb.com/broadway-production/a-raisin-in-the-sun-2083",
+      "translations": {
+        "en": {"heading": "Broadway opening", "summary": "Lorraine Hansberry's A Raisin in the Sun opened at the Ethel Barrymore Theatre."},
+        "zh-Hans": {"heading": "百老汇正式开幕", "summary": "Lorraine Hansberry 创作的《A Raisin in the Sun》在 Ethel Barrymore Theatre 正式开幕。"},
+        "zh-Hant": {"heading": "百老匯正式開幕", "summary": "Lorraine Hansberry 創作的《A Raisin in the Sun》在 Ethel Barrymore Theatre 正式開幕。"},
+        "ja": {"heading": "ブロードウェイ開幕", "summary": "ロレイン・ハンズベリー作『A Raisin in the Sun』がエセル・バリモア劇場で開幕。"}
+      }
+    }
+  ]
+}

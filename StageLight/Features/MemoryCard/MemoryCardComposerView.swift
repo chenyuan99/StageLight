@@ -209,7 +209,7 @@ private struct SharedMemoryCard: Identifiable {
     let includesAppStoreLink: Bool
 }
 
-private struct MemoryCardActivityView: UIViewControllerRepresentable {
+struct MemoryCardActivityView: UIViewControllerRepresentable {
     let image: UIImage
     let includesAppStoreLink: Bool
 

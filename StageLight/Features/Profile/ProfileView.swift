@@ -51,6 +51,7 @@ struct ProfileView: View {
                 }
 
                 languageSection
+                TheatreHistorySettings()
                 cloudSyncSection
 
                 Spacer(minLength: 60)
