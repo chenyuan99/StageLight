@@ -51,6 +51,7 @@ struct ProfileView: View {
                 }
 
                 languageSection
+                AppIconSettings()
                 MiniTheatreSettings()
                 TheatreHistorySettings()
                 cloudSyncSection
