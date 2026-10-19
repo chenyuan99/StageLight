@@ -5,7 +5,8 @@ import MiniTheatreCore
 import UIKit
 
 enum CompanionSchemaV1: VersionedSchema {
-    static let versionIdentifier = Schema.Version(1, 0, 0)
+    // Older SDKs do not mark Schema.Version Sendable. Avoid shared stored state.
+    static var versionIdentifier: Schema.Version { Schema.Version(1, 0, 0) }
     static var models: [any PersistentModel.Type] { [Grant.self, Stage.self] }
     @Model final class Grant {
         @Attribute(.unique) var key: String

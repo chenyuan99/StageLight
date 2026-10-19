@@ -5,6 +5,10 @@ import MiniTheatreCore
 @testable import StageLight
 
 @MainActor final class MiniTheatreTests: XCTestCase {
+    func testSchemaVersionRemainsStableAcrossReads() {
+        XCTAssertEqual(CompanionSchemaV1.versionIdentifier, Schema.Version(1, 0, 0))
+        XCTAssertEqual(CompanionSchemaV1.versionIdentifier, CompanionSchemaV1.versionIdentifier)
+    }
     private func visits(_ count: Int = 10) -> [CompanionVisit] {
         (0..<count).map { CompanionVisit(id: UUID(), date: .now.addingTimeInterval(-86400 * 4), theatre: "Venue \($0)", city: "NYC") }
     }
