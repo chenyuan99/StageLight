@@ -204,3 +204,12 @@ footer a { color: #b9b0a7; }
   .faq-grid { grid-template-columns: 1fr; }
   .legal-hero { margin-top: 60px; }
 }
+.release-section { padding: 64px max(24px, calc((100% - 1160px) / 2)); background: #faf4e7; scroll-margin-top: 90px; }
+.release-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.release-grid .feature-card h3 { margin-top: 0; }
+.release-privacy { max-width: 820px; margin: 28px auto; line-height: 1.7; }
+.release-history { border-top: 1px solid #d9c8a4; padding: 24px 0; scroll-margin-top: 90px; }
+.release-history summary { cursor: pointer; font-weight: 600; }
+.release-history h3 { margin-top: 24px; }
+.release-history p { line-height: 1.7; }
+@media (max-width: 700px) { .release-grid { grid-template-columns: 1fr; } }

@@ -1,6 +1,6 @@
-# StageLight 1.5.0 (7) release candidate
+# StageLight 1.5.0 (7) — Waiting for Review
 
-Prepare only: do not merge, upload, submit for review or publish automatically.
+Submitted to App Store Review on 2026-10-19 after user authorization. Build 7 is associated with the submission; automatic release after approval is configured. This is not yet a public release. Current live version: 1.4.1.
 
 Scope: optional local Mini Theatre bunny companion, prop collection and sharing; app icon customization; Golden premiere primary icon. Historical theatre feature inherited from main is included. Uncommitted Theatre Passport and workflow edits are excluded.
 
@@ -37,4 +37,4 @@ No app login is required. In Profile, enable Mini Theatre to inspect the optiona
 - Verify signed Release archive version/build and Production iCloud entitlement.
 - PR CI must pass; review and merge before upload.
 - Update product screenshots/privacy description if needed for the optional local companion.
-- App Store submission and public release require a later explicit instruction.
+- Submission authorization received and completed on 2026-10-19. Verify Apple approval before describing 1.5.0 as publicly available.
