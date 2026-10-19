@@ -19,13 +19,19 @@ enum AppIconChoice: String, CaseIterable {
     case original, bunny, creamBunny, goldenPremiere
     var iconName: String? {
         switch self {
-        case .original: nil
+        case .original: "AppIcon"
         case .bunny: "BunnyIcon"
         case .creamBunny: "CreamBunnyIcon"
-        case .goldenPremiere: "GoldenPremiereIcon"
+        case .goldenPremiere: nil
         }
     }
-    var preview: String { iconName.map { $0 + "Preview" } ?? "MemoryCardAppIcon" }
+    var preview: String {
+        switch self {
+        case .original: "MemoryCardAppIcon"
+        case .goldenPremiere: "GoldenPremiereIconPreview"
+        default: iconName.map { $0 + "Preview" } ?? "GoldenPremiereIconPreview"
+        }
+    }
 }
 
 @MainActor @Observable final class AppIconStore {
@@ -41,7 +47,8 @@ enum AppIconChoice: String, CaseIterable {
     }
 
     func refresh() {
-        selectedName = service.alternateIconName
+        // Preserve the previous optional gold icon as an alias of the new default.
+        selectedName = service.alternateIconName == "GoldenPremiereIcon" ? nil : service.alternateIconName
         supported = service.supportsAlternateIcons
     }
 
@@ -116,7 +123,7 @@ enum AppIconCopy {
         "original": ["Original", "原版", "原版", "オリジナル"],
         "bunny": ["Theatre bunny", "剧场小兔", "劇場小兔", "劇場のうさぎ"],
         "creamBunny": ["Cream bunny", "奶油小兔", "奶油小兔", "クリームうさぎ"],
-        "goldenPremiere": ["Golden premiere", "金色首演", "金色首演", "黄金の初日"],
+        "goldenPremiere": ["Golden premiere (default)", "金色首演（默认）", "金色首演（預設）", "黄金の初日（デフォルト）"],
         "changing": ["Changing icon", "正在更换图标", "正在更換圖示", "アイコンを変更中"],
         "unsupported": ["Icon changes are unavailable on this device.", "此设备暂不支持更换图标。", "此裝置暫不支援更換圖示。", "この端末ではアイコンを変更できません。"],
         "error": ["Could not change icon", "无法更换图标", "無法更換圖示", "アイコンを変更できませんでした"],

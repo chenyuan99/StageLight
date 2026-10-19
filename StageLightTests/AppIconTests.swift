@@ -23,7 +23,7 @@ import UIKit
         await subject.select(.bunny)
         XCTAssertEqual(subject.selectedName, "BunnyIcon")
         await subject.select(.original)
-        XCTAssertNil(subject.selectedName)
+        XCTAssertEqual(subject.selectedName, "AppIcon")
         XCTAssertEqual(service.requests.count, 2)
         XCTAssertFalse(subject.failed)
     }
@@ -38,7 +38,7 @@ import UIKit
                 XCTAssertNotEqual(AppIconCopy.text(choice.rawValue, language), choice.rawValue)
             }
         }
-        await store.select(.original)
+        await store.select(.goldenPremiere)
         XCTAssertNil(store.selectedName)
     }
     func testFailureKeepsActualIconAndAllowsRetry() async {
@@ -58,7 +58,7 @@ import UIKit
         let service = Service(), other = Service()
         service.supportsAlternateIcons = false
         await AppIconStore(service: service).select(.bunny)
-        await AppIconStore(service: other).select(.original)
+        await AppIconStore(service: other).select(.goldenPremiere)
         XCTAssertTrue(service.requests.isEmpty)
         XCTAssertTrue(other.requests.isEmpty)
     }
@@ -68,6 +68,18 @@ import UIKit
         service.alternateIconName = "BunnyIcon"
         store.refresh()
         XCTAssertEqual(store.selectedName, "BunnyIcon")
+    }
+    func testGoldIsDefaultAndLegacyGoldRemainsSelected() async {
+        let service = Service()
+        let store = AppIconStore(service: service)
+        XCTAssertNil(AppIconChoice.goldenPremiere.iconName)
+        XCTAssertEqual(AppIconChoice.original.iconName, "AppIcon")
+        XCTAssertNil(store.selectedName)
+        service.alternateIconName = "GoldenPremiereIcon"
+        store.refresh()
+        XCTAssertNil(store.selectedName)
+        await store.select(.goldenPremiere)
+        XCTAssertTrue(service.requests.isEmpty)
     }
     func testConcurrentChangesAreIgnored() async {
         let service = Service()
@@ -93,6 +105,9 @@ import UIKit
                 if let name = choice.iconName { XCTAssertNotNil(alternates[name]) }
             }
             XCTAssertNotNil(icons["CFBundlePrimaryIcon"])
+            let primary = try XCTUnwrap(icons["CFBundlePrimaryIcon"] as? [String: Any])
+            XCTAssertEqual(primary["CFBundleIconName"] as? String, "DefaultAppIcon")
+            XCTAssertNotNil(alternates["GoldenPremiereIcon"], "Keep legacy installed icon name")
         }
         XCTAssertNotNil(UIImage(named: "BunnyIconPreview"))
         XCTAssertNotNil(UIImage(named: "MemoryCardAppIcon"))
