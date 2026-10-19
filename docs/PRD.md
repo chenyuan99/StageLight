@@ -4,6 +4,8 @@
 
 Language-specific requirements and release criteria are defined in the [Localization PRD](LOCALIZATION_PRD.md).
 
+This document retains the original v0.1 MVP baseline; its roadmap version numbers are historical planning labels. The current app supports private iCloud diary synchronization. Later feature requirements are explicitly marked below, including the proposed [Mini Theatre companion](specs/MINI_THEATRE_COMPANION.md).
+
 StageLight is a personal theatre collection and diary for people who watch Broadway, Off-Broadway, West End, touring productions, plays, and musicals.
 
 > 剧光灯不是告诉你有什么剧可以看，而是记住你这一生看过哪些剧。
@@ -361,6 +363,8 @@ StageLight v0.1 is local-first and uses SwiftData for metadata. It has no CloudK
 
 ## Success Metrics
 
+The optional Mini Theatre experiment does not authorize adding remote behavioral analytics to collect these metrics.
+
 - **Activation:** percentage of new users who save their first Performance
 - **Collection depth:** performances saved per activated user
 - **Scan success:** scans that yield a useful draft and proceed to save
@@ -368,6 +372,46 @@ StageLight v0.1 is local-first and uses SwiftData for metadata. It has no CloudK
 - **Return behavior:** users who return to view or add to their history
 
 **North Star: Performances Collected**
+
+## Optional Mini Theatre Companion
+
+Status: implemented on the feature branch, October 18, 2026; not approved for release. Separate from Theatre Passport. Uses the selected cream-and-gold lop-eared bunny and six original props. See the feature spec and QA notes for verification status.
+
+### Purpose and scope
+
+Let theatre memories gradually furnish a small, original theatre scene with a companion, provisionally named 小剧灯. Gentle companionship may make revisiting memories more enjoyable; improved retention is a hypothesis to validate through voluntary feedback, not a promise or a reason to introduce tracking.
+
+First release: one original character, an optional nickname, six original props, three equipment slots, one skippable theatre-specific reflection prompt, and one preview-first share card. Support English, Simplified Chinese, Traditional Chinese, Japanese, iPhone, and iPad.
+
+Default off. Explicit activation lives in Profile; a collapsible Collection shortcut is separately optional. Preserve existing navigation and the fast diary save flow. Do not reserve a third of the home screen for the companion.
+
+### User stories and acceptance
+
+| Story | Required behavior |
+| --- | --- |
+| Ignore the companion | No evaluation, prompts, notification permissions, or extra save step while disabled. |
+| Activate with an existing diary | Reconcile past records and show one reward summary, not a chain of popups. |
+| Earn a keepsake | Deterministic milestones; manual entry, scanning, and backfilled memories have equal eligibility. AI genre classification is not required. |
+| Avoid repeated rewards | One permanent grant per milestone, regardless of edits, extra photos, callbacks, or relaunch. |
+| Keep control of records | Deleting or editing a diary never revokes earned props. Rewards cannot restore deleted diary data. |
+| Recover from an error | Reward-store failure cannot fail or roll back diary saving; retry without resetting either store. |
+| Decorate | Equip only unlocked, slot-compatible props and persist the selection locally. |
+| Reflect | A skippable theatre-specific prompt opens the existing note editor; no overwriting, minimum length, sentiment analysis, or note-based reward. |
+| Take a break | No hunger, sadness penalty, broken streak, expiry, or guilt-based language. |
+| Share | Preview only the original character and equipped stage with app icon and Made with StageLight; exclude nickname and all diary content by default. |
+| Disable | Hide companion UI and stop evaluation, retain progress, and reconcile on re-enabling. |
+
+### Privacy and durability
+
+Keep the existing diary schema and private iCloud configuration unchanged. Companion state lives in a separate device-local store, without cross-store relationships. Local-first does not mean the diary never syncs.
+
+Reflection disclosure: “内容保存在你的设备上，并可能通过你的私人 iCloud 同步。不会用于公开展示。” Never claim existing notes stay off cloud. Explain that first-release companion progress and equipment do not sync between devices. Reinstall recovery is not guaranteed: remaining diary records can reconstruct eligible milestones, but grants based on deleted records and equipment choices may not be recoverable.
+
+### Boundaries and validation
+
+No coins, shop, purchases, random reward pool, leaderboards, viewing streaks, or pressure to buy tickets. Use original artwork rather than copying another product's mascot, UI, or production-specific assets. Timed exploration, widgets, Live Activities, show-specific rewards, venue aliases, and cross-device companion sync are deferred.
+
+Reduce Motion, VoiceOver, Dynamic Type, and optional haptics are release requirements. Validate enjoyment, discoverability, and comfort through voluntary feedback without a telemetry SDK or automatic diary activity export. The [technical and test specification](specs/MINI_THEATRE_COMPANION.md) defines release gates; this proposal is not evidence that implementation or testing is complete.
 
 ## MVP Definition of Done
 

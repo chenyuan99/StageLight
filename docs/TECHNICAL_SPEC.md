@@ -1,5 +1,11 @@
 # 剧光灯 StageLight — Technical Specification v0.1
 
+## Later feature specifications
+
+The original sections retain historical v0.1 architecture examples, including pre-iCloud models and photo-storage assumptions. They are not migration instructions for the current app, which uses a versioned SwiftData schema, private iCloud synchronization, and photo data support.
+
+- [Mini Theatre companion](specs/MINI_THEATRE_COMPANION.md): optional progression with a local Swift package rule engine, isolated versioned SwiftData store, idempotent awards, and privacy-preserving cards. The diary storage configuration is unchanged. See feature QA before release.
+
 ## Platform and Stack
 
 | Area | Decision |

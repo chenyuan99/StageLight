@@ -17,7 +17,12 @@ struct StageLightApp: App {
             let isRunningUnitTests = ProcessInfo.processInfo.environment[
                 "XCTestConfigurationFilePath"
             ] != nil
-            let configuration = if isRunningUnitTests {
+            var isMiniPreview = false
+            #if DEBUG
+            isMiniPreview = ProcessInfo.processInfo.arguments.contains("-ui-testing")
+                && ProcessInfo.processInfo.arguments.contains("-mini-preview")
+            #endif
+            let configuration = if isRunningUnitTests || isMiniPreview {
                 ModelConfiguration(
                     schema: schema,
                     isStoredInMemoryOnly: true,
@@ -35,6 +40,12 @@ struct StageLightApp: App {
                 configurations: [configuration]
             )
             let library = LibraryStore(context: container.mainContext)
+            #if DEBUG
+            if isMiniPreview {
+                MiniTheatrePreviewData.insert(into: container.mainContext)
+                library.refresh()
+            }
+            #endif
             if ProcessInfo.processInfo.arguments.contains("-reset-data") {
                 library.resetForUITesting()
             }
@@ -48,6 +59,7 @@ struct StageLightApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
+                .modifier(MiniTheatreRuntime())
                 .environment(library)
                 .environment(
                     \.locale,

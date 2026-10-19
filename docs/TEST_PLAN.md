@@ -4,6 +4,8 @@
 
 For localization, use the acceptance matrix in the [Localization PRD](LOCALIZATION_PRD.md) alongside this original MVP plan. It also covers language-sensitive sharing and iCloud checks introduced after the MVP.
 
+For Mini Theatre, use the [feature acceptance matrix](specs/MINI_THEATRE_COMPANION.md#verification-and-release-gates). The core package's 31 tests and the app's 10 MiniTheatre integration tests passed locally after the test-first implementation. UI/device, privacy and accessibility release gates remain separate; consult feature QA rather than treating unit passes as release approval.
+
 This plan defines how StageLight's iOS MVP will be verified before TestFlight. It translates the product requirements, UX decisions, and technical specification into observable tests so implementation can proceed against clear behavior rather than informal expectations.
 
 The plan follows a test-first workflow:
