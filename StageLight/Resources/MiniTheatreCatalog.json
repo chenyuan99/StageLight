@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "props": [
+    {
+      "id": "welcome_pennant",
+      "milestoneID": "welcome",
+      "slot": "handheld",
+      "rule": {
+        "welcome": {}
+      },
+      "ruleVersion": 1,
+      "assetName": "mini_welcome_pennant"
+    },
+    {
+      "id": "keepsake_ticket",
+      "milestoneID": "visits_1",
+      "slot": "decoration",
+      "rule": {
+        "visits": {
+          "_0": 1
+        }
+      },
+      "ruleVersion": 1,
+      "assetName": "mini_keepsake_ticket"
+    },
+    {
+      "id": "golden_spotlight",
+      "milestoneID": "visits_3",
+      "slot": "decoration",
+      "rule": {
+        "visits": {
+          "_0": 3
+        }
+      },
+      "ruleVersion": 1,
+      "assetName": "mini_golden_spotlight"
+    },
+    {
+      "id": "velvet_curtain",
+      "milestoneID": "visits_5",
+      "slot": "background",
+      "rule": {
+        "visits": {
+          "_0": 5
+        }
+      },
+      "ruleVersion": 1,
+      "assetName": "mini_velvet_curtain"
+    },
+    {
+      "id": "memory_bouquet",
+      "milestoneID": "visits_10",
+      "slot": "handheld",
+      "rule": {
+        "visits": {
+          "_0": 10
+        }
+      },
+      "ruleVersion": 1,
+      "assetName": "mini_memory_bouquet"
+    },
+    {
+      "id": "theatre_suitcase",
+      "milestoneID": "venues_3",
+      "slot": "decoration",
+      "rule": {
+        "venues": {
+          "_0": 3
+        }
+      },
+      "ruleVersion": 1,
+      "assetName": "mini_theatre_suitcase"
+    }
+  ]
+}

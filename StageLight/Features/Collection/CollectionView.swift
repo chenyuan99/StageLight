@@ -7,12 +7,17 @@ struct CollectionView: View {
     @State private var selectedYear: Int?
     @State private var minimumRating: Double?
     @AppStorage(HistoryCopy.preferenceKey) private var showsHistory = true
+    @AppStorage(MiniTheatreStore.enabledKey) private var miniEnabled = false
+    @AppStorage(MiniTheatreStore.shortcutKey) private var miniShortcut = false
     @Environment(\.horizontalSizeClass) private var sizeClass
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
         GeometryReader { geometry in
           VStack(spacing: 0) {
+            if miniEnabled && miniShortcut && searchText.isEmpty {
+                MiniTheatreEntry().padding(.horizontal, 16).padding(.vertical, 4).readableStageContent()
+            }
             if showsHistory && searchText.isEmpty {
                 TheatreHistoryEntry()
                     .padding(.horizontal, 16)

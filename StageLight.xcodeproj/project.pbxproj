@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C10000000000000000000001 = {isa = PBXBuildFile; productRef = C10000000000000000000002; };
 		A10000000000000000000001 /* StageLight.app in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A20000000000000000000001 /* StageLight.app */; };
 /* End PBXBuildFile section */
 
@@ -44,7 +45,7 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		A70000000000000000000001 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		A70000000000000000000001 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (C10000000000000000000001,); runOnlyForDeploymentPostprocessing = 0; };
 		A70000000000000000000002 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 		A70000000000000000000003 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXFrameworksBuildPhase section */
@@ -85,7 +86,7 @@
 			dependencies = ();
 			fileSystemSynchronizedGroups = (A60000000000000000000001 /* StageLight */);
 			name = StageLight;
-			packageProductDependencies = ();
+			packageProductDependencies = (C10000000000000000000002,);
 			productName = StageLight;
 			productReference = A20000000000000000000001 /* StageLight.app */;
 			productType = "com.apple.product-type.application";
@@ -147,6 +148,7 @@
 			mainGroup = A80000000000000000000001;
 			productRefGroup = A80000000000000000000002 /* Products */;
 			projectDirPath = "";
+			packageReferences = (C10000000000000000000003,);
 			projectRoot = "";
 			targets = (
 				A50000000000000000000001 /* StageLight */,
@@ -174,6 +176,8 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		C10000000000000000000003 = {isa = XCLocalSwiftPackageReference; relativePath = Packages/MiniTheatreCore; };
+		C10000000000000000000002 = {isa = XCSwiftPackageProductDependency; productName = MiniTheatreCore; };
 		AF0000000000000000000001 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor; CODE_SIGN_ENTITLEMENTS = StageLight/StageLight.entitlements; CODE_SIGN_STYLE = Automatic; CLOUDKIT_ENVIRONMENT = Development; CURRENT_PROJECT_VERSION = 3; ENABLE_PREVIEWS = YES; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_FILE = StageLight/Info.plist; INFOPLIST_KEY_NSCameraUsageDescription = "StageLight uses the camera to scan a Playbill, ticket, or theatre poster."; INFOPLIST_KEY_UILaunchScreen_Generation = YES; IPHONEOS_DEPLOYMENT_TARGET = 18.0; LOCALIZATION_PREFERS_STRING_CATALOGS = YES; MARKETING_VERSION = 1.2.0; PRODUCT_BUNDLE_IDENTIFIER = com.chenyuan.StageLight; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_STRICT_CONCURRENCY = complete; SWIFT_VERSION = 6.0; TARGETED_DEVICE_FAMILY = "1,2"; }; name = Debug; };
 		AF0000000000000000000002 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor; CODE_SIGN_ENTITLEMENTS = StageLight/StageLight.entitlements; CODE_SIGN_STYLE = Automatic; CLOUDKIT_ENVIRONMENT = Production; CURRENT_PROJECT_VERSION = 3; ENABLE_PREVIEWS = YES; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_FILE = StageLight/Info.plist; INFOPLIST_KEY_NSCameraUsageDescription = "StageLight uses the camera to scan a Playbill, ticket, or theatre poster."; INFOPLIST_KEY_UILaunchScreen_Generation = YES; IPHONEOS_DEPLOYMENT_TARGET = 18.0; LOCALIZATION_PREFERS_STRING_CATALOGS = YES; MARKETING_VERSION = 1.2.0; PRODUCT_BUNDLE_IDENTIFIER = com.chenyuan.StageLight; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_STRICT_CONCURRENCY = complete; SWIFT_VERSION = 6.0; TARGETED_DEVICE_FAMILY = "1,2"; VALIDATE_PRODUCT = YES; }; name = Release; };
 		AF0000000000000000000003 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {BUNDLE_LOADER = "$(TEST_HOST)"; CODE_SIGN_STYLE = Automatic; GENERATE_INFOPLIST_FILE = YES; IPHONEOS_DEPLOYMENT_TARGET = 18.0; PRODUCT_BUNDLE_IDENTIFIER = com.chenyuan.StageLightTests; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_STRICT_CONCURRENCY = complete; SWIFT_VERSION = 6.0; TARGETED_DEVICE_FAMILY = "1,2"; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StageLight.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/StageLight"; }; name = Debug; };
