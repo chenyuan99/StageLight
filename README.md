@@ -26,6 +26,26 @@ Enable **Mini Theatre** from **Profile** to meet the original theatre bunny, col
 
 **Golden Premiere** is the default iOS icon in 1.5.0, shown above. **Profile → App icon** also offers Original, Theatre bunny, and Cream bunny. Icon selection does not require enabling Mini Theatre.
 
+### Logo wall
+
+<p align="center">
+  <img src="StageLight/Resources/Assets.xcassets/DefaultAppIcon.appiconset/GoldenPremiereIcon.png" alt="Golden Premiere bunny — default app icon" width="128" height="128">
+  &nbsp;
+  <img src="StageLight/Resources/Assets.xcassets/CreamBunnyIcon.appiconset/CreamBunnyIcon.png" alt="Cream bunny app icon" width="128" height="128">
+  &nbsp;
+  <img src="StageLight/Resources/Assets.xcassets/BunnyIcon.appiconset/BunnyIcon.png" alt="Theatre bunny app icon" width="128" height="128">
+  &nbsp;
+  <img src="StageLight/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon.png" alt="Original StageLight app icon" width="128" height="128">
+  &nbsp;
+  <img src="docs/images/logo-concepts/golden-premiere-cat.png" alt="Golden Premiere cat — design concept, not a selectable app icon" width="128" height="128">
+</p>
+
+<p align="center">
+  Golden Premiere (default) · Cream bunny · Theatre bunny · Original · Golden Premiere cat (concept)
+</p>
+
+Choose among the four app icons in **Profile → App icon**. The cat is a design concept, not a selectable icon; the default remains Golden Premiere bunny.
+
 The latest recorded release status is **1.5.0 (7), submitted for review on October 19, 2026**. At that submission, 1.4.1 was the public version; submission does not mean the update is already available. See the [release record](docs/specs/RELEASE_1.5.0.md) and the App Store for availability.
 
 ## Privacy and storage
