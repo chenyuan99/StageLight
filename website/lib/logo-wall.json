@@ -1,0 +1,45 @@
+{
+  "icons": ["golden-premiere", "cream-bunny", "theatre-bunny", "original", "golden-premiere-cat"],
+  "locales": {
+    "en": {
+      "eyebrow": "A little personality",
+      "title": "Find your StageLight.",
+      "description": "Four app icons, one private theatre diary. Choose your favourite in Profile → App icon.",
+      "names": ["Golden Premiere", "Cream bunny", "Theatre bunny", "Original", "Golden Premiere cat"],
+      "default": "Default",
+      "available": "App icon",
+      "concept": "Design concept",
+      "note": "The cat is a design concept, not a selectable app icon. Golden Premiere bunny remains the default."
+    },
+    "zh-Hans": {
+      "eyebrow": "一点专属个性",
+      "title": "找到你的剧光灯。",
+      "description": "四款应用图标，同一本私人观剧日记。在「我的 → 应用图标」中选择喜欢的样子。",
+      "names": ["金色首演", "奶油小兔", "剧场小兔", "原版", "金色首演猫"],
+      "default": "默认图标",
+      "available": "应用图标",
+      "concept": "设计概念",
+      "note": "猫咪是设计概念，暂不可选为应用图标。默认图标仍为金色首演兔。"
+    },
+    "zh-Hant": {
+      "eyebrow": "一點專屬個性",
+      "title": "找到你的劇光燈。",
+      "description": "四款應用程式圖示，同一本私人觀劇日記。在「我的 → 應用程式圖示」中選擇喜歡的樣子。",
+      "names": ["金色首演", "奶油小兔", "劇場小兔", "原版", "金色首演貓"],
+      "default": "預設圖示",
+      "available": "應用程式圖示",
+      "concept": "設計概念",
+      "note": "貓咪是設計概念，暫不可選為應用程式圖示。預設圖示仍為金色首演兔。"
+    },
+    "ja": {
+      "eyebrow": "あなたらしさを少し",
+      "title": "あなたのStageLightを見つけよう。",
+      "description": "4つのアプリアイコンと、あなただけの観劇日記。「プロフィール → アプリアイコン」でお気に入りを選べます。",
+      "names": ["ゴールデン・プレミア", "クリームうさぎ", "劇場うさぎ", "オリジナル", "ゴールデン・プレミアの猫"],
+      "default": "デフォルト",
+      "available": "アプリアイコン",
+      "concept": "デザイン案",
+      "note": "猫はデザイン案で、アプリアイコンとしては選択できません。デフォルトはゴールデン・プレミアのうさぎです。"
+    }
+  }
+}

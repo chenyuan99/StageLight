@@ -1,6 +1,6 @@
 # StageLight / 剧光灯
 
-<img src="StageLight/Resources/Assets.xcassets/DefaultAppIcon.appiconset/GoldenPremiereIcon.png" alt="StageLight Golden Premiere bunny app icon" width="128" height="128">
+<img src="website/public/logo-wall/golden-premiere.svg" alt="StageLight Golden Premiere bunny app icon" width="128" height="128">
 
 StageLight is a private, local-first theatre diary for **iPhone and iPad**. Remember the performances you have seen, keep your notes and photos, and share the moments you choose.
 
@@ -29,15 +29,15 @@ Enable **Mini Theatre** from **Profile** to meet the original theatre bunny, col
 ### Logo wall
 
 <p align="center">
-  <img src="StageLight/Resources/Assets.xcassets/DefaultAppIcon.appiconset/GoldenPremiereIcon.png" alt="Golden Premiere bunny — default app icon" width="128" height="128">
+  <img src="website/public/logo-wall/golden-premiere.svg" alt="Golden Premiere bunny — default app icon" width="128" height="128">
   &nbsp;
-  <img src="StageLight/Resources/Assets.xcassets/CreamBunnyIcon.appiconset/CreamBunnyIcon.png" alt="Cream bunny app icon" width="128" height="128">
+  <img src="website/public/logo-wall/cream-bunny.svg" alt="Cream bunny app icon" width="128" height="128">
   &nbsp;
-  <img src="StageLight/Resources/Assets.xcassets/BunnyIcon.appiconset/BunnyIcon.png" alt="Theatre bunny app icon" width="128" height="128">
+  <img src="website/public/logo-wall/theatre-bunny.svg" alt="Theatre bunny app icon" width="128" height="128">
   &nbsp;
-  <img src="StageLight/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon.png" alt="Original StageLight app icon" width="128" height="128">
+  <img src="website/public/logo-wall/original.svg" alt="Original StageLight app icon" width="128" height="128">
   &nbsp;
-  <img src="docs/images/logo-concepts/golden-premiere-cat.png" alt="Golden Premiere cat — design concept, not a selectable app icon" width="128" height="128">
+  <img src="website/public/logo-wall/golden-premiere-cat.svg" alt="Golden Premiere cat — design concept, not a selectable app icon" width="128" height="128">
 </p>
 
 <p align="center">
