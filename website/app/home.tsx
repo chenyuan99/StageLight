@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import releases from '../lib/releases.json';
 import { Cloud, ImageDown, Languages, LockKeyhole, MapPin, NotebookPen, Palette, Share2 } from 'lucide-react';
 
 const appStoreURL = 'https://apps.apple.com/us/app/stagelight-theatre-diary/id6806575225';
@@ -17,7 +18,7 @@ const appStoreBadges = {
 const copy = {
   ja: {
     brand: 'StageLight', skip: '本文へスキップ', nav: ['メモリーカード', 'プライバシー', 'サポート'], download: '無料ダウンロード',
-    heroEyebrow: 'iPhoneでつづる、あなただけの観劇日記', heroTitle: '舞台の感動を残して、分かち合おう。',
+    heroEyebrow: 'iPhoneとiPadでつづる、あなただけの観劇日記', heroTitle: '舞台の感動を残して、分かち合おう。',
     heroDescription: '観劇の思い出をプライベートな日記に。お気に入りの公演を美しいメモリーカードにして、シェアしたり、写真に保存したりできます。',
     downloadOn: '無料ダウンロード', appStore: 'App Store', availability: '無料 · アカウント登録不要 · 広告なし', privacy: 'トラッキングなし。思い出は、あなただけのもの。', floating: 'Made with StageLight.\n思い出をシェア。',
     memoryEyebrow: 'カーテンコールから、写真ライブラリへ', memoryTitle: 'あの夜の感動を、美しい一枚に。',
@@ -27,12 +28,12 @@ const copy = {
       ['自分らしく仕上げる', 'SpotlightまたはStoryのデザインを選び、載せたい情報だけを追加できます。'],
       ['シェアする、保存する', 'カードを好きな場所にシェアしたり、写真ライブラリに保存したりできます。'],
     ],
-    memoryCta: 'はじめてのメモリーカードを作る', freeIPhone: 'iPhoneで無料', featureEyebrow: 'プライバシーを大切に', featureTitle: 'あなたの観劇の記録は、あなたのもの。',
+    memoryCta: 'はじめてのメモリーカードを作る', freeIPhone: 'iPhone・iPadで無料', featureEyebrow: 'プライバシーを大切に', featureTitle: 'あなたの観劇の記録は、あなたのもの。',
     features: [
       ['思い出をまるごと残す', '公演名、日付、劇場、座席、評価、メモ、そして感動がよみがえる写真を保存できます。'],
       ['プライベートなiCloud同期', 'StageLight専用のアカウントを作らずに、Appleデバイス間でコレクションを同期できます。'],
       ['劇場をすばやく見つける', 'Appleマップで検索することも、劇場名を手入力することもできます。ブロードウェイから地元の劇場まで。'],
-      ['アプリの表示言語を選べる', 'アプリは英語、簡体字中国語、繁体字中国語に対応。プロフィールからいつでも切り替えられます。'],
+      ['アプリの表示言語を選べる', 'アプリは英語、簡体字中国語、繁体字中国語、日本語に対応。プロフィールからいつでも切り替えられます。'],
     ],
     storyEyebrow: '思い出とともに育つ日記', storyTitle: 'あなただけの観劇の物語を。',
     storyCopy: '公演を時系列で眺めたり、公演名や劇場名で検索したり。心に残った場所や作品を、いつでも振り返れます。',
@@ -40,7 +41,7 @@ const copy = {
   },
   en: {
     brand: 'StageLight', skip: 'Skip to content', nav: ['Memory cards', 'Privacy', 'Support'], download: 'Download free',
-    heroEyebrow: 'Your private theatre diary for iPhone', heroTitle: 'Remember the show. Share the moment.',
+    heroEyebrow: 'Your private theatre diary for iPhone and iPad', heroTitle: 'Remember the show. Share the moment.',
     heroDescription: 'Keep every theatre night in one private diary, then turn it into a beautiful memory card you can share anywhere or save to Photos.',
     downloadOn: 'Download free on the', appStore: 'App Store', availability: 'Free · No account · No ads', privacy: 'No tracking. Your memories stay yours.', floating: 'Made with StageLight.\nReady to share.',
     memoryEyebrow: 'From curtain call to camera roll', memoryTitle: 'Make the memory as beautiful as the night.',
@@ -50,12 +51,12 @@ const copy = {
       ['Make it yours', 'Choose a Spotlight or Story design and include only the details you want.'],
       ['Share or save', 'Send your card anywhere or keep a beautiful copy in your photo library.'],
     ],
-    memoryCta: 'Create your first memory card', freeIPhone: 'Free on iPhone', featureEyebrow: 'Private by design', featureTitle: 'Your theatre life belongs to you.',
+    memoryCta: 'Create your first memory card', freeIPhone: 'Free on iPhone and iPad', featureEyebrow: 'Private by design', featureTitle: 'Your theatre life belongs to you.',
     features: [
       ['Keep the whole night', 'Save the show, date, theatre, seats, rating, notes, and the photos that bring it back.'],
       ['Private iCloud sync', 'Your collection stays available across your Apple devices without a separate StageLight account.'],
       ['Find theatres faster', 'Use optional Apple Maps search or enter any venue manually—from Broadway to your local stage.'],
-      ['Now in your language', 'Use StageLight in English, Simplified Chinese, or Traditional Chinese, and switch anytime from Profile.'],
+      ['Now in your language', 'Use StageLight in English, Simplified Chinese, Traditional Chinese, or Japanese, and switch anytime from Profile.'],
     ],
     storyEyebrow: 'A diary that grows with you', storyTitle: 'See your theatre story take shape.',
     storyCopy: 'Browse performances chronologically, search by show or theatre, and look back on the places and productions that meant the most.',
@@ -63,7 +64,7 @@ const copy = {
   },
   'zh-Hans': {
     brand: '剧光灯', skip: '跳到主要内容', nav: ['回忆卡', '隐私', '支持'], download: '免费下载',
-    heroEyebrow: '你的 iPhone 私人观剧日记', heroTitle: '记住舞台，共享此刻。',
+    heroEyebrow: '你的 iPhone 与 iPad 私人观剧日记', heroTitle: '记住舞台，共享此刻。',
     heroDescription: '把每个剧场之夜珍藏在私人日记中，再制成精美回忆卡，随时分享或保存到照片。',
     downloadOn: '免费下载自', appStore: 'App Store', availability: '免费 · 无需账户 · 无广告', privacy: '不追踪。你的回忆只属于你。', floating: '由剧光灯制作。\n随时分享。',
     memoryEyebrow: '从谢幕到相册', memoryTitle: '让回忆和那个夜晚一样动人。',
@@ -73,12 +74,12 @@ const copy = {
       ['随心创作', '选择聚光灯或故事版式，只展示你想分享的细节。'],
       ['分享或保存', '把回忆卡发送到任何地方，或保存一份到照片图库。'],
     ],
-    memoryCta: '制作第一张回忆卡', freeIPhone: 'iPhone 免费下载', featureEyebrow: '为隐私而设计', featureTitle: '你的观剧生活只属于你。',
+    memoryCta: '制作第一张回忆卡', freeIPhone: 'iPhone 与 iPad 免费下载', featureEyebrow: '为隐私而设计', featureTitle: '你的观剧生活只属于你。',
     features: [
       ['珍藏完整夜晚', '记录演出、日期、剧院、座位、评分、笔记，以及唤醒回忆的照片。'],
       ['私人 iCloud 同步', '无需单独注册剧光灯账户，你的收藏也能在 Apple 设备间保持同步。'],
       ['更快找到剧院', '可选择使用 Apple 地图搜索，也能手动输入任何场馆。'],
-      ['现已支持中文', '支持 English、简体中文和繁體中文，可随时在个人资料中切换。'],
+      ['现已支持中文', '支持英语、简体中文、繁体中文和日语，可随时在个人资料中切换。'],
     ],
     storyEyebrow: '与你一起成长的日记', storyTitle: '看见自己的观剧故事。',
     storyCopy: '按时间浏览演出，搜索剧目或剧院，重温那些对你意义非凡的地点与作品。',
@@ -86,7 +87,7 @@ const copy = {
   },
   'zh-Hant': {
     brand: '劇光燈', skip: '跳到主要內容', nav: ['回憶卡', '隱私', '支援'], download: '免費下載',
-    heroEyebrow: '你的 iPhone 私人觀劇日記', heroTitle: '記住舞台，分享此刻。',
+    heroEyebrow: '你的 iPhone 與 iPad 私人觀劇日記', heroTitle: '記住舞台，分享此刻。',
     heroDescription: '把每個劇場之夜珍藏在私人日記中，再製成精美回憶卡，隨時分享或儲存到照片。',
     downloadOn: '免費下載自', appStore: 'App Store', availability: '免費 · 無需帳戶 · 無廣告', privacy: '不追蹤。你的回憶只屬於你。', floating: '由劇光燈製作。\n隨時分享。',
     memoryEyebrow: '從謝幕到相簿', memoryTitle: '讓回憶和那個夜晚一樣動人。',
@@ -96,12 +97,12 @@ const copy = {
       ['隨心創作', '選擇聚光燈或故事版式，只展示你想分享的細節。'],
       ['分享或儲存', '把回憶卡傳送到任何地方，或儲存一份到照片圖庫。'],
     ],
-    memoryCta: '製作第一張回憶卡', freeIPhone: 'iPhone 免費下載', featureEyebrow: '為隱私而設計', featureTitle: '你的觀劇生活只屬於你。',
+    memoryCta: '製作第一張回憶卡', freeIPhone: 'iPhone 與 iPad 免費下載', featureEyebrow: '為隱私而設計', featureTitle: '你的觀劇生活只屬於你。',
     features: [
       ['珍藏完整夜晚', '記錄演出、日期、劇院、座位、評分、筆記，以及喚醒回憶的照片。'],
       ['私人 iCloud 同步', '無需單獨註冊劇光燈帳戶，你的收藏也能在 Apple 裝置間保持同步。'],
       ['更快找到劇院', '可選擇使用 Apple 地圖搜尋，也能手動輸入任何場館。'],
-      ['現已支援中文', '支援 English、简体中文和繁體中文，可隨時在個人資料中切換。'],
+      ['現已支援中文', '支援英語、簡體中文、繁體中文和日語，可隨時在個人資料中切換。'],
     ],
     storyEyebrow: '與你一起成長的日記', storyTitle: '看見自己的觀劇故事。',
     storyCopy: '按時間瀏覽演出，搜尋劇目或劇院，重溫那些對你意義非凡的地點與作品。',
@@ -121,6 +122,7 @@ export default function Home() {
   const [language, setLanguage] = useState<Language>('en');
   const [languageReady, setLanguageReady] = useState(false);
   const text = copy[language];
+  const release = releases.locales[language];
 
   useEffect(() => {
     const saved = window.localStorage.getItem('stagelight-site-language') as Language | null;
@@ -146,7 +148,7 @@ export default function Home() {
       <a className="skip-link" href="#content">{text.skip}</a>
       <header className="site-header">
         <a className="brand" href={`${basePath}/`} aria-label={language === 'ja' ? 'StageLight ホーム' : `${text.brand} home`}>
-          <img src={`${basePath}/app-icon.png`} alt="" width="40" height="40" /><span>{text.brand}</span>
+          <img src={`${basePath}/golden-premiere-icon.png`} alt="" width="40" height="40" /><span>{text.brand}</span>
         </a>
         <div className="header-actions">
           <nav aria-label={language === 'ja' ? 'メインナビゲーション' : 'Primary navigation'}>
@@ -184,6 +186,24 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="release-section" id="whats-new" aria-labelledby="release-title">
+        <div className="section-heading">
+          <p className="eyebrow">{release.status}</p>
+          <h2 id="release-title">{release.heading}</h2>
+        </div>
+        <div className="release-grid">
+          {release.features.map(([title, description]) => (
+            <article className="feature-card" key={title}><h3>{title}</h3><p>{description}</p></article>
+          ))}
+        </div>
+        <p className="release-privacy">{release.privacy}</p>
+        <details className="release-history" id="version-history">
+          <summary>{release.history}</summary>
+          <h3>{releases.version} ({releases.build})</h3><p>{release.pending}</p>
+          <h3>{releases.liveVersion}</h3><p>{release.live}</p>
+        </details>
+      </section>
+
       <section className="memory-section" id="memory-cards">
         <div className="section-heading"><p className="eyebrow">{text.memoryEyebrow}</p><h2>{text.memoryTitle}</h2><p className="section-intro">{text.memoryIntro}</p></div>
         <div className="memory-grid">
@@ -214,9 +234,9 @@ export default function Home() {
       </section>
 
       <section className="closing-section">
-        <img src={`${basePath}/app-icon.png`} alt={language === 'ja' ? 'StageLightのアイコン' : `${text.brand} icon`} width="84" height="84" /><h2>{text.closingTitle}</h2><p>{text.closingCopy}</p><a className="primary-link" href={appStoreURL}>{text.closingCta}</a>
+        <img src={`${basePath}/golden-premiere-icon.png`} alt={language === 'ja' ? 'StageLightのアイコン' : `${text.brand} icon`} width="84" height="84" /><h2>{text.closingTitle}</h2><p>{text.closingCopy}</p><a className="primary-link" href={appStoreURL}>{text.closingCta}</a>
       </section>
-      <footer><span>© 2026 Yuan Chen</span><div><a href={`${basePath}/privacy.html`}>{text.nav[1]}</a><a href={`${basePath}/support.html`}>{text.nav[2]}</a></div></footer>
+      <footer><span>© 2026 Yuan Chen</span><div><a href="#version-history">{release.history}</a><a href={`${basePath}/privacy.html`}>{text.nav[1]}</a><a href={`${basePath}/support.html`}>{text.nav[2]}</a></div></footer>
     </main>
   );
 }
