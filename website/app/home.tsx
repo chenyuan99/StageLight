@@ -148,7 +148,7 @@ export default function Home() {
       <a className="skip-link" href="#content">{text.skip}</a>
       <header className="site-header">
         <a className="brand" href={`${basePath}/`} aria-label={language === 'ja' ? 'StageLight ホーム' : `${text.brand} home`}>
-          <img src={`${basePath}/app-icon.png`} alt="" width="40" height="40" /><span>{text.brand}</span>
+          <img src={`${basePath}/golden-premiere-icon.png`} alt="" width="40" height="40" /><span>{text.brand}</span>
         </a>
         <div className="header-actions">
           <nav aria-label={language === 'ja' ? 'メインナビゲーション' : 'Primary navigation'}>
@@ -234,7 +234,7 @@ export default function Home() {
       </section>
 
       <section className="closing-section">
-        <img src={`${basePath}/app-icon.png`} alt={language === 'ja' ? 'StageLightのアイコン' : `${text.brand} icon`} width="84" height="84" /><h2>{text.closingTitle}</h2><p>{text.closingCopy}</p><a className="primary-link" href={appStoreURL}>{text.closingCta}</a>
+        <img src={`${basePath}/golden-premiere-icon.png`} alt={language === 'ja' ? 'StageLightのアイコン' : `${text.brand} icon`} width="84" height="84" /><h2>{text.closingTitle}</h2><p>{text.closingCopy}</p><a className="primary-link" href={appStoreURL}>{text.closingCta}</a>
       </section>
       <footer><span>© 2026 Yuan Chen</span><div><a href="#version-history">{release.history}</a><a href={`${basePath}/privacy.html`}>{text.nav[1]}</a><a href={`${basePath}/support.html`}>{text.nav[2]}</a></div></footer>
     </main>
