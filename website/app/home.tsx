@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import releases from '../lib/releases.json';
+import logoWall from '../lib/logo-wall.json';
 import { Cloud, ImageDown, Languages, LockKeyhole, MapPin, NotebookPen, Palette, Share2 } from 'lucide-react';
 
 const appStoreURL = 'https://apps.apple.com/us/app/stagelight-theatre-diary/id6806575225';
@@ -123,6 +124,7 @@ export default function Home() {
   const [languageReady, setLanguageReady] = useState(false);
   const text = copy[language];
   const release = releases.locales[language];
+  const logos = logoWall.locales[language];
 
   useEffect(() => {
     const saved = window.localStorage.getItem('stagelight-site-language') as Language | null;
@@ -199,9 +201,29 @@ export default function Home() {
         <p className="release-privacy">{release.privacy}</p>
         <details className="release-history" id="version-history">
           <summary>{release.history}</summary>
-          <h3>{releases.version} ({releases.build})</h3><p>{release.pending}</p>
           <h3>{releases.liveVersion}</h3><p>{release.live}</p>
+          <h3>{releases.previousVersion}</h3><p>{release.previous}</p>
         </details>
+      </section>
+
+      <section className="logo-section" id="logo-wall" aria-labelledby="logo-wall-title">
+        <div className="section-heading">
+          <p className="eyebrow">{logos.eyebrow}</p>
+          <h2 id="logo-wall-title">{logos.title}</h2>
+          <p className="section-intro">{logos.description}</p>
+        </div>
+        <ul className="logo-wall">
+          {logoWall.icons.map((icon, index) => (
+            <li key={icon}>
+              <img src={`${basePath}/logo-wall/${icon}.svg`} alt={logos.names[index]} width="160" height="160" loading="lazy" decoding="async" />
+              <h3>{logos.names[index]}</h3>
+              <span className={`logo-label${index === 4 ? ' logo-concept' : ''}`}>
+                {index === 0 ? logos.default : index === 4 ? logos.concept : logos.available}
+              </span>
+            </li>
+          ))}
+        </ul>
+        <p className="logo-note">{logos.note}</p>
       </section>
 
       <section className="memory-section" id="memory-cards">
