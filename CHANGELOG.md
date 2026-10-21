@@ -1,9 +1,22 @@
 # Version history
 
+## 1.5.1 — live on the App Store
+
+Confirmed fully live by the app owner on 2026-10-20. This is the confirmation
+date, not an inferred release date. Available for iPhone and iPad.
+
+- Optional Mini Theatre bunny companion, prop collection, stage decoration, and bunny sharing.
+- Golden Premiere default icon, with Original, Theatre bunny, and Cream bunny alternatives.
+- Existing diary records and private iCloud settings are unchanged; Mini Theatre progress remains local to the device.
+
+See [release details](docs/specs/RELEASE_1.5.1.md). No additional patch-specific
+changes or build number are claimed without a verified release record.
+
 ## 1.5.0 (7) — submitted for review, 2026-10-19
 
-Not yet publicly released. App Store Connect confirmed **Waiting for Review**;
-automatic release is configured for approval. The current live version is 1.4.1.
+Historical submission snapshot: App Store Connect confirmed **Waiting for Review**
+on 2026-10-19, with automatic release configured and 1.4.1 live at that time.
+This is not the current release status; 1.5.1 is now live.
 
 - Optional Mini Theatre bunny companion: collect props from past performances and decorate a local stage.
 - Share bunny outfit images without nickname or diary details.
@@ -23,6 +36,6 @@ or feature lists for older versions.
 ## Website maintenance
 
 The landing page release copy is maintained in `website/lib/releases.json`.
-After Apple approval is verified, update the status, live version, and all four
-localized status/history strings together. Do not mark a submission date as a
+When release availability changes, update the status, live version, and all four
+localized status/history strings together. Do not mark a submission or confirmation date as a
 public release date. The public URL remains https://yuanchen.io/StageLight/.

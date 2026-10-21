@@ -13,18 +13,18 @@ export const metadata: Metadata = {
   },
   title: 'StageLight — Remember the Show. Share the Moment.',
   description:
-    'Keep a private theatre diary on iPhone and iPad. Share memory cards and discover what is coming in StageLight 1.5.0.',
+    'StageLight 1.5.1 is now available for iPhone and iPad. Keep a private theatre diary, share memory cards, and meet your optional theatre bunny.',
   openGraph: {
     title: 'StageLight — Remember the Show. Share the Moment.',
     description:
-      'Keep a private theatre diary on iPhone and iPad. Share memory cards and discover what is coming in StageLight 1.5.0.',
+      'StageLight 1.5.1 is now available for iPhone and iPad. Keep a private theatre diary, share memory cards, and meet your optional theatre bunny.',
     images: [socialImageURL],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'StageLight — Remember the Show. Share the Moment.',
     description:
-      'Keep a private theatre diary on iPhone and iPad. Share memory cards and discover what is coming in StageLight 1.5.0.',
+      'StageLight 1.5.1 is now available for iPhone and iPad. Keep a private theatre diary, share memory cards, and meet your optional theatre bunny.',
     images: [socialImageURL],
   },
 };

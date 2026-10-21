@@ -20,11 +20,11 @@ Available in English, 简体中文, 繁體中文, and 日本語.
 - Create Spotlight or Story memory cards, choose the details to include, and share or save them to Photos.
 - Explore optional Theatre on This Day entries and share theatre-history cards.
 
-## Mini Theatre and app icons — 1.5.0
+## Mini Theatre and app icons — 1.5.1
 
 Enable **Mini Theatre** from **Profile** to meet the original theatre bunny, collect props through past-performance milestones, and decorate a little stage. It is optional: the diary works without it. Bunny share images exclude your nickname and diary details.
 
-**Golden Premiere** is the default iOS icon in 1.5.0, shown above. **Profile → App icon** also offers Original, Theatre bunny, and Cream bunny. Icon selection does not require enabling Mini Theatre.
+**Golden Premiere** is the default iOS icon in 1.5.1, shown above. **Profile → App icon** also offers Original, Theatre bunny, and Cream bunny. Icon selection does not require enabling Mini Theatre.
 
 ### Logo wall
 
@@ -46,7 +46,7 @@ Enable **Mini Theatre** from **Profile** to meet the original theatre bunny, col
 
 Choose among the four app icons in **Profile → App icon**. The cat is a design concept, not a selectable icon; the default remains Golden Premiere bunny.
 
-The latest recorded release status is **1.5.0 (7), submitted for review on October 19, 2026**. At that submission, 1.4.1 was the public version; submission does not mean the update is already available. See the [release record](docs/specs/RELEASE_1.5.0.md) and the App Store for availability.
+**StageLight 1.5.1 is now live on the App Store for iPhone and iPad.** [Download or update](https://apps.apple.com/app/id6806575225) to enjoy Mini Theatre and app icon customization. See the [release record](docs/specs/RELEASE_1.5.1.md) and [version history](CHANGELOG.md).
 
 ## Privacy and storage
 
