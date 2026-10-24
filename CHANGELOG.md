@@ -1,5 +1,15 @@
 # Version history
 
+## 1.6.0 (8) — submitted for review, 2026-10-23
+
+- Native adaptive navigation for iPhone Duo and regular iPhone.
+- Labeled Add action in the toolbar; navigation remains available as the display changes.
+- Confirmation before discarding edited performance drafts.
+- Mini Theatre reward notice no longer covers navigation controls.
+- No production storage or schema changes.
+
+See [release details](docs/specs/RELEASE_1.6.0.md). App Store Connect confirmed **Waiting for Review**; automatic release after approval is enabled. Not yet live.
+
 ## 1.5.1 — live on the App Store
 
 Confirmed fully live by the app owner on 2026-10-20. This is the confirmation
