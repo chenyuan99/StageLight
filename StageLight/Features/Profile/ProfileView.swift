@@ -200,6 +200,15 @@ struct ProfileView: View {
     }
 
     private func refreshCloudSyncStatus() async {
+        #if DEBUG
+        // UI tests use an isolated local store and an unsigned simulator build.
+        // Do not ask CloudKit for entitlements or account state in that mode.
+        if ProcessInfo.processInfo.arguments.contains("-ui-testing") {
+            cloudSyncAvailability = .noAccount
+            library.refresh()
+            return
+        }
+        #endif
         cloudSyncAvailability = .checking
         cloudSyncAvailability = await cloudSyncStatusProvider.currentAvailability()
         library.refresh()

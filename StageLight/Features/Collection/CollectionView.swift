@@ -15,6 +15,7 @@ struct CollectionView: View {
     var body: some View {
         GeometryReader { geometry in
           VStack(spacing: 0) {
+            MiniTheatreRewardNotice()
             if miniEnabled && miniShortcut && searchText.isEmpty {
                 MiniTheatreEntry().padding(.horizontal, 16).padding(.vertical, 4).readableStageContent()
             }
@@ -45,7 +46,7 @@ struct CollectionView: View {
                         }
                     }
                     .padding(.horizontal, 16)
-                    .padding(.bottom, 88)
+                    .padding(.bottom, 16)
                 }
                 .background(StageTheme.background)
                 .refreshable { library.refresh() }
@@ -104,7 +105,7 @@ struct CollectionView: View {
                 }
             }
         } label: {
-            Image(systemName: selectedYear == nil && minimumRating == nil
+            Label("Filter Collection", systemImage: selectedYear == nil && minimumRating == nil
                 ? "line.3.horizontal.decrease"
                 : "line.3.horizontal.decrease.circle.fill")
         }

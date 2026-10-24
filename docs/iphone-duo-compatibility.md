@@ -24,6 +24,13 @@ Tested October 23, 2026, on `feature/duo-compatibility`, based on main `93d88b7`
 
 ## Remaining validation
 
-This is not comprehensive compatibility certification. Still test physical hardware, camera capture, Photos and share sheets, Dynamic Type/VoiceOver, all languages, populated collections, Mini Theatre, and rotation in every fold pose. The custom bottom navigation does not automatically become a native vertical tab bar and merits a separate design review. Unsaved drafts remain session-only; force-quitting the app is not covered by the discard guard.
+### Mini Theatre follow-up
+
+- All 4 `MiniTheatreUITests` passed on Duo (80.2 seconds, zero failures): English and Simplified Chinese unlock/equip/share-preview flows, Chinese landscape, and disabled-feature visibility.
+- Manually kept Mini Theatre open while changing from open to partially open to closed. The sheet and prop controls adapted to each display; the same screen and nickname remained visible, with no crash observed. This did not verify unsaved nickname edits or equipped-state persistence across relaunch.
+- Screenshots: `/tmp/stagelight-duo-mini-screenshots`; automated screenshot attachments are in its `test-attachments` directory. Log: `/tmp/stagelight-duo-mini-tests.log`.
+- System share-sheet delivery, Photos saving, accessibility sizes, and rotation in every fold pose remain untested in this follow-up.
+
+This is not comprehensive compatibility certification. Still test physical hardware, camera capture, Photos and share sheets, Dynamic Type/VoiceOver, all languages, populated collections, and rotation in every fold pose. The native-navigation follow-up restores system tab and toolbar placement; see `native-adaptive-navigation.md`. Unsaved drafts remain session-only; force-quitting the app is not covered by the discard guard.
 
 The first simulator reboot reported a simulator data-migration failure; a subsequent app launch and manual fold checks succeeded. This is an environment observation, not evidence of production diary data loss.

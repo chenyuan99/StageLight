@@ -9,6 +9,35 @@ final class StageLightUITests: XCTestCase {
         return app
     }
 
+    func test_nativeTabsKeepNavigationAndAddAvailable() {
+        continueAfterFailure = false
+        let app = launchApp()
+        for destination in ["Diary", "Profile", "Collection"] {
+            let tab = app.buttons[destination].firstMatch
+            XCTAssertTrue(tab.waitForExistence(timeout: 5))
+            tab.tap()
+            XCTAssertTrue(app.buttons["add-performance-button"].waitForExistence(timeout: 5))
+            capture("Native navigation - " + destination)
+        }
+        app.buttons["add-performance-button"].tap()
+        XCTAssertTrue(app.buttons["add-manually-button"].waitForExistence(timeout: 5))
+        app.buttons["add-manually-button"].tap()
+        let title = app.textFields["show-title-field"]
+        XCTAssertTrue(title.waitForExistence(timeout: 5))
+        title.tap()
+        title.typeText("Navigation keeps this memory")
+        app.buttons["save-performance-button"].tap()
+        let savedTitle = app.staticTexts["Navigation keeps this memory"]
+        XCTAssertTrue(savedTitle.waitForExistence(timeout: 5))
+        savedTitle.tap()
+        capture("Native navigation - show detail")
+        app.buttons["Diary"].firstMatch.tap()
+        XCTAssertTrue(savedTitle.waitForExistence(timeout: 5))
+        app.buttons["Collection"].firstMatch.tap()
+        XCTAssertTrue(app.buttons["performance-row"].waitForExistence(timeout: 5))
+        capture("Native navigation - retained detail")
+    }
+
     func test_emptyLibrary_displaysEmptyStateAndAddAction() {
         continueAfterFailure = false
         let app = launchApp()

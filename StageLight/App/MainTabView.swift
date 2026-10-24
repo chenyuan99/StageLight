@@ -13,30 +13,26 @@ struct MainTabView: View {
                 CollectionView {
                     isAddingPerformance = true
                 }
+                .toolbar { addPerformanceToolbar }
             }
-            .toolbar(.hidden, for: .tabBar)
             .tabItem { Label("Collection", systemImage: "square.grid.2x2") }
             .tag(0)
 
             NavigationStack {
                 DiaryView()
+                    .toolbar { addPerformanceToolbar }
             }
-            .toolbar(.hidden, for: .tabBar)
             .tabItem { Label("Diary", systemImage: "book.pages") }
             .tag(1)
 
             NavigationStack {
                 ProfileView()
+                    .toolbar { addPerformanceToolbar }
             }
-            .toolbar(.hidden, for: .tabBar)
             .tabItem { Label("Profile", systemImage: "person.crop.circle") }
             .tag(2)
         }
         .tint(.primary)
-        .toolbar(.hidden, for: .tabBar)
-        .safeAreaInset(edge: .bottom, spacing: 0) {
-            bottomNavigation
-        }
         .sheet(isPresented: $isAddingPerformance) {
             AddPerformanceFlow()
         }
@@ -53,52 +49,17 @@ struct MainTabView: View {
         }
     }
 
-    private var bottomNavigation: some View {
-        HStack(spacing: 12) {
-            HStack(spacing: 0) {
-                navigationButton("Collection", icon: "square.grid.2x2", tab: 0)
-                navigationButton("Diary", icon: "book.pages", tab: 1)
-            }
-            .frame(maxWidth: .infinity)
-
+    // Keep the sheet and tab selection above the individual navigation stacks so
+    // system bar repositioning never replaces an in-progress editor.
+    @ToolbarContentBuilder
+    private var addPerformanceToolbar: some ToolbarContent {
+        ToolbarItem(placement: .primaryAction) {
             Button {
                 isAddingPerformance = true
             } label: {
-                Image(systemName: "plus")
-                    .font(.system(size: 26, weight: .medium))
-                    .foregroundStyle(.white)
-                    .frame(width: 56, height: 44)
-                    .background(StageTheme.spotlight, in: RoundedRectangle(cornerRadius: 12))
+                Label("Add a performance", systemImage: "plus")
             }
-            .buttonStyle(.plain)
             .accessibilityIdentifier("add-performance-button")
-            .accessibilityLabel("Add a performance")
-
-            navigationButton("Profile", icon: "person.crop.circle", tab: 2)
-                .frame(maxWidth: .infinity)
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 8)
-        .frame(maxWidth: 640)
-        .frame(maxWidth: .infinity)
-        .background(.bar)
-    }
-
-    private func navigationButton(_ title: LocalizedStringKey, icon: String, tab: Int) -> some View {
-        Button {
-            selectedTab = tab
-        } label: {
-            VStack(spacing: 4) {
-                Image(systemName: icon)
-                    .font(.system(size: 22, weight: selectedTab == tab ? .semibold : .regular))
-                Text(title)
-                    .font(.caption2)
-            }
-            .foregroundStyle(selectedTab == tab ? Color.primary : Color.secondary)
-            .frame(maxWidth: .infinity, minHeight: 44)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityAddTraits(selectedTab == tab ? .isSelected : [])
     }
 }
