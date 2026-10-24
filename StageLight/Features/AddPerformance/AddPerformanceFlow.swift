@@ -19,6 +19,8 @@ struct AddPerformanceFlow: View {
     @Environment(\.dismiss) private var dismiss
 
     private let performance: Performance?
+    @State private var initialDraft: PerformanceDraft
+    @State private var showsDiscardConfirmation = false
     @State private var state: AddPerformanceState
     @State private var draft: PerformanceDraft
     @State private var selectedImages: [UIImage] = []
@@ -31,7 +33,9 @@ struct AddPerformanceFlow: View {
 
     init(editing performance: Performance? = nil) {
         self.performance = performance
-        _draft = State(initialValue: performance.map(PerformanceDraft.init) ?? PerformanceDraft())
+        let initial = performance.map(PerformanceDraft.init) ?? PerformanceDraft()
+        _initialDraft = State(initialValue: initial)
+        _draft = State(initialValue: initial)
         _state = State(initialValue: performance == nil ? .sourceSelection : .editing)
     }
 
@@ -78,12 +82,20 @@ struct AddPerformanceFlow: View {
             .toolbar {
                 if !isCamera {
                     ToolbarItem(placement: .cancellationAction) {
-                        Button("Cancel") { dismiss() }
+                        Button("Cancel") {
+                            if hasUnsavedChanges { showsDiscardConfirmation = true }
+                            else { dismiss() }
+                        }
+                        .disabled(isSaving)
+                        .alert("Discard changes?", isPresented: $showsDiscardConfirmation) {
+                            Button("Discard Changes", role: .destructive) { dismiss() }
+                            Button("Keep Editing", role: .cancel) { }
+                        }
                     }
                 }
             }
         }
-        .interactiveDismissDisabled(isSaving)
+        .interactiveDismissDisabled(isSaving || hasUnsavedChanges)
         .confirmationDialog(
             "Possible duplicate",
             isPresented: $showsDuplicateWarning,
@@ -109,6 +121,10 @@ struct AddPerformanceFlow: View {
             guard !newItems.isEmpty else { return }
             loadPickerItems(newItems)
         }
+    }
+
+    private var hasUnsavedChanges: Bool {
+        draft != initialDraft || !selectedImages.isEmpty || !pickerItems.isEmpty
     }
 
     private var sourceSelection: some View {

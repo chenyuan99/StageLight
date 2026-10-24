@@ -18,11 +18,13 @@ struct StageLightApp: App {
                 "XCTestConfigurationFilePath"
             ] != nil
             var isMiniPreview = false
+            var isUITesting = false
             #if DEBUG
-            isMiniPreview = ProcessInfo.processInfo.arguments.contains("-ui-testing")
+            isUITesting = ProcessInfo.processInfo.arguments.contains("-ui-testing")
+            isMiniPreview = isUITesting
                 && ProcessInfo.processInfo.arguments.contains("-mini-preview")
             #endif
-            let configuration = if isRunningUnitTests || isMiniPreview {
+            let configuration = if isRunningUnitTests || isUITesting {
                 ModelConfiguration(
                     schema: schema,
                     isStoredInMemoryOnly: true,

@@ -28,6 +28,8 @@
 "Camera and photo access are requested only when you choose to use them." = "只有在你选择使用相机或照片时，StageLight 才会请求权限。";
 "Camera isn't available on this device. Choose a photo or add manually." = "此设备无法使用相机。请选择照片或手动添加。";
 "Cancel" = "取消";
+"Discard changes?" = "放弃更改？";
+"Discard Changes" = "放弃更改";
 "Change the language without restarting StageLight." = "无需重新启动 StageLight 即可切换语言。";
 "Check Status" = "检查状态";
 "Checking your iCloud account status." = "正在检查你的 iCloud 帐户状态。";

@@ -28,6 +28,8 @@
 "Camera and photo access are requested only when you choose to use them." = "カメラや写真へのアクセスは、使用するときだけ確認します。";
 "Camera isn't available on this device. Choose a photo or add manually." = "このデバイスではカメラを利用できません。写真を選ぶか、手入力で追加してください。";
 "Cancel" = "キャンセル";
+"Discard changes?" = "変更を破棄しますか？";
+"Discard Changes" = "変更を破棄";
 "Change the language without restarting StageLight." = "StageLightを再起動せずに言語を変更できます。";
 "Check Status" = "状態を確認";
 "Checking your iCloud account status." = "iCloudアカウントの状態を確認しています。";

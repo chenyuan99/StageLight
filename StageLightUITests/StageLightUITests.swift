@@ -17,6 +17,38 @@ final class StageLightUITests: XCTestCase {
         XCTAssertTrue(app.buttons["add-performance-button"].exists)
     }
 
+    func test_unsavedDraftSurvivesRotationAndCancelledDiscard() {
+        continueAfterFailure = false
+        let app = launchApp()
+        defer { XCUIDevice.shared.orientation = .portrait }
+        app.buttons["add-performance-button"].tap()
+        app.buttons["add-manually-button"].tap()
+        let title = app.textFields["show-title-field"]
+        XCTAssertTrue(title.waitForExistence(timeout: 5))
+        title.tap()
+        title.typeText("Duo draft test")
+        capture("Draft before rotation")
+        XCUIDevice.shared.orientation = .landscapeLeft
+        XCTAssertEqual(title.value as? String, "Duo draft test")
+        capture("Draft after landscape rotation")
+        XCUIDevice.shared.orientation = .portrait
+        app.buttons["Cancel"].tap()
+        XCTAssertTrue(app.buttons["Keep Editing"].waitForExistence(timeout: 3))
+        capture("Discard confirmation")
+        app.buttons["Keep Editing"].tap()
+        XCTAssertEqual(title.value as? String, "Duo draft test")
+        app.buttons["Cancel"].tap()
+        app.buttons["Discard Changes"].tap()
+        XCTAssertTrue(app.buttons["add-performance-button"].waitForExistence(timeout: 3))
+    }
+
+    private func capture(_ name: String) {
+        let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+
     func test_manualAdd_savesPerformanceIntoCollection() {
         continueAfterFailure = false
         let app = launchApp()
