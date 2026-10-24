@@ -18,7 +18,6 @@ struct MiniTheatreRuntime: ViewModifier {
     @Environment(\.locale) private var locale
     @AppStorage(MiniTheatreStore.enabledKey) private var enabled = false
     @State private var store = MiniTheatreStore(inMemory: ProcessInfo.processInfo.arguments.contains("-ui-testing"))
-    @State private var presents = false
     private var visits: [CompanionVisit] {
         enabled ? library.performances.map { CompanionVisit(id: $0.id, date: $0.date, theatre: $0.theatre, city: $0.city) } : []
     }
@@ -31,23 +30,41 @@ struct MiniTheatreRuntime: ViewModifier {
             .onReceive(Timer.publish(every: 60, on: .main, in: .common).autoconnect()) { _ in
                 if phase == .active { reconcile() }
             }
-            .overlay(alignment: .top) {
-                if enabled && !store.pending.isEmpty && !presents {
-                    Button { presents = true } label: {
-                        Label(MiniCopy.text("new", locale.identifier), systemImage: "gift")
-                            .padding(12).background(.regularMaterial, in: Capsule())
-                    }.tint(MiniPalette.accent).padding(.top, 8).accessibilityIdentifier("mini-award-notice")
+    }
+    private func reconcile() { store.reconcile(enabled: enabled, visits: visits) }
+}
+
+// This notice belongs inside scroll/navigation content, so it cannot cover
+// native horizontal or vertical navigation bars.
+struct MiniTheatreRewardNotice: View {
+    @Environment(MiniTheatreStore.self) private var store
+    @Environment(\.locale) private var locale
+    @AppStorage(MiniTheatreStore.enabledKey) private var enabled = false
+    @State private var presents = false
+
+    var body: some View {
+        VStack(spacing: 0) {
+            if enabled && !store.pending.isEmpty {
+                Button { presents = true } label: {
+                    Label(MiniCopy.text("new", locale.identifier), systemImage: "gift")
+                        .padding(12).background(.regularMaterial, in: Capsule())
                 }
+                .tint(MiniPalette.accent)
+                .padding(.vertical, 8)
+                .accessibilityIdentifier("mini-award-notice")
             }
-            .sheet(isPresented: $presents) {
-                NavigationStack { MiniTheatreView().toolbar {
+        }
+        // Keep the presenter alive after acknowledging the pending rewards.
+        .sheet(isPresented: $presents) {
+            NavigationStack {
+                MiniTheatreView().toolbar {
                     ToolbarItem(placement: .confirmationAction) {
                         Button(MiniCopy.text("done", locale.identifier)) { presents = false }
                     }
-                } }.environment(store)
-            }
+                }
+            }.environment(store)
+        }
     }
-    private func reconcile() { store.reconcile(enabled: enabled, visits: visits) }
 }
 
 struct MiniTheatreEntry: View {
