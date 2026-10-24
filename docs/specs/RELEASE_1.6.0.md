@@ -1,6 +1,6 @@
-# StageLight 1.6.0 (8) — Release preparation
+# StageLight 1.6.0 (8) — Submitted for review
 
-Prepared from main merge commit `3d7a9e0` (PR #46). This is a candidate, not a submitted or live release.
+Prepared from main merge commit `3d7a9e0` (PR #46). Uploaded and submitted on 2026-10-23 at 10:49 PM EDT. App Store Connect confirmed **Waiting for Review**; this version is not yet live.
 
 ## Version verification
 
@@ -56,4 +56,10 @@ No StageLight account or login is required. This update uses system tabs and too
 - Verified Production CloudKit container `iCloud.com.chenyuan.StageLight` and unchanged key-value store identifier.
 - All 98 app unit tests passed on iPhone 18 Pro / iOS 27.0.
 - Archive, signed IPA, export summary, and logs are saved locally in the project workspace's `release-artifacts/1.6.0-8/` directory (outside the repository).
-- Candidate has not been uploaded, submitted for review, or released. Apple server-side upload validation remains pending.
+- Apple server-side upload validation succeeded; build 8 processed and attached to version 1.6.0.
+- Release notes saved in English, Simplified Chinese, Traditional Chinese, and Japanese; existing screenshots retained.
+- Submitted on 2026-10-23 at 10:49 PM EDT. Confirmed **Waiting for Review**.
+- Submission ID: `0977d50f-5d71-4786-9132-39c461a0347a`.
+- Automatic release after approval is enabled; existing ratings are retained.
+- Upload log and submission screenshot are saved alongside the local release artifacts.
+- Release PR #47 CI passed before submission. Public availability remains pending.
