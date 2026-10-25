@@ -7,6 +7,7 @@ enum MiniCopy {
         return values[key]?[index] ?? key
     }
     static let values: [String: [String]] = [
+        "tab": ["Mini Theatre", "小剧场", "小劇場", "小さな劇場"],
         "title": ["Mini Theatre", "掌上小剧场", "掌上小劇場", "小さな劇場"],
         "enable": ["Enable Mini Theatre", "开启掌上小剧场", "開啟掌上小劇場", "小さな劇場を有効にする"],
         "privacy": ["Optional. Props and outfits stay in a separate local store and do not sync with iCloud. Device backups may include them; reinstalling may lose them. Your diary keeps its existing private iCloud settings.", "可选功能。道具与装扮保存在独立本地存储，不通过 iCloud 同步；设备备份可能包含它们，重装可能丢失。日记仍沿用现有的私密 iCloud 设置。", "可選功能。道具與裝扮保存在獨立本機儲存，不透過 iCloud 同步；裝置備份可能包含它們，重新安裝可能遺失。日記仍沿用現有的私密 iCloud 設定。", "任意の機能です。小道具と衣装は別のローカル保存領域に保存され、iCloud同期されません。端末のバックアップに含まれる場合があり、再インストールで失われる可能性があります。日記のプライベートiCloud設定は変わりません。"],

@@ -16,7 +16,7 @@ struct MiniTheatreRuntime: ViewModifier {
     @Environment(LibraryStore.self) private var library
     @Environment(\.scenePhase) private var phase
     @Environment(\.locale) private var locale
-    @AppStorage(MiniTheatreStore.enabledKey) private var enabled = false
+    @AppStorage(MiniTheatreStore.enabledKey) private var enabled = true
     @State private var store = MiniTheatreStore(inMemory: ProcessInfo.processInfo.arguments.contains("-ui-testing"))
     private var visits: [CompanionVisit] {
         enabled ? library.performances.map { CompanionVisit(id: $0.id, date: $0.date, theatre: $0.theatre, city: $0.city) } : []
@@ -39,7 +39,7 @@ struct MiniTheatreRuntime: ViewModifier {
 struct MiniTheatreRewardNotice: View {
     @Environment(MiniTheatreStore.self) private var store
     @Environment(\.locale) private var locale
-    @AppStorage(MiniTheatreStore.enabledKey) private var enabled = false
+    @AppStorage(MiniTheatreStore.enabledKey) private var enabled = true
     @State private var presents = false
 
     var body: some View {
@@ -79,7 +79,7 @@ struct MiniTheatreEntry: View {
 }
 struct MiniTheatreSettings: View {
     @Environment(\.locale) private var locale
-    @AppStorage(MiniTheatreStore.enabledKey) private var enabled = false
+    @AppStorage(MiniTheatreStore.enabledKey) private var enabled = true
     @AppStorage(MiniTheatreStore.shortcutKey) private var shortcut = false
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -124,7 +124,7 @@ struct MiniTheatreView: View {
     @Environment(LibraryStore.self) private var library
     @Environment(\.locale) private var locale
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @AppStorage(MiniTheatreStore.enabledKey) private var enabled = false
+    @AppStorage(MiniTheatreStore.enabledKey) private var enabled = true
     @AppStorage("miniTheatre.haptics") private var haptics = false
     @State private var nickname = ""
     @State private var sharing = false

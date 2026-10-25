@@ -1,12 +1,30 @@
 import XCTest
 
 @MainActor final class MiniTheatreUITests: XCTestCase {
+    func testDedicatedNavigation() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-ui-testing", "-mini-preview", "-skip-onboarding", "-appLanguage", "simplifiedChinese", "-miniTheatre.enabled", "YES"]
+        app.launch()
+        let tab = app.buttons["小剧场"]
+        XCTAssertTrue(tab.waitForExistence(timeout: 10))
+        capture(app, "navigation-collection")
+        tab.tap()
+        XCTAssertTrue(app.scrollViews["mini-scroll"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["add-performance-button"].exists)
+        capture(app, "navigation-mini-theatre")
+        app.buttons["mini-acknowledge"].tap()
+        capture(app, "navigation-mini-acknowledged")
+        app.buttons["add-performance-button"].tap()
+        XCTAssertTrue(app.buttons["取消"].waitForExistence(timeout: 5))
+    }
+
     func testDisabledHasNoCollectionShortcutOrAward() {
         let app = XCUIApplication()
         app.launchArguments = ["-ui-testing", "-mini-preview", "-skip-onboarding", "-appLanguage", "english",
                                "-miniTheatre.enabled", "NO", "-miniTheatre.shortcut", "YES"]
         app.launch()
         XCTAssertTrue(app.buttons["Profile"].waitForExistence(timeout: 10))
+        XCTAssertFalse(app.buttons["Mini Theatre"].exists)
         XCTAssertFalse(app.buttons["mini-entry"].exists)
         XCTAssertFalse(app.buttons["mini-award-notice"].exists)
     }
