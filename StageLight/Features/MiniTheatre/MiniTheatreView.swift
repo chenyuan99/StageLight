@@ -88,7 +88,6 @@ struct MiniTheatreSettings: View {
             Toggle(MiniCopy.text("enable", locale.identifier), isOn: $enabled).accessibilityIdentifier("mini-enable")
             if enabled {
                 Toggle(MiniCopy.text("shortcut", locale.identifier), isOn: $shortcut)
-                MiniTheatreEntry()
             }
         }.tint(MiniPalette.accent)
     }
