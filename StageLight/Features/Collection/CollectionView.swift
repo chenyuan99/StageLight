@@ -7,7 +7,7 @@ struct CollectionView: View {
     @State private var selectedYear: Int?
     @State private var minimumRating: Double?
     @AppStorage(HistoryCopy.preferenceKey) private var showsHistory = true
-    @AppStorage(MiniTheatreStore.enabledKey) private var miniEnabled = false
+    @AppStorage(MiniTheatreStore.enabledKey) private var miniEnabled = true
     @AppStorage(MiniTheatreStore.shortcutKey) private var miniShortcut = false
     @Environment(\.horizontalSizeClass) private var sizeClass
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize

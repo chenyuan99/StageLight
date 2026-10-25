@@ -5,6 +5,19 @@ import MiniTheatreCore
 @testable import StageLight
 
 @MainActor final class MiniTheatreTests: XCTestCase {
+    func testDefaultEnabledPreferencePreservesExplicitOptOut() throws {
+        let suite = "mini-navigation-\(UUID().uuidString)"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let preference = AppStorage(wrappedValue: true, MiniTheatreStore.enabledKey, store: defaults)
+        XCTAssertTrue(preference.wrappedValue)
+        XCTAssertNil(defaults.object(forKey: MiniTheatreStore.enabledKey))
+        defaults.set(false, forKey: MiniTheatreStore.enabledKey)
+        XCTAssertFalse(AppStorage(wrappedValue: true, MiniTheatreStore.enabledKey, store: defaults).wrappedValue)
+        defaults.set(true, forKey: MiniTheatreStore.enabledKey)
+        XCTAssertTrue(AppStorage(wrappedValue: true, MiniTheatreStore.enabledKey, store: defaults).wrappedValue)
+    }
+
     func testSchemaVersionRemainsStableAcrossReads() {
         XCTAssertEqual(CompanionSchemaV1.versionIdentifier, Schema.Version(1, 0, 0))
         XCTAssertEqual(CompanionSchemaV1.versionIdentifier, CompanionSchemaV1.versionIdentifier)
