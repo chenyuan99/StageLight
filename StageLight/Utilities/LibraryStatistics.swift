@@ -24,6 +24,7 @@ struct LibraryStatistics: Equatable {
         now: Date = .now,
         calendar: Calendar = .current
     ) -> LibraryStatistics {
+        let performances = performances.filter(\.isAttended)
         guard !performances.isEmpty else { return .empty }
 
         let showIDs = Set(performances.compactMap { $0.show?.id })

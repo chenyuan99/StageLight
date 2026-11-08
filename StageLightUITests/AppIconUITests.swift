@@ -47,6 +47,8 @@ import XCTest
         let profile = app.buttons["Profile"]
         XCTAssertTrue(profile.waitForExistence(timeout: 15))
         profile.tap()
+        app.buttons["settings-entry"].tap()
+        app.buttons["settings-icon"].tap()
         reveal(app.buttons["app-icon-original"], in: app)
     }
 

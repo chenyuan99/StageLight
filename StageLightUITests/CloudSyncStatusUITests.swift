@@ -9,7 +9,8 @@ final class CloudSyncStatusUITests: XCTestCase {
 
         app.buttons["Profile"].tap()
 
-        app.swipeUp()
+        app.buttons["settings-entry"].tap()
+        app.buttons["settings-sync"].tap()
 
         XCTAssertTrue(
             app.staticTexts["icloud-sync-section-title"].waitForExistence(timeout: 3)

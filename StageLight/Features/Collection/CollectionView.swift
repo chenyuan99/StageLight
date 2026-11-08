@@ -127,7 +127,7 @@ struct CollectionView: View {
                     Calendar.current.component(.year, from: $0.date) == selectedYear
                 }
             let matchesRating = minimumRating == nil
-                || show.performanceList.contains { ($0.rating ?? 0) >= (minimumRating ?? 0) }
+                || show.performanceList.contains { $0.isAttended && ($0.rating ?? 0) >= (minimumRating ?? 0) }
             return matchesQuery && matchesYear && matchesRating
         }
     }

@@ -3,6 +3,7 @@ import SwiftData
 
 @Model
 final class Performance {
+    var statusRaw: String?
     var id: UUID = UUID()
     var date: Date = Date.now
     var time: Date?
@@ -50,6 +51,17 @@ final class Performance {
         self.updatedAt = updatedAt
         self.show = show
         self.photos = photos
+    }
+
+    var isAttended: Bool { statusRaw == nil || statusRaw == "attended" }
+    var isUpcoming: Bool { statusRaw == "upcoming" }
+    var statusLabel: String {
+        if isAttended { return "Attended" }
+        switch statusRaw {
+        case "upcoming": return "Upcoming"
+        case "cancelled": return "Cancelled"
+        default: return "Unsupported status"
+        }
     }
 
     var photoList: [PerformancePhoto] { photos ?? [] }

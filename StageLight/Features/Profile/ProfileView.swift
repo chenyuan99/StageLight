@@ -5,18 +5,24 @@ struct ProfileView: View {
     @Environment(LibraryStore.self) private var library
     @Environment(\.requestReview) private var requestReview
     @AppStorage("lastReviewRequestVersion") private var lastReviewRequestVersion = ""
-    @AppStorage(AppLanguage.storageKey) private var selectedLanguage = AppLanguage.system.rawValue
-    @State private var cloudSyncAvailability: CloudSyncAvailability = .checking
-
-    private let cloudSyncStatusProvider = CloudSyncStatusProvider(
-        containerIdentifier: "iCloud.com.chenyuan.StageLight"
-    )
-
     private var statistics: LibraryStatistics { library.statistics }
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 44) {
+                NavigationLink {
+                    SettingsView()
+                } label: {
+                    HStack {
+                        Label("Settings", systemImage: "gearshape")
+                        Spacer()
+                        Image(systemName: "chevron.right").font(.caption).accessibilityHidden(true)
+                    }.padding(18)
+                        .background(StageTheme.surface, in: RoundedRectangle(cornerRadius: 18))
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("settings-entry")
+
                 VStack(alignment: .leading, spacing: 0) {
                     Text(statistics.performanceCount.formatted())
                         .font(.system(size: 68, weight: .semibold, design: .serif))
@@ -50,12 +56,6 @@ struct ProfileView: View {
                     editorialFact(label: "Favorite theatre", value: favoriteTheatre)
                 }
 
-                languageSection
-                AppIconSettings()
-                MiniTheatreSettings()
-                TheatreHistorySettings()
-                cloudSyncSection
-
                 Spacer(minLength: 60)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -65,7 +65,6 @@ struct ProfileView: View {
         .background(StageTheme.background)
         .navigationTitle("Profile")
         .task {
-            await refreshCloudSyncStatus()
             await requestReviewIfAppropriate()
         }
     }
@@ -90,128 +89,6 @@ struct ProfileView: View {
             Text(value)
                 .font(.system(.title2, design: .serif, weight: .medium))
         }
-    }
-
-    private var cloudSyncSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("iCloud Sync")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .textCase(.uppercase)
-                .accessibilityIdentifier("icloud-sync-section-title")
-
-            VStack(alignment: .leading, spacing: 16) {
-                HStack(spacing: 14) {
-                    Image(systemName: cloudSyncAvailability == .available
-                        ? "icloud.fill"
-                        : "icloud")
-                        .font(.title2)
-                        .foregroundStyle(cloudSyncAvailability == .available
-                            ? .blue
-                            : .secondary)
-                        .frame(width: 34, height: 34)
-
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("Automatic Sync")
-                            .font(.headline)
-                        Text(cloudSyncAvailability.title)
-                            .font(.subheadline)
-                            .foregroundStyle(statusColor)
-                    }
-
-                    Spacer()
-
-                    if cloudSyncAvailability == .checking {
-                        ProgressView()
-                            .controlSize(.small)
-                    } else {
-                        Circle()
-                            .fill(statusColor)
-                            .frame(width: 9, height: 9)
-                            .accessibilityHidden(true)
-                    }
-                }
-
-                Text(cloudSyncAvailability.message)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
-
-                Button {
-                    Task { await refreshCloudSyncStatus() }
-                } label: {
-                    Label("Check Status", systemImage: "arrow.clockwise")
-                }
-                .buttonStyle(.bordered)
-                .disabled(cloudSyncAvailability == .checking)
-            }
-            .padding(18)
-            .background(StageTheme.surface, in: RoundedRectangle(cornerRadius: 18))
-        }
-        .accessibilityElement(children: .contain)
-    }
-
-    private var languageSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Language")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .textCase(.uppercase)
-
-            HStack(spacing: 14) {
-                Image(systemName: "globe")
-                    .font(.title2)
-                    .foregroundStyle(.secondary)
-                    .frame(width: 34, height: 34)
-
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("App Language")
-                        .font(.headline)
-                    Text("Change the language without restarting StageLight.")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-
-                Spacer()
-
-                Picker("App Language", selection: $selectedLanguage) {
-                    ForEach(AppLanguage.allCases) { language in
-                        Text(verbatim: language.displayName)
-                            .tag(language.rawValue)
-                    }
-                }
-                .labelsHidden()
-                .pickerStyle(.menu)
-                .accessibilityIdentifier("app-language-picker")
-            }
-            .padding(18)
-            .background(StageTheme.surface, in: RoundedRectangle(cornerRadius: 18))
-        }
-        .accessibilityElement(children: .contain)
-    }
-
-    private var statusColor: Color {
-        switch cloudSyncAvailability {
-        case .available:
-            .green
-        case .checking, .noAccount, .restricted, .temporarilyUnavailable, .unavailable:
-            .secondary
-        }
-    }
-
-    private func refreshCloudSyncStatus() async {
-        #if DEBUG
-        // UI tests use an isolated local store and an unsigned simulator build.
-        // Do not ask CloudKit for entitlements or account state in that mode.
-        if ProcessInfo.processInfo.arguments.contains("-ui-testing") {
-            cloudSyncAvailability = .noAccount
-            library.refresh()
-            return
-        }
-        #endif
-        cloudSyncAvailability = .checking
-        cloudSyncAvailability = await cloudSyncStatusProvider.currentAvailability()
-        library.refresh()
     }
 
     private func requestReviewIfAppropriate() async {

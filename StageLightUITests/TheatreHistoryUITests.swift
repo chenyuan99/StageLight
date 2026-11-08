@@ -61,6 +61,8 @@ final class TheatreHistoryUITests: XCTestCase {
         XCTAssertTrue(app.buttons["add-performance-button"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["theatre-history-entry"].exists)
         app.buttons["Profile"].tap()
+        app.buttons["settings-entry"].tap()
+        app.buttons["settings-history"].tap()
         let toggle = app.switches["theatre-history-toggle"]
         for _ in 0..<5 where !toggle.isHittable { app.swipeUp() }
         XCTAssertTrue(toggle.isHittable)
@@ -73,6 +75,8 @@ final class TheatreHistoryUITests: XCTestCase {
         XCTAssertTrue(app.buttons["add-performance-button"].waitForExistence(timeout: 5))
         XCTAssertFalse(app.buttons["theatre-history-entry"].exists)
         app.buttons["Profile"].tap()
+        app.buttons["settings-entry"].tap()
+        app.buttons["settings-history"].tap()
         for _ in 0..<5 where !toggle.isHittable { app.swipeUp() }
         toggle.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
         XCTAssertEqual(toggle.value as? String, "1")

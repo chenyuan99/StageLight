@@ -33,6 +33,18 @@ final class LibraryStore {
         )
     }
 
+    var attendedPerformances: [Performance] { performances.filter(\.isAttended) }
+
+    func transition(_ performance: Performance, to status: String) throws {
+        try repository.transition(performance, to: status, expectedStatus: performance.statusRaw)
+        refresh()
+    }
+
+    func updateNotes(_ performance: Performance, notes: String, expectedNotes: String) throws {
+        try repository.updateNotes(performance, notes: notes, expectedNotes: expectedNotes)
+        refresh()
+    }
+
     var statistics: LibraryStatistics {
         LibraryStatistics.calculate(performances: performances)
     }
