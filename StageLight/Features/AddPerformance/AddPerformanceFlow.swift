@@ -276,6 +276,19 @@ struct AddPerformanceFlow: View {
                     .accessibilityIdentifier("show-title-field")
             }
 
+            Section("Attendance") {
+                Picker("Status", selection: Binding(
+                    get: { draft.statusRaw ?? "attended" },
+                    set: { draft.statusRaw = $0 }
+                )) {
+                    Text("Attended").tag("attended")
+                    Text("Upcoming").tag("upcoming")
+                    if draft.statusRaw == "cancelled" { Text("Cancelled").tag("cancelled") }
+                    if let raw = draft.statusRaw, !["attended", "upcoming", "cancelled"].contains(raw) {
+                        Text("Unsupported status").tag(raw)
+                    }
+                }.accessibilityIdentifier("attendance-picker")
+            }
             Section("When") {
                 DatePicker("Date", selection: $draft.date, displayedComponents: .date)
                 Toggle("Add a time", isOn: $draft.includesTime)

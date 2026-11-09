@@ -3,6 +3,19 @@ import SwiftUI
 struct DiaryView: View {
     @Environment(LibraryStore.self) private var library
 
+    @State private var filter = "overview"
+    @AppStorage("diary.showUpcoming") private var showUpcoming = true
+    private var filtered: [Performance] {
+        library.performances.filter { p in
+            switch filter {
+            case "upcoming": return p.isUpcoming
+            case "cancelled": return p.statusRaw == "cancelled"
+            case "all": return true
+            default: return p.isAttended
+            }
+        }
+    }
+
     var body: some View {
         Group {
             if library.performances.isEmpty {
@@ -13,6 +26,30 @@ struct DiaryView: View {
                 )
             } else {
                 List {
+                    Picker("Show performances", selection: $filter) {
+                        Text("Overview").tag("overview")
+                        Text("Attended").tag("attended")
+                        Text("Upcoming").tag("upcoming")
+                        Text("Cancelled").tag("cancelled")
+                        Text("All").tag("all")
+                    }.pickerStyle(.menu).accessibilityIdentifier("diary-filter")
+                    if library.performances.contains(where: \.isUpcoming) && (filter == "upcoming" || (filter == "overview" && showUpcoming)) {
+                        Section("Upcoming") {
+                            ForEach(library.performances.filter(\.isUpcoming).sorted { $0.date < $1.date }) { p in
+                                NavigationLink { PerformanceDetailView(performance: p) } label: {
+                                    VStack(alignment: .leading, spacing: 6) {
+                                        Text(p.show?.title ?? "").font(.headline)
+                                        Text(p.date.formatted(date: .abbreviated, time: .omitted))
+                                        Text(p.theatre).foregroundStyle(.secondary)
+                                        if let time = p.time { Text(time.formatted(date: .omitted, time: .shortened)) }
+                                    }.padding(.vertical, 6)
+                                }.accessibilityIdentifier("upcoming-row")
+                            }
+                        }
+                    }
+                    if filter == "upcoming" && !library.performances.contains(where: \.isUpcoming) {
+                        Text("No upcoming performances")
+                    }
                     ForEach(groupedYears, id: \.year) { yearGroup in
                         Section {
                             ForEach(yearGroup.months, id: \.month) { monthGroup in
@@ -54,7 +91,7 @@ struct DiaryView: View {
 
     private var groupedYears: [DiaryYear] {
         let calendar = Calendar.current
-        let byYear = Dictionary(grouping: library.performances) {
+        let byYear = Dictionary(grouping: filter == "upcoming" ? [] : filtered) {
             calendar.component(.year, from: $0.date)
         }
         return byYear.keys.sorted(by: >).map { year in
@@ -103,7 +140,8 @@ private struct DiaryRow: View {
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
-                if let rating = performance.rating {
+                if !performance.isAttended { Text(LocalizedStringKey(performance.statusLabel)).font(.caption) }
+                if performance.isAttended, let rating = performance.rating {
                     RatingLabel(rating: rating)
                 }
             }

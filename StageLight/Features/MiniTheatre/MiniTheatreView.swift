@@ -19,7 +19,7 @@ struct MiniTheatreRuntime: ViewModifier {
     @AppStorage(MiniTheatreStore.enabledKey) private var enabled = true
     @State private var store = MiniTheatreStore(inMemory: ProcessInfo.processInfo.arguments.contains("-ui-testing"))
     private var visits: [CompanionVisit] {
-        enabled ? library.performances.map { CompanionVisit(id: $0.id, date: $0.date, theatre: $0.theatre, city: $0.city) } : []
+        enabled ? library.attendedPerformances.map { CompanionVisit(id: $0.id, date: $0.date, theatre: $0.theatre, city: $0.city) } : []
     }
     func body(content: Content) -> some View {
         content.environment(store)
@@ -81,6 +81,7 @@ struct MiniTheatreSettings: View {
     @Environment(\.locale) private var locale
     @AppStorage(MiniTheatreStore.enabledKey) private var enabled = true
     @AppStorage(MiniTheatreStore.shortcutKey) private var shortcut = false
+    @AppStorage("miniTheatre.haptics") private var haptics = false
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(MiniCopy.text("title", locale.identifier)).font(.headline)
@@ -88,6 +89,8 @@ struct MiniTheatreSettings: View {
             Toggle(MiniCopy.text("enable", locale.identifier), isOn: $enabled).accessibilityIdentifier("mini-enable")
             if enabled {
                 Toggle(MiniCopy.text("shortcut", locale.identifier), isOn: $shortcut)
+                Toggle(MiniCopy.text("haptics", locale.identifier), isOn: $haptics)
+                    .accessibilityIdentifier("mini-haptics")
             }
         }.tint(MiniPalette.accent)
     }
@@ -164,13 +167,12 @@ struct MiniTheatreView: View {
                         .buttonStyle(.borderedProminent).accessibilityIdentifier("mini-share")
                     TextField(copy("nickname"), text: $nickname).textFieldStyle(.roundedBorder)
                     Button(copy("save")) { store.rename(nickname) }
-                    Toggle(copy("haptics"), isOn: $haptics)
-                    if let latest = library.performances.first(where: { $0.date <= .now }) {
+                    if let latest = library.attendedPerformances.first(where: { $0.date <= .now }) {
                         Text(copy("reflect")).font(.headline)
                         Button(copy("note")) { editing = latest }
                     }
                     Text(copy("policy")).font(.footnote).foregroundStyle(.secondary)
-                } else { MiniTheatreSettings() }
+                } else { NavigationLink("Settings") { SettingsView() } }
             }.padding(24).readableStageContent()
         }
         .accessibilityIdentifier("mini-scroll")
@@ -195,7 +197,7 @@ struct MiniTheatreView: View {
         }.frame(maxWidth: .infinity).padding(12).background(StageTheme.surface, in: RoundedRectangle(cornerRadius: 16))
     }
     private func refresh() {
-        store.reconcile(enabled: enabled, visits: library.performances.map {
+        store.reconcile(enabled: enabled, visits: library.attendedPerformances.map {
             CompanionVisit(id: $0.id, date: $0.date, theatre: $0.theatre, city: $0.city)
         })
     }

@@ -1,6 +1,7 @@
 import Foundation
 
 struct PerformanceDraft: Equatable {
+    var statusRaw: String? = nil
     var showTitle: String
     var date: Date
     var includesTime: Bool
@@ -67,6 +68,7 @@ struct PerformanceDraft: Equatable {
                 }
             )
         )
+        statusRaw = performance.statusRaw
     }
 
     func validate() throws -> PerformanceDraft {

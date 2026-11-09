@@ -7,6 +7,11 @@ struct PerformanceDetailView: View {
     @State private var isEditing = false
     @State private var isSharingMemory = false
     @State private var confirmsDelete = false
+    @State private var confirmsCancel = false
+    @State private var editingReflection = false
+    @State private var offersReflection = false
+    @State private var actionError: String?
+    @AppStorage(ReflectionPolicy.enabledKey) private var reflectionEnabled = false
 
     private var photos: [PerformancePhoto] {
         performance.photoList.sorted { $0.sortOrder < $1.sortOrder }
@@ -24,6 +29,21 @@ struct PerformanceDetailView: View {
                     venueLine
                 }
 
+                bookingActions
+                if offersReflection && reflectionEnabled {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("What stayed with you?").font(.headline)
+                        Text("A sentence is enough. You can always return later.").foregroundStyle(.secondary)
+                        HStack {
+                            Button("Add a memory") { editingReflection = true }
+                                .buttonStyle(.borderedProminent).tint(MiniPalette.accent)
+                                .accessibilityIdentifier("reflection-offer")
+                            Button("Not now") { offersReflection = false }
+                        }
+                    }.padding().frame(maxWidth: .infinity, alignment: .leading)
+                        .background(StageTheme.surface, in: RoundedRectangle(cornerRadius: 16))
+                }
+                if let actionError { Text(actionError).foregroundStyle(.red) }
                 if let first = photos.first {
                     PhotoThumbnailView(photo: first, contentMode: .fit)
                         .frame(height: 390)
@@ -32,6 +52,8 @@ struct PerformanceDetailView: View {
 
                 detailMetadata
 
+                Button(performance.notes.isEmpty ? "Add notes" : "Edit notes") { editingReflection = true }
+                    .accessibilityIdentifier("edit-reflection")
                 if !performance.notes.isEmpty {
                     VStack(alignment: .leading, spacing: 10) {
                         Text("What I remember")
@@ -82,6 +104,14 @@ struct PerformanceDetailView: View {
                 .accessibilityIdentifier("performance-actions")
             }
         }
+        .sheet(isPresented: $editingReflection) {
+            ReflectionEditor(performance: performance) { offersReflection = false }
+        }
+        .confirmationDialog("Cancel this booking?", isPresented: $confirmsCancel, titleVisibility: .visible) {
+            Button("Cancel booking", role: .destructive) { changeStatus("cancelled") }
+                .accessibilityIdentifier("confirm-cancel-booking")
+            Button("Keep booking", role: .cancel) {}
+        } message: { Text("Your notes, photos and booking details will be kept.") }
         .sheet(isPresented: $isEditing) {
             AddPerformanceFlow(editing: performance)
         }
@@ -105,6 +135,45 @@ struct PerformanceDetailView: View {
         } message: {
             Text("Its photos and notes will be removed from this device.")
         }
+    }
+
+    @ViewBuilder
+    private var bookingActions: some View {
+        if !performance.isAttended {
+            VStack(alignment: .leading, spacing: 12) {
+                Label(LocalizedStringKey(performance.statusLabel), systemImage: "calendar")
+                    .font(.headline).foregroundStyle(MiniPalette.accent)
+                if performance.isUpcoming {
+                    if Calendar.current.startOfDay(for: performance.date) < Calendar.current.startOfDay(for: .now) {
+                        Text("Needs attendance confirmation").font(.subheadline).foregroundStyle(.secondary)
+                    }
+                    Button("Mark attended") { changeStatus("attended") }
+                        .buttonStyle(.borderedProminent).tint(MiniPalette.accent)
+                        .accessibilityIdentifier("mark-attended")
+                    HStack {
+                        Button("Reschedule") { isEditing = true }
+                        Spacer()
+                        Button("Cancel booking") { confirmsCancel = true }
+                            .accessibilityIdentifier("cancel-booking")
+                    }
+                } else if performance.statusRaw == "cancelled" {
+                    Button("Restore booking") { changeStatus("upcoming") }
+                        .accessibilityIdentifier("restore-booking")
+                }
+            }.padding().frame(maxWidth: .infinity, alignment: .leading)
+                .background(StageTheme.surface, in: RoundedRectangle(cornerRadius: 16))
+        }
+    }
+
+    private func changeStatus(_ status: String) {
+        let wasUpcoming = performance.isUpcoming
+        do {
+            try library.transition(performance, to: status)
+            actionError = nil
+            if wasUpcoming && status == "attended" {
+                offersReflection = ReflectionPolicy.consumeOffer(for: performance.id)
+            }
+        } catch { actionError = error.localizedDescription }
     }
 
     @ViewBuilder

@@ -1,6 +1,22 @@
 import XCTest
 
 @MainActor final class MiniTheatreUITests: XCTestCase {
+    func testProfileSettingsWithoutDuplicateEntrance() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-ui-testing", "-mini-preview", "-skip-onboarding", "-appLanguage", "simplifiedChinese", "-miniTheatre.enabled", "YES"]
+        app.launch()
+        XCTAssertTrue(app.buttons["我的"].waitForExistence(timeout: 10))
+        app.buttons["我的"].tap()
+        XCTAssertFalse(app.switches["mini-enable"].exists)
+        app.buttons["settings-entry"].tap()
+        app.buttons["settings-mini"].tap()
+        let toggle = app.switches["mini-enable"]
+        for _ in 0..<12 where !toggle.isHittable { app.swipeUp() }
+        XCTAssertTrue(toggle.isHittable)
+        XCTAssertFalse(app.buttons["mini-entry"].exists)
+        capture(app, "profile-settings-no-duplicate-entry")
+    }
+
     func testDedicatedNavigation() {
         let app = XCUIApplication()
         app.launchArguments = ["-ui-testing", "-mini-preview", "-skip-onboarding", "-appLanguage", "simplifiedChinese", "-miniTheatre.enabled", "YES"]

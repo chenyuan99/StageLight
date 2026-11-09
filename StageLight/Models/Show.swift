@@ -27,12 +27,14 @@ final class Show {
 
     var performanceList: [Performance] { performances ?? [] }
 
+    var attendedPerformances: [Performance] { performanceList.filter(\.isAttended) }
+
     var latestPerformance: Performance? {
         performanceList.max { $0.date < $1.date }
     }
 
     var averageRating: Double? {
-        let ratings = performanceList.compactMap(\.rating)
+        let ratings = attendedPerformances.compactMap(\.rating)
         guard !ratings.isEmpty else { return nil }
         return ratings.reduce(0, +) / Double(ratings.count)
     }

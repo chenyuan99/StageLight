@@ -10,14 +10,54 @@ protocol PerformanceRepositoryProtocol {
     func delete(_ performance: Performance) throws
     func deleteAll() throws
     func saveChanges() throws
+    func transition(_ performance: Performance, to status: String, expectedStatus: String?) throws
+    func updateNotes(_ performance: Performance, notes: String, expectedNotes: String) throws
 }
 
 @MainActor
 final class PerformanceRepository: PerformanceRepositoryProtocol {
     private let context: ModelContext
 
-    init(context: ModelContext) {
+    private let persist: () throws -> Void
+    init(context: ModelContext, save: (() throws -> Void)? = nil) {
         self.context = context
+        self.persist = save ?? { try context.save() }
+    }
+
+    private func requireExisting(_ performance: Performance) throws {
+        let id = performance.id
+        guard !performance.isDeleted,
+              try context.fetch(FetchDescriptor<Performance>(predicate: #Predicate { $0.id == id })).contains(where: { $0.persistentModelID == performance.persistentModelID }) else {
+            throw PerformanceEditError.missing
+        }
+    }
+
+    func transition(_ performance: Performance, to status: String, expectedStatus: String?) throws {
+        try requireExisting(performance)
+        guard performance.statusRaw == expectedStatus else { throw PerformanceEditError.conflict }
+        guard ["upcoming", "attended", "cancelled"].contains(status),
+              expectedStatus == nil || ["upcoming", "attended", "cancelled"].contains(expectedStatus!) else {
+            throw PerformanceEditError.conflict
+        }
+        let old = performance.statusRaw, timestamp = performance.updatedAt
+        performance.statusRaw = status
+        performance.updatedAt = .now
+        do { try persist() } catch {
+            performance.statusRaw = old; performance.updatedAt = timestamp
+            throw error
+        }
+    }
+
+    func updateNotes(_ performance: Performance, notes: String, expectedNotes: String) throws {
+        try requireExisting(performance)
+        guard performance.notes == expectedNotes else { throw PerformanceEditError.conflict }
+        let timestamp = performance.updatedAt
+        performance.notes = notes
+        performance.updatedAt = .now
+        do { try persist() } catch {
+            performance.notes = expectedNotes; performance.updatedAt = timestamp
+            throw error
+        }
     }
 
     func fetchShows() throws -> [Show] {
@@ -46,6 +86,7 @@ final class PerformanceRepository: PerformanceRepositoryProtocol {
             notes: draft.notes,
             show: show
         )
+        performance.statusRaw = draft.statusRaw
         context.insert(performance)
 
         for (index, filename) in draft.photoFilenames.enumerated() {
@@ -79,6 +120,7 @@ final class PerformanceRepository: PerformanceRepositoryProtocol {
             oldShow?.title = draft.showTitle
         }
 
+        performance.statusRaw = draft.statusRaw
         performance.date = draft.date
         performance.time = draft.includesTime ? draft.time : nil
         performance.theatre = draft.theatre
@@ -142,5 +184,21 @@ final class PerformanceRepository: PerformanceRepositoryProtocol {
         let show = Show(title: title, normalizedTitle: normalizedTitle)
         context.insert(show)
         return show
+    }
+}
+
+// Test doubles that do not exercise focused editing keep their existing behavior.
+extension PerformanceRepositoryProtocol {
+    func transition(_ performance: Performance, to status: String, expectedStatus: String?) throws { throw PerformanceEditError.missing }
+    func updateNotes(_ performance: Performance, notes: String, expectedNotes: String) throws { throw PerformanceEditError.missing }
+}
+
+enum PerformanceEditError: LocalizedError {
+    case conflict, missing
+    var errorDescription: String? {
+        switch self {
+        case .conflict: AppLanguage.localized("This record changed. Your draft is safe. Review the latest version before saving.")
+        case .missing: AppLanguage.localized("This performance is no longer available. Copy your draft before closing.")
+        }
     }
 }

@@ -20,9 +20,12 @@ struct ShowCard: View {
                 .foregroundStyle(.primary)
                 .lineLimit(2)
 
+            if show.performanceList.contains(where: \.isUpcoming) {
+                Text("Upcoming").font(.caption).foregroundStyle(MiniPalette.accent)
+            }
             HStack(spacing: 8) {
-                Text("\(show.performanceList.count) seen")
-                if let rating = show.latestPerformance?.rating ?? show.averageRating {
+                Text("\(show.attendedPerformances.count) seen")
+                if let rating = show.averageRating {
                     Text("·")
                     RatingLabel(rating: rating)
                 }
@@ -35,7 +38,7 @@ struct ShowCard: View {
     }
 
     private var accessibilityLabel: String {
-        var parts = [show.title, AppLanguage.localized("\(show.performanceList.count) performances")]
+        var parts = [show.title, AppLanguage.localized("\(show.attendedPerformances.count) performances")]
         if let average = show.averageRating {
             parts.append(AppLanguage.localized("average \(average.formatted()) out of 5 stars"))
         }

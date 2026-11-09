@@ -22,7 +22,7 @@ struct ShowDetailView: View {
                     Text(show.title)
                         .font(.system(.largeTitle, design: .serif, weight: .semibold))
                     HStack(spacing: 12) {
-                        Text("Seen \(performances.count) times")
+                        Text("Seen \(show.attendedPerformances.count) times")
                         if let average = show.averageRating {
                             Text("·")
                             RatingLabel(rating: average)
@@ -81,7 +81,8 @@ struct PerformanceRow: View {
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
-                if let rating = performance.rating {
+                if !performance.isAttended { Text(LocalizedStringKey(performance.statusLabel)).font(.caption) }
+                if performance.isAttended, let rating = performance.rating {
                     RatingLabel(rating: rating)
                 }
             }
