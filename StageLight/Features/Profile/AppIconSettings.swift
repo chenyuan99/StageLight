@@ -16,13 +16,14 @@ import UIKit
 }
 
 enum AppIconChoice: String, CaseIterable {
-    case original, bunny, creamBunny, goldenPremiere, revolutionaryBunny
+    case original, bunny, creamBunny, goldenPremiere, revolutionaryBunny, phantomBunny
     var iconName: String? {
         switch self {
         case .original: "AppIcon"
         case .bunny: "BunnyIcon"
         case .creamBunny: "CreamBunnyIcon"
         case .revolutionaryBunny: "RevolutionaryBunnyIcon"
+        case .phantomBunny: "PhantomBunnyIcon"
         case .goldenPremiere: nil
         }
     }
@@ -126,6 +127,7 @@ enum AppIconCopy {
         "creamBunny": ["Cream bunny", "奶油小兔", "奶油小兔", "クリームうさぎ"],
         "goldenPremiere": ["Golden premiere (default)", "金色首演（默认）", "金色首演（預設）", "黄金の初日（デフォルト）"],
         "revolutionaryBunny": ["Revolutionary bunny · Gold silhouette", "革命兔 · 金色剪影", "革命兔 · 金色剪影", "革命うさぎ・金色のシルエット"],
+        "phantomBunny": ["Phantom bunny", "魅影兔", "魅影兔", "怪人うさぎ"],
         "changing": ["Changing icon", "正在更换图标", "正在更換圖示", "アイコンを変更中"],
         "unsupported": ["Icon changes are unavailable on this device.", "此设备暂不支持更换图标。", "此裝置暫不支援更換圖示。", "この端末ではアイコンを変更できません。"],
         "error": ["Could not change icon", "无法更换图标", "無法更換圖示", "アイコンを変更できませんでした"],
