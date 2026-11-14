@@ -46,7 +46,7 @@ Enable **Mini Theatre** from **Profile** to meet the original theatre bunny, col
 
 Choose among the four app icons in **Profile → App icon**. The cat is a design concept, not a selectable icon; the default remains Golden Premiere bunny.
 
-**StageLight 1.5.1 is now live on the App Store for iPhone and iPad.** [Download or update](https://apps.apple.com/app/id6806575225) to enjoy Mini Theatre and app icon customization. See the [release record](docs/specs/RELEASE_1.5.1.md) and [version history](CHANGELOG.md).
+**StageLight 1.6.0 is available on the App Store.** Version 1.7.0 (build 9) is waiting for review. It adds upcoming performances, private post-show reflections, and a dedicated Settings screen. [Download the live version](https://apps.apple.com/app/id6806575225) or see the [version history](CHANGELOG.md).
 
 ## Privacy and storage
 

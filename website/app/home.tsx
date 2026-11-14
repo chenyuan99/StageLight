@@ -201,6 +201,7 @@ export default function Home() {
         <p className="release-privacy">{release.privacy}</p>
         <details className="release-history" id="version-history">
           <summary>{release.history}</summary>
+          <h3>{release.status}</h3>
           <h3>{releases.liveVersion}</h3><p>{release.live}</p>
           <h3>{releases.previousVersion}</h3><p>{release.previous}</p>
         </details>

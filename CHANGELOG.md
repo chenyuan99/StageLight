@@ -1,6 +1,14 @@
 # Version history
 
-## 1.6.0 (8) — submitted for review, 2026-10-23
+## 1.7.0 (9) — Waiting for Review
+
+Submitted to Apple on November 14, 2026, with automatic release after approval. **1.6.0 remains the live App Store version.**
+
+- Save upcoming performances in Diary and mark them as attended after the show.
+- Write a private post-show reflection. Reflection prompts are optional and off by default.
+- Find app preferences in Profile → Settings and open Mini Theatre from the navigation bar when enabled.
+
+## 1.6.0 (8) — live on the App Store
 
 - Native adaptive navigation for iPhone Duo and regular iPhone.
 - Labeled Add action in the toolbar; navigation remains available as the display changes.
@@ -8,9 +16,9 @@
 - Mini Theatre reward notice no longer covers navigation controls.
 - No production storage or schema changes.
 
-See [release details](docs/specs/RELEASE_1.6.0.md). App Store Connect confirmed **Waiting for Review**; automatic release after approval is enabled. Not yet live.
+See [release details](docs/specs/RELEASE_1.6.0.md). Submitted on October 23, 2026. App Store Connect showed **Ready for Distribution** on November 14, 2026.
 
-## 1.5.1 — live on the App Store
+## 1.5.1 — previous public release
 
 Confirmed fully live by the app owner on 2026-10-20. This is the confirmation
 date, not an inferred release date. Available for iPhone and iPad.
@@ -26,7 +34,7 @@ changes or build number are claimed without a verified release record.
 
 Historical submission snapshot: App Store Connect confirmed **Waiting for Review**
 on 2026-10-19, with automatic release configured and 1.4.1 live at that time.
-This is not the current release status; 1.5.1 is now live.
+Version 1.5.1 was later confirmed live.
 
 - Optional Mini Theatre bunny companion: collect props from past performances and decorate a local stage.
 - Share bunny outfit images without nickname or diary details.
