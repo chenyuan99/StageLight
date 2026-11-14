@@ -413,6 +413,66 @@ No coins, shop, purchases, random reward pool, leaderboards, viewing streaks, or
 
 Reduce Motion, VoiceOver, Dynamic Type, and optional haptics are release requirements. Validate enjoyment, discoverability, and comfort through voluntary feedback without a telemetry SDK or automatic diary activity export. The [technical and test specification](specs/MINI_THEATRE_COMPANION.md) defines release gates; this proposal is not evidence that implementation or testing is complete.
 
+## Musical-inspired Home Screen icons
+
+A diary owner can give StageLight a theatre-inspired identity on their own Home Screen. In 1.7.0 build 10, Profile → Settings → App icon offers three new bunny designs alongside the four existing choices. Golden premiere remains the default. Each option is available immediately, including when Mini Theatre is disabled.
+
+| Selectable icon | Stage reference | What the user sees |
+| --- | --- | --- |
+| Phantom bunny | *The Phantom of the Opera* | A cream lop-eared rabbit in an ivory half-mask and burgundy bow tie under a side spotlight. |
+| Revolutionary bunny · Gold silhouette | *Hamilton* | A gold-foil rabbit in a tricorn hat raises one paw on a star-shaped stage against dark plum. |
+| Barricade bunny | *Les Misérables* | A street messenger in an indigo cap and red neckerchief, with a flag catching the dawn behind it. |
+
+### Acceptance criteria
+
+- The picker shows matching previews and localized names in English, Simplified Chinese, Traditional Chinese, and Japanese. VoiceOver identifies the selected row.
+- Choosing a row requests the system icon change. After relaunch, the checkmark matches the system selection. The user can restore Golden premiere or any previous choice.
+- A failed request keeps the actual selection and permits retry. On unsupported devices the picker explains why switching is unavailable.
+- The choice belongs to the device. Switching icons requires no purchase, diary entry, reward, or iCloud write. The icon feature introduces no diary migration.
+- Verification for this increment includes eight passing simulator unit tests covering selection, previews and bundled iPhone/iPad icon metadata. Each new icon was selected and verified after relaunch on an iPhone 18 Pro in a focused physical-device run. Physical iPad switching was not verified.
+
+### Proposed commemorative series · 剧目纪念图标
+
+**Design proposal for a future release.** Phantom bunny (魅影兔), Revolutionary bunny · Gold silhouette (革命兔 · 金色剪影), and Barricade bunny (街垒兔) form the permanently free Premiere series for all users, including new installs. The four earlier choices also stay freely selectable. Updating the app must preserve the device’s selected icon. The following unlock rules apply only to new designs explicitly labeled as part of the commemorative series.
+
+**Earn an icon by attending its show.** Proposed first pairings are *Wicked* → Emerald bunny, *Hadestown* → Lantern bunny, and *Singin’ in the Rain* → Rain dance bunny. Someone planning to see *Wicked* can preview Emerald bunny in Settings. After they save the performance as attended, a dismissible message offers “You unlocked Emerald bunny” and “Preview.” Only an explicit “Set as Home Screen icon” changes the device icon.
+
+| Diary event | Expected result |
+| --- | --- |
+| Save an attended performance manually, from a scan, or as a backdated entry | A successful save qualifies on the user’s word. A ticket photo, rating, reflection, or online verification is optional. A failed save awards nothing. |
+| Have an older attended entry when a matching icon arrives | Recognize it on opening the picker. The user can claim the icon without editing or re-entering the performance. |
+| Attend a tour, revival, or translated production | Match the work across venues and title aliases. Ask the user to confirm an ambiguous match and preserve their original diary title. |
+| Book, cancel, or attend again | Upcoming and cancelled entries do not qualify. The first qualifying attendance unlocks the icon once; repeat visits stay separate diary entries. |
+| Correct or delete a qualifying entry after earning the icon | Keep the earned icon. Deleting the entry also removes its date and venue from any commemorative caption. |
+
+**Unlock the collection with one purchase.** In Profile → Settings → App icon, show a full preview and both routes for each locked design. For example, offer “Record a visit to Wicked” and “Unlock the collection.” Before purchase, show the price and state that the one-time purchase includes all current and future icons in this commemorative series. Provide “Restore purchases” for reinstalls and other devices. Pricing is open. Keep purchase prompts in the picker so saving a diary entry stays focused on the show.
+
+**Ownership and privacy.** Buying the collection and earning an individual icon are independent. A buyer can later earn the same icon through attendance and see a personal caption from their diary. If the purchase is refunded, individually earned icons remain available. Attendance unlocks should work offline. With private iCloud sync available, earned icon identifiers should follow the user across devices; each device keeps its own Home Screen selection. Restoring a purchase must work independently of diary sync and must not require sending viewing history or ticket photos.
+
+**Acceptance examples for future development**
+
+- A new user with an empty diary can immediately select any Premiere icon, with Mini Theatre on or off.
+- A returning user with an attended *Wicked* entry can claim Emerald bunny offline. A user with only an upcoming booking can preview it, then earn it after marking the show attended.
+- A user who purchases the collection on iPhone can restore it on iPad, including later additions to the series. Neither operation changes the selected icon on the other device.
+- Dismissing an unlock, cancelling a purchase, or encountering a purchase failure leaves diary entries, previously earned icons, and the current selection intact.
+
+### Future concepts for review
+
+These are design candidates. The musical titles identify creative references for the team; the proposed picker names describe the original artwork.
+
+| Proposed icon | Musical inspiration | Art direction at Home Screen size |
+| --- | --- | --- |
+| Emerald bunny · 翡翠兔 | *Wicked* | A tall, crooked plum hat between the ears, with a single emerald rim light. The pointed crown gives it a different silhouette from the tricorn. |
+| Lantern bunny · 灯火兔 | *Hadestown* | A soot-blue railway cap and one amber lantern lighting the cheek from below. Let the lantern form one large bright shape. |
+| Rain dance bunny · 雨舞兔 | *Singin’ in the Rain* | A tilted yellow umbrella fills one upper corner; the other ear peeks out against a rainy blue sky. |
+| Fiddler bunny · 提琴兔 | *Fiddler on the Roof* | A warm chestnut violin tucked beneath one cheek, with a single diagonal bow against a dusk-blue backdrop. |
+| Jazz bunny · 爵士兔 | *Chicago* | A black bowler tilted over one eye and two crossed ivory spotlights on a wine-red field. |
+| Garden bunny · 花园兔 | *The Secret Garden* | The bunny holds a brass key against a moss-green garden gate, with one pale blossom near its ear. |
+
+Prototype Emerald bunny and Lantern bunny first: their silhouettes and palettes are distinct from the three current designs. Compare each candidate beside the existing icons at actual Home Screen size before adding it to the picker. Use original costume and prop illustrations; keep official logos, key art, and performer likenesses out of the artwork.
+
+See the [app icon implementation and test specification](specs/APP_ICON.md).
+
 ## MVP Definition of Done
 
 - [ ] Onboarding and the first empty state are complete.
