@@ -14,7 +14,7 @@ import XCTest
         }
         defer { removeUIInterruptionMonitor(monitor) }
         openSettings(app)
-        let choices = ["original", "bunny", "creamBunny", "goldenPremiere", "revolutionaryBunny", "phantomBunny"]
+        let choices = ["original", "bunny", "creamBunny", "goldenPremiere", "revolutionaryBunny", "phantomBunny", "barricadeBunny"]
         let original = try XCTUnwrap(choices.first { app.buttons["app-icon-\($0)"].isSelected })
         // Restore the user's starting icon, even if an assertion later fails.
         addTeardownBlock {
