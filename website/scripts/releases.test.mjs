@@ -6,7 +6,7 @@ const releases = JSON.parse(readFileSync(new URL('../lib/releases.json', import.
 
 test('the submitted build is distinct from the live App Store release', () => {
   assert.equal(releases.version, '1.7.0');
-  assert.equal(releases.build, 9);
+  assert.equal(releases.build, 10);
   assert.equal(releases.status, 'waiting_for_review');
   assert.equal(releases.submittedOn, '2026-11-14');
   assert.equal(releases.liveVersion, '1.6.0');

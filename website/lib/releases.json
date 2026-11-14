@@ -18,7 +18,7 @@
         ],
         [
           "Find your preferences",
-          "Open Settings from Profile. When Mini Theatre is enabled, you can visit it from the navigation bar."
+          "Open Settings from Profile. When Mini Theatre is enabled, you can visit it from the navigation bar. Choose Phantom Bunny, Revolutionary Bunny · Gold Silhouette, or Barricade Bunny as your Home Screen icon."
         ]
       ],
       "privacy": "Reflection prompts are off by default.",
@@ -40,7 +40,7 @@
         ],
         [
           "找到常用设置",
-          "从「我的」进入设置。开启小剧场后，可直接从导航栏进入。"
+          "从「我的」进入设置。开启小剧场后，可直接从导航栏进入。也可选择魅影兔、革命兔 · 金色剪影或街垒兔作为主屏幕图标。"
         ]
       ],
       "privacy": "观后感提示默认关闭。",
@@ -62,7 +62,7 @@
         ],
         [
           "找到常用設定",
-          "從個人頁面進入設定。開啟小劇場後，可直接從導覽列進入。"
+          "從個人頁面進入設定。開啟小劇場後，可直接從導覽列進入。也可選擇魅影兔、革命兔 · 金色剪影或街壘兔作為主畫面圖示。"
         ]
       ],
       "privacy": "觀後感提示預設關閉。",
@@ -84,7 +84,7 @@
         ],
         [
           "設定をひとつの場所に",
-          "プロフィールから設定を開けます。ミニシアターを有効にすると、ナビゲーションバーから直接移動できます。"
+          "プロフィールから設定を開けます。ミニシアターを有効にすると、ナビゲーションバーから直接移動できます。ホーム画面のアイコンに怪人うさぎ、革命うさぎ・金色のシルエット、バリケードうさぎを選べます。"
         ]
       ],
       "privacy": "感想の入力を促す機能は初期設定ではオフです。",
@@ -93,6 +93,6 @@
       "live": "App Storeで配信中。iPhone Duoの画面に合わせてナビゲーションが切り替わります。"
     }
   },
-  "build": 9,
+  "build": 10,
   "submittedOn": "2026-11-14"
 }

@@ -1,12 +1,13 @@
 # Version history
 
-## 1.7.0 (9) — Waiting for Review
+## 1.7.0 (10) — Waiting for Review
 
 Submitted to Apple on November 14, 2026, with automatic release after approval. **1.6.0 remains the live App Store version.**
 
 - Save upcoming performances in Diary and mark them as attended after the show.
 - Write a private post-show reflection. Reflection prompts are optional and off by default.
 - Find app preferences in Profile → Settings and open Mini Theatre from the navigation bar when enabled.
+- Build 10 adds Phantom Bunny, Revolutionary Bunny · Gold Silhouette, and Barricade Bunny to the Home Screen icon picker.
 
 ## 1.6.0 (8) — live on the App Store
 
