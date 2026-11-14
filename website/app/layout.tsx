@@ -5,6 +5,8 @@ const siteURL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://yuanchen.io/StageLi
 const socialImageURL = new URL('og.png', siteURL).toString();
 const iconURL = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/golden-premiere-icon.png`;
 
+const description = 'StageLight 1.6.0 is available for iPhone and iPad. Version 1.7.0, with upcoming performances and private post-show reflections, is waiting for review.';
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteURL),
   icons: {
@@ -12,19 +14,16 @@ export const metadata: Metadata = {
     apple: { url: iconURL, type: 'image/png' },
   },
   title: 'StageLight — Remember the Show. Share the Moment.',
-  description:
-    'StageLight 1.5.1 is now available for iPhone and iPad. Keep a private theatre diary, share memory cards, and meet your optional theatre bunny.',
+  description,
   openGraph: {
     title: 'StageLight — Remember the Show. Share the Moment.',
-    description:
-      'StageLight 1.5.1 is now available for iPhone and iPad. Keep a private theatre diary, share memory cards, and meet your optional theatre bunny.',
+    description,
     images: [socialImageURL],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'StageLight — Remember the Show. Share the Moment.',
-    description:
-      'StageLight 1.5.1 is now available for iPhone and iPad. Keep a private theatre diary, share memory cards, and meet your optional theatre bunny.',
+    description,
     images: [socialImageURL],
   },
 };

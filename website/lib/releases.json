@@ -1,61 +1,98 @@
 {
-  "version": "1.5.1",
-  "status": "live",
-  "confirmedLiveOn": "2026-10-20",
-  "liveVersion": "1.5.1",
-  "previousVersion": "1.4.1",
+  "version": "1.7.0",
+  "status": "waiting_for_review",
+  "liveVersion": "1.6.0",
+  "previousVersion": "1.5.1",
   "locales": {
     "en": {
-      "heading": "A little theatre, just for you.",
-      "status": "1.5.1 · Available now on the App Store",
+      "heading": "Your next show, from booking to curtain call",
+      "status": "1.7.0 · Waiting for Review",
       "features": [
-        ["Meet your theatre bunny", "Enable the optional Mini Theatre from Profile. Record past performances, collect props, and decorate your little stage."],
-        ["Share a little joy", "Share your bunny and its outfit without including your nickname or diary details."],
-        ["An icon of your own", "Golden Premiere is the default icon. Choose Original, Theatre bunny, or Cream bunny from Profile—even with Mini Theatre turned off."]
+        [
+          "Save a booking",
+          "Keep upcoming performances in your Diary and mark them as attended after the show."
+        ],
+        [
+          "Remember the night",
+          "Write a private reflection after a performance. Turn on reflection prompts if you want a reminder after marking a show attended."
+        ],
+        [
+          "Find your preferences",
+          "Open Settings from Profile. When Mini Theatre is enabled, you can visit it from the navigation bar. Choose Phantom Bunny, Revolutionary Bunny · Gold Silhouette, or Barricade Bunny as your Home Screen icon."
+        ]
       ],
-      "privacy": "Your performances, photos, notes, and private iCloud settings stay unchanged. Mini Theatre progress is stored separately on this device and does not sync with iCloud.",
+      "privacy": "Reflection prompts are off by default.",
       "history": "Version history",
-      "previous": "Earlier public release, confirmed available on October 19, 2026.",
-      "live": "StageLight 1.5.1 is now live on the App Store for iPhone and iPad. Download or update to enjoy Mini Theatre and your choice of app icon."
+      "previous": "Introduced the optional theatre bunny and alternate app icons.",
+      "live": "Available now on the App Store, with adaptive navigation for iPhone Duo."
     },
     "zh-Hans": {
-      "heading": "属于你的小小剧场。",
-      "status": "1.5.1 · 已在 App Store 正式上线",
+      "heading": "从买票到散场，记下这一场",
+      "status": "1.7.0 · 等待审核",
       "features": [
-        ["认识剧场小兔", "在「我的」开启可选的掌上小剧场。记录往日演出、收集道具，装扮你的小舞台。"],
-        ["分享一点快乐", "分享小兔与装扮图片，不包含昵称或日记详情。"],
-        ["选择你的应用图标", "金色首演现为默认图标。即使未开启小剧场，也能在「我的」选择原版、剧场小兔或奶油小兔。"]
+        [
+          "记下待看的演出",
+          "把已订的演出存进日记，散场后标记为已观看。"
+        ],
+        [
+          "留下观后感",
+          "为这场演出写下私密感想。开启提示后，标记为已观看时就会收到写观后感的邀请。"
+        ],
+        [
+          "找到常用设置",
+          "从「我的」进入设置。开启小剧场后，可直接从导航栏进入。也可选择魅影兔、革命兔 · 金色剪影或街垒兔作为主屏幕图标。"
+        ]
       ],
-      "privacy": "现有演出、照片、笔记及私密 iCloud 设置保持不变。小剧场进度独立保存在本机，不通过 iCloud 同步。",
+      "privacy": "观后感提示默认关闭。",
       "history": "版本历史",
-      "previous": "此前的正式版本，已于 2026 年 10 月 19 日确认可下载。",
-      "live": "剧光灯 1.5.1 已在 App Store 正式上线，支持 iPhone 与 iPad。下载或更新，体验掌上小剧场并选择喜欢的应用图标。"
+      "previous": "加入可选的剧场小兔和多款应用图标。",
+      "live": "已在 App Store 上线，导航布局适配 iPhone Duo。"
     },
     "zh-Hant": {
-      "heading": "屬於你的小小劇場。",
-      "status": "1.5.1 · 已在 App Store 正式上架",
+      "heading": "從訂票到散場，記下這一場",
+      "status": "1.7.0 · 等待審核",
       "features": [
-        ["認識劇場小兔", "在「我的」開啟可選的掌上小劇場。記錄往日演出、收集道具，裝扮你的小舞台。"],
-        ["分享一點快樂", "分享小兔與裝扮圖片，不包含暱稱或日記詳情。"],
-        ["選擇你的應用程式圖示", "金色首演現為預設圖示。即使未開啟小劇場，也能在「我的」選擇原版、劇場小兔或奶油小兔。"]
+        [
+          "記下待看的演出",
+          "把已訂票的演出存進日記，散場後標記為已觀看。"
+        ],
+        [
+          "留下觀後感",
+          "為這場演出寫下私密感想。開啟提示後，標記為已觀看時就會收到寫觀後感的邀請。"
+        ],
+        [
+          "找到常用設定",
+          "從個人頁面進入設定。開啟小劇場後，可直接從導覽列進入。也可選擇魅影兔、革命兔 · 金色剪影或街壘兔作為主畫面圖示。"
+        ]
       ],
-      "privacy": "現有演出、照片、筆記及私密 iCloud 設定保持不變。小劇場進度獨立儲存在本機，不透過 iCloud 同步。",
+      "privacy": "觀後感提示預設關閉。",
       "history": "版本歷史",
-      "previous": "先前的正式版本，已於 2026 年 10 月 19 日確認可下載。",
-      "live": "劇光燈 1.5.1 已在 App Store 正式上架，支援 iPhone 與 iPad。下載或更新，體驗掌上小劇場並選擇喜歡的應用程式圖示。"
+      "previous": "加入可選的劇場小兔與多款 App 圖示。",
+      "live": "已在 App Store 上架，導覽介面支援 iPhone Duo。"
     },
     "ja": {
-      "heading": "あなただけの、小さな劇場。",
-      "status": "1.5.1 · App Storeで配信中",
+      "heading": "チケットを取った日から、終演後の余韻まで",
+      "status": "1.7.0 · 審査待ち",
       "features": [
-        ["劇場のうさぎに会おう", "プロフィールから任意の「小さな劇場」を有効に。過去の公演を記録して小道具を集め、舞台を飾れます。"],
-        ["小さな喜びをシェア", "ニックネームや日記の詳細を含めずに、うさぎと小道具の画像を共有できます。"],
-        ["自分らしいアイコンに", "「黄金の初日」が標準アイコンです。小さな劇場を使わなくても、プロフィールでオリジナル、劇場のうさぎ、クリームうさぎを選べます。"]
+        [
+          "観劇予定を記録",
+          "予約した公演を日記に登録し、終演後に鑑賞済みにできます。"
+        ],
+        [
+          "観劇の余韻を残す",
+          "公演ごとに自分だけの感想を書けます。案内をオンにすると、鑑賞済みにしたときに感想の入力を促します。"
+        ],
+        [
+          "設定をひとつの場所に",
+          "プロフィールから設定を開けます。ミニシアターを有効にすると、ナビゲーションバーから直接移動できます。ホーム画面のアイコンに怪人うさぎ、革命うさぎ・金色のシルエット、バリケードうさぎを選べます。"
+        ]
       ],
-      "privacy": "保存済みの公演、写真、メモ、プライベートiCloud設定は変わりません。小さな劇場の進行状況は端末内に別途保存され、iCloudでは同期されません。",
+      "privacy": "感想の入力を促す機能は初期設定ではオフです。",
       "history": "バージョン履歴",
-      "previous": "以前の公開バージョン。2026年10月19日に配信を確認しました。",
-      "live": "StageLight 1.5.1はiPhoneとiPad向けにApp Storeで配信中です。ダウンロードまたはアップデートして、小さな劇場やアプリアイコンの選択をお楽しみください。"
+      "previous": "劇場のうさぎと、選べるアプリアイコンが登場しました。",
+      "live": "App Storeで配信中。iPhone Duoの画面に合わせてナビゲーションが切り替わります。"
     }
-  }
+  },
+  "build": 10,
+  "submittedOn": "2026-11-14"
 }
