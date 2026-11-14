@@ -431,6 +431,31 @@ A diary owner can give StageLight a theatre-inspired identity on their own Home 
 - The choice belongs to the device. Switching icons requires no purchase, diary entry, reward, or iCloud write. The icon feature introduces no diary migration.
 - Verification for this increment includes eight passing simulator unit tests covering selection, previews and bundled iPhone/iPad icon metadata. Each new icon was selected and verified after relaunch on an iPhone 18 Pro in a focused physical-device run. Physical iPad switching was not verified.
 
+### Proposed commemorative series · 剧目纪念图标
+
+**Design proposal for a future release.** Phantom bunny (魅影兔), Revolutionary bunny · Gold silhouette (革命兔 · 金色剪影), and Barricade bunny (街垒兔) form the permanently free Premiere series for all users, including new installs. The four earlier choices also stay freely selectable. Updating the app must preserve the device’s selected icon. The following unlock rules apply only to new designs explicitly labeled as part of the commemorative series.
+
+**Earn an icon by attending its show.** Proposed first pairings are *Wicked* → Emerald bunny, *Hadestown* → Lantern bunny, and *Singin’ in the Rain* → Rain dance bunny. Someone planning to see *Wicked* can preview Emerald bunny in Settings. After they save the performance as attended, a dismissible message offers “You unlocked Emerald bunny” and “Preview.” Only an explicit “Set as Home Screen icon” changes the device icon.
+
+| Diary event | Expected result |
+| --- | --- |
+| Save an attended performance manually, from a scan, or as a backdated entry | A successful save qualifies on the user’s word. A ticket photo, rating, reflection, or online verification is optional. A failed save awards nothing. |
+| Have an older attended entry when a matching icon arrives | Recognize it on opening the picker. The user can claim the icon without editing or re-entering the performance. |
+| Attend a tour, revival, or translated production | Match the work across venues and title aliases. Ask the user to confirm an ambiguous match and preserve their original diary title. |
+| Book, cancel, or attend again | Upcoming and cancelled entries do not qualify. The first qualifying attendance unlocks the icon once; repeat visits stay separate diary entries. |
+| Correct or delete a qualifying entry after earning the icon | Keep the earned icon. Deleting the entry also removes its date and venue from any commemorative caption. |
+
+**Unlock the collection with one purchase.** In Profile → Settings → App icon, show a full preview and both routes for each locked design. For example, offer “Record a visit to Wicked” and “Unlock the collection.” Before purchase, show the price and state that the one-time purchase includes all current and future icons in this commemorative series. Provide “Restore purchases” for reinstalls and other devices. Pricing is open. Keep purchase prompts in the picker so saving a diary entry stays focused on the show.
+
+**Ownership and privacy.** Buying the collection and earning an individual icon are independent. A buyer can later earn the same icon through attendance and see a personal caption from their diary. If the purchase is refunded, individually earned icons remain available. Attendance unlocks should work offline. With private iCloud sync available, earned icon identifiers should follow the user across devices; each device keeps its own Home Screen selection. Restoring a purchase must work independently of diary sync and must not require sending viewing history or ticket photos.
+
+**Acceptance examples for future development**
+
+- A new user with an empty diary can immediately select any Premiere icon, with Mini Theatre on or off.
+- A returning user with an attended *Wicked* entry can claim Emerald bunny offline. A user with only an upcoming booking can preview it, then earn it after marking the show attended.
+- A user who purchases the collection on iPhone can restore it on iPad, including later additions to the series. Neither operation changes the selected icon on the other device.
+- Dismissing an unlock, cancelling a purchase, or encountering a purchase failure leaves diary entries, previously earned icons, and the current selection intact.
+
 ### Future concepts for review
 
 These are design candidates. The musical titles identify creative references for the team; the proposed picker names describe the original artwork.
